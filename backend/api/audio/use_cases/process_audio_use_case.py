@@ -15,7 +15,9 @@ class ProcessAudioUseCase:
     def execute(self, file: UploadFile) -> str:
         try:
             buffer = self._parse_file_into_buffer(file)
-            return self.openai_wrapper.transcribe_audio(buffer)
+            transcribed_audio = self.openai_wrapper.transcribe_audio(buffer)
+
+            return self.openai_wrapper.prompt_chat(transcribed_audio)
         except Exception as e:
             raise AudioProcessingError(f"Error processing audio file: {str(e)}")
 
