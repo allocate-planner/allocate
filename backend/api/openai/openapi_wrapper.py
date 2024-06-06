@@ -22,8 +22,6 @@ class OpenAIWrapper:
         self._read_base_prompt_from_file()
         self._populate_dynamic_content_in_prompt()
 
-        print(self.prompt)
-
         chat_completion = self.client.chat.completions.create(
             model="gpt-4o",
             messages=[
