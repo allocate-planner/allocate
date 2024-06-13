@@ -9,9 +9,9 @@ class EmailAddressValidator:
 
     def validate_email_address(self, email_address: str) -> str | None:
         if not email_address:
-            return "Email is required"
+            return "An email is required."
         elif not self.email_address_regex.match(email_address):
-            return "Invalid email address"
+            return "An invalid email address was provided."
 
     def validate_user_email_address(self, email_address: str) -> str | None:
         return self.validate_email_address(email_address)
@@ -20,9 +20,9 @@ class EmailAddressValidator:
 class PasswordValidator:
     def validate_password(self, password: str) -> str | None:
         if not password:
-            return "Password is required"
+            return "A password is required."
         elif len(password) < 8:
-            return "Password must be at least 8 characters long"
+            return "A password must be at least 8 characters long."
 
     def validate_user_password(self, password: str) -> str | None:
         return self.validate_password(password)

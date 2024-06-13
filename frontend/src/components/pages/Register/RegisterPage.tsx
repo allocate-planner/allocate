@@ -33,6 +33,11 @@ const RegisterPage = () => {
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    if (password !== confirmPassword) {
+      toast.error("The passwords provided do not match.");
+      return;
+    }
+
     const userDetails: IUserRegister = {
       username: email,
       password: password,
