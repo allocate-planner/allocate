@@ -39,8 +39,6 @@ const RegisterPage = () => {
       confirm_password: confirmPassword,
     };
 
-    console.log(userDetails);
-
     await registerUser(userDetails);
   };
 
