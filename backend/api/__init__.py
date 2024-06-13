@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from api.audio.controllers.audio_controller import audio
+from api.users.controllers.users_controller import users
 
 from api.config import DevelopmentConfig
 from api.database import engine
@@ -23,6 +24,8 @@ def create_app() -> FastAPI:
     Base.metadata.create_all(bind=engine)
 
     app.include_router(audio, tags=["audio"])
+    app.include_router(users, tags=["users"])
+
     app.state.config = config
 
     return app
