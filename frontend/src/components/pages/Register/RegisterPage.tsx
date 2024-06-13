@@ -68,8 +68,8 @@ const RegisterPage = () => {
 
   return (
     <div className="flex flex-row h-screen w-screen">
-      <div className="w-1/2 bg-random-shapes flex flex-col justify-between"></div>
-      <div className="w-1/2 flex justify-center items-center">
+      <div className="md:w-1/2 bg-random-shapes flex flex-col justify-between"></div>
+      <div className="w-full md:w-1/2 flex justify-center items-center">
         <div className="flex flex-col space-y-8">
           <div className="flex flex-col space-y-2">
             <h1 className="font-black text-2xl">Create an account</h1>
