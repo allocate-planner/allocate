@@ -19,7 +19,7 @@ class RegisterUserUseCase:
 
     def execute(self, request: UserDetails) -> UserSchema:
         if self.user_repository.find_by_email(request.email_address):
-            raise UserAlreadyExists("User already exists")
+            raise UserAlreadyExists("User already exists.")
 
         hashed_password = self.bcrypt_hasher.hash(request.password)
 

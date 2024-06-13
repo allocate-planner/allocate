@@ -39,13 +39,16 @@ def register_user(
         request.password
     )
 
-    if validation_email_errors or validation_password_errors:
+    if validation_email_errors:
         raise HTTPException(
             status_code=400,
-            detail={
-                "email_errors": validation_email_errors,
-                "password_errors": validation_password_errors,
-            },
+            detail=validation_email_errors,
+        )
+
+    if validation_password_errors:
+        raise HTTPException(
+            status_code=400,
+            detail=validation_password_errors,
         )
 
     try:

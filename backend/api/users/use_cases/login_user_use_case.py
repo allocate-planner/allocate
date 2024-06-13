@@ -31,10 +31,10 @@ class LoginUserUseCase:
         user = self.user_repository.find_by_email(form_data.username)
 
         if user is None:
-            raise UserNotFound("User not found")
+            raise UserNotFound("User not found.")
 
         if not self.bcrypt_hasher.check(str(user.password), form_data.password):
-            raise InvalidCredentials("Invalid Credentials provided")
+            raise InvalidCredentials("Invalid Credentials provided.")
 
         access_token = self.create_access_token(str(user.email_address))
         refresh_token = self.create_refresh_token(str(user.email_address))
