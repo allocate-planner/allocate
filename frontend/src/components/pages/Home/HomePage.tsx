@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
-import Header from "./Header";
-import PrimaryContent from "./PrimaryContent";
+import Header from "../../common/Home/Header";
+import PrimaryContent from "../../common/Home/PrimaryContent";
 
 const HomePage = () => {
   useEffect(() => {
