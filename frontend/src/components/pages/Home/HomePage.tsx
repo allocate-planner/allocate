@@ -4,6 +4,7 @@ import Header from "../../common/Home/Header";
 import PrimaryContent from "../../common/Home/PrimaryContent";
 import Features from "../../common/Home/Features";
 import Pricing from "../../common/Home/Pricing";
+import Footer from "../../common/Home/Footer";
 
 const HomePage = () => {
   useEffect(() => {
@@ -18,6 +19,7 @@ const HomePage = () => {
         <Features />
         <Pricing />
       </div>
+      <Footer />
     </div>
   );
 };
