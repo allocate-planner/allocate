@@ -4,7 +4,7 @@ import FeatureCard from "./FeatureCard";
 
 const Features = () => {
   return (
-    <div className="h-5/6 w-full flex flex-col justify-center items-center">
+    <div className="h-5/6 w-full flex flex-col justify-center items-center space-y-8">
       <div className="flex flex-col -space-y-8">
         <h1 className="text-6xl font-extrabold">Only the features you want</h1>
         <div className="flex flex-row space-x-2 items-center justify-center">
