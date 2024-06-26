@@ -1,19 +1,36 @@
 import { Button } from "../Button";
 
 const Header = () => {
+  const handleClickScroll = (id: string) => {
+    const element = document.getElementById(id);
+
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <div className="flex justify-between h-1/6 w-full p-12">
       <div className="flex flex-row justify-center items-center text-center space-x-16">
         <img src="/logo.svg" alt="Allocate Logo" />
-        <h2 className="text-gray-600 text-sm font-semibold cursor-pointer hover:text-violet-500">
+        <a
+          onClick={() => handleClickScroll("features")}
+          className="text-gray-600 text-sm font-semibold cursor-pointer hover:text-violet-500"
+        >
           Features
-        </h2>
-        <h2 className="text-gray-600 text-sm font-semibold cursor-pointer hover:text-violet-500">
+        </a>
+        <a
+          onClick={() => handleClickScroll("pricing")}
+          className="text-gray-600 text-sm font-semibold cursor-pointer hover:text-violet-500"
+        >
           Pricing
-        </h2>
-        <h2 className="text-gray-600 text-sm font-semibold cursor-pointer hover:text-violet-500">
+        </a>
+        <a
+          onClick={() => handleClickScroll("faq")}
+          className="text-gray-600 text-sm font-semibold cursor-pointer hover:text-violet-500"
+        >
           FAQ
-        </h2>
+        </a>
       </div>
       <div className="flex flex-row justify-center items-center text-center space-x-8">
         <h2 className="text-gray-600 text-sm font-semibold cursor-pointer hover:text-violet-500">

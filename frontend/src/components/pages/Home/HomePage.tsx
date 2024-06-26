@@ -15,11 +15,19 @@ const HomePage = () => {
     <div className="w-full h-full">
       <Header />
       <div className="space-y-72">
-        <PrimaryContent />
-        <Features />
-        <Pricing />
+        <section id="primary">
+          <PrimaryContent />
+        </section>
+        <section id="features">
+          <Features />
+        </section>
+        <section id="pricing">
+          <Pricing />
+        </section>
+        <section id="footer">
+          <Footer />
+        </section>
       </div>
-      <Footer />
     </div>
   );
 };

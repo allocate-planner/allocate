@@ -17,7 +17,7 @@ const PricingCard = (props: PricingCardProps) => {
     <div className="p-8 border border-1 border-[#DBDBDB] rounded-2xl bg-[#F8F8F8] space-y-8 shadow-xl">
       <div className="flex flex-col space-y-2">
         <div className="flex flex-row justify-between items-center">
-          <h1 className="text-5xl font-extrabold">Free</h1>
+          <h1 className="text-4xl font-extrabold">Free</h1>
           {props.pricing && (
             <h1 className="text-base font-light">${props.pricing}/month</h1>
           )}
@@ -26,20 +26,20 @@ const PricingCard = (props: PricingCardProps) => {
       </div>
       <div className="space-y-4">
         <div className="flex flex-row space-x-2 items-center">
-          <CheckCircleIcon className="w-8 h-8" />
-          <h3 className="text-base font-light">Lorem ipsum dolor sit amet.</h3>
+          <CheckCircleIcon className="w-6 h-6" />
+          <h3 className="text-sm font-light">Lorem ipsum dolor sit amet.</h3>
         </div>
         <div className="flex flex-row space-x-2 items-center">
-          <CheckCircleIcon className="w-8 h-8" />
-          <h3 className="text-base font-light">Lorem ipsum dolor sit amet.</h3>
+          <CheckCircleIcon className="w-6 h-6" />
+          <h3 className="text-sm font-light">Lorem ipsum dolor sit amet.</h3>
         </div>
         <div className="flex flex-row space-x-2 items-center">
-          <CheckCircleIcon className="w-8 h-8" />
-          <h3 className="text-base font-light">Lorem ipsum dolor sit amet.</h3>
+          <CheckCircleIcon className="w-6 h-6" />
+          <h3 className="text-sm font-light">Lorem ipsum dolor sit amet.</h3>
         </div>
         <div className="flex flex-row space-x-2 items-center">
-          <CheckCircleIcon className="w-8 h-8" />
-          <h3 className="text-base font-light">Lorem ipsum dolor sit amet.</h3>
+          <CheckCircleIcon className="w-6 h-6" />
+          <h3 className="text-sm font-light">Lorem ipsum dolor sit amet.</h3>
         </div>
       </div>
       <div>

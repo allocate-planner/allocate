@@ -6,13 +6,13 @@ const Pricing = () => {
       <div className="flex flex-col -space-y-4">
         <div className="flex flex-row space-x-12 items-center justify-center">
           <h1 className="text-6xl font-extrabold">Pricing Plans</h1>
-          <img src="/dollar.svg" alt="Dollar Sign" />
+          <img src="/dollar.svg" alt="Dollar Sign" className="mt-8" />
         </div>
         <p className="text-lg font-light max-w-md">
           No surprises, no hidden fees. Just simple, transparent pricing.
         </p>
       </div>
-      <div className="h-2/3 w-3/4 grid grid-rows-1 grid-cols-3 p-12 rounded-3xl gap-x-24">
+      <div className="h-4/5 w-[70%] grid grid-rows-1 grid-cols-3 p-12 rounded-3xl gap-x-24">
         <PricingCard
           title="Lorem Ipsum"
           subtitle="Lorem ipsum dolor sit amet."
