@@ -14,7 +14,7 @@ const HomePage = () => {
   return (
     <div className="w-full h-full">
       <Header />
-      <div className="space-y-72">
+      <div className="space-y-64">
         <section id="primary">
           <PrimaryContent />
         </section>
