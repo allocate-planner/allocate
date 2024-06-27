@@ -1,4 +1,7 @@
+import { useState } from "react";
+
 import CalendarHeader from "./CalendarHeader";
+import Event from "./Event";
 
 const calendarHours = Array.from({ length: 24 }, (_, i) => i);
 
@@ -22,8 +25,12 @@ const Calendar = () => {
             <div className="border-r-[1px] border-gray-300 flex flex-col justify-center items-start p-4">
               <h2 className="text-sm">{formatHour(hour)}</h2>
             </div>
-            <div className="border-r-[1px] border-gray-300 flex flex-col justify-center items-center p-4">
-              <h2 className="text-sm"></h2>
+            <div className="border-r-[1px] border-gray-300 flex flex-col justify-center items-center p-1">
+              <Event
+                title="Wake Up & Run"
+                startTime="06:00 AM"
+                endTime="07:00 AM"
+              />
             </div>
             <div className="border-r-[1px] border-gray-300 flex flex-col justify-center items-center p-4">
               <h2 className="text-sm"></h2>
