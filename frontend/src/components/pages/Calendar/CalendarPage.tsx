@@ -3,7 +3,7 @@ import Calendar from "@/components/common/Calendar/Calendar";
 
 const CalendarPage = () => {
   return (
-    <div className="flex flex-row">
+    <div className="flex flex-row h-screen">
       <Sidebar />
       <Calendar />
     </div>

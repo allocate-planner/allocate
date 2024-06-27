@@ -69,6 +69,15 @@
   }
 }
 
+.no-scrollbar {
+  ::-webkit-scrollbar {
+      display: none;
+  }
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 ::-webkit-scrollbar {
   background-color: transparent;
   height: .6em;
