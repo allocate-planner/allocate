@@ -1,5 +1,7 @@
 from pydantic import BaseModel
 
+from typing import List
+
 from datetime import date, time
 
 
@@ -40,3 +42,7 @@ class Event(EventBase):
 
     class Config:
         from_attributes = True
+
+
+class EventList(BaseModel):
+    events: List[Event]
