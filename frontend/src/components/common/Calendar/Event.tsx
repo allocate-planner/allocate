@@ -1,7 +1,7 @@
 interface IEventProps {
   title: string;
-  startTime: string;
-  endTime: string;
+  startTime: number;
+  endTime: number;
 }
 
 const Event = (props: IEventProps) => {
