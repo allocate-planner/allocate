@@ -1,7 +1,14 @@
 export interface IEvent {
-  id: string;
+  id: number;
   title: string;
-  date: string;
-  start_time: string;
-  end_time: string;
+  date: Date;
+  start_time: Date;
+  end_time: Date;
+}
+
+export interface IEventCreate {
+  title: string;
+  date: Date;
+  start_time: Date;
+  end_time: Date;
 }

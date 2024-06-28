@@ -1,3 +1,9 @@
+import { useEffect, useState } from "react";
+
+import { useAuth } from "@/AuthProvider";
+import { eventService } from "@/services/EventService";
+import { IEvent } from "@/models/IEvent";
+
 import CalendarHeader from "./CalendarHeader";
 import Event from "./Event";
 
@@ -11,6 +17,28 @@ const formatHour = (hour: number): string => {
 };
 
 const Calendar = () => {
+  const [events, setEvents] = useState<IEvent[]>([]);
+
+  const { getAccessToken } = useAuth();
+
+  const accessToken = getAccessToken();
+
+  const eventData = async () => {
+    try {
+      if (accessToken) {
+        const events = await eventService.getEvents(accessToken);
+        setEvents(events);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    eventData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div className="w-[87.5%] flex flex-col items-start border-[1px] bg-[#F8F8F8] rounded-xl border-gray-300 m-12">
       <CalendarHeader />
