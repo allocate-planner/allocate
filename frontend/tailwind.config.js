@@ -21,6 +21,9 @@ module.exports = {
       fontFamily: {
         sans: ["Inter"],
       },
+      gridRow: {
+        "span-24": "span 24 / span 24",
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

@@ -144,29 +144,44 @@ const Calendar = () => {
           </div>
         ))}
       </div>
-      <div className="h-full w-full overflow-y-scroll no-scrollbar">
-        {calendarHours.map((hour: number) => (
-          <div
-            className={`grid grid-cols-8 grid-rows-1 w-full min-w-0 ${
-              hour === calendarHours.length - 1 ? "" : "border-b"
-            } `}
-          >
-            <div className="border-r-[1px] border-gray-300 flex flex-col justify-center items-start p-4">
-              <h2 className="text-sm">{formatHour(hour)}</h2>
-            </div>
-            {daysOfWeek.map((day: number) => (
-              <div className="border-r-[1px] border-gray-300 flex h-full flex-col justify-center items-center box-border px-1 last:border-r-0">
-                {getEventsForTimeSlot(day, hour).map((event) => (
-                  <Event
-                    title={event.title}
-                    startTime={event.start_time}
-                    endTime={event.end_time}
-                  />
-                ))}
+
+      <div className="grid grid-cols-8 grid-rows-[repeat(24,1fr))] h-full w-full overflow-y-scroll no-scrollbar">
+        <div className="col-span-1 row-span-24 w-full h-full">
+          {calendarHours.map((hour: number) => (
+            <div
+              className={`w-full min-w-0 ${
+                hour === calendarHours.length - 1 ? "" : "border-b"
+              } `}
+            >
+              <div className="border-r-[1px] border-gray-300 flex flex-col justify-center items-start h-14 p-4">
+                <h2 className="text-sm">{formatHour(hour)}</h2>
               </div>
-            ))}
-          </div>
-        ))}
+            </div>
+          ))}
+        </div>
+        <div className="w-full h-full col-span-7 row-span-24 grid-cols-subgrid grid-rows-subgrid grid-cols-subgrid grid">
+          {daysOfWeek.map((day: number) => (
+            <div className="w-full h-full min-w-0 col-span-1 row-span-24 grid grid-rows-subgrid grid-cols-subgrid">
+              {calendarHours.map((hour: number) => (
+                <div
+                  className={`w-full grid grid-rows-subgrid ${
+                    hour === calendarHours.length - 1 ? "" : "border-b"
+                  } `}
+                >
+                  <div className="border-r-[1px] border-gray-300 box-border p-1 h-14 grid grid-rows-subgrid">
+                    {getEventsForTimeSlot(day, hour).map((event) => (
+                      <Event
+                        title={event.title}
+                        startTime={event.start_time}
+                        endTime={event.end_time}
+                      />
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
