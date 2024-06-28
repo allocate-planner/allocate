@@ -153,32 +153,38 @@ const Calendar = () => {
                 hour === calendarHours.length - 1 ? "" : "border-b"
               } `}
             >
-              <div className="border-r-[1px] border-gray-300 flex flex-col justify-center items-start h-14 p-4">
+              <div className="border-r-[1px] border-gray-300 flex flex-col justify-center items-start h-[56px] p-4">
                 <h2 className="text-sm">{formatHour(hour)}</h2>
               </div>
             </div>
           ))}
         </div>
-        <div className="w-full h-full col-span-7 row-span-24 grid-cols-subgrid grid-rows-subgrid grid-cols-subgrid grid">
+        <div className="w-full h-full col-span-7 row-span-24 grid-rows-subgrid grid-cols-subgrid grid">
           {daysOfWeek.map((day: number) => (
-            <div className="w-full h-full min-w-0 col-span-1 row-span-24 grid grid-rows-subgrid grid-cols-subgrid">
-              {calendarHours.map((hour: number) => (
-                <div
-                  className={`w-full grid grid-rows-subgrid ${
-                    hour === calendarHours.length - 1 ? "" : "border-b"
-                  } `}
-                >
-                  <div className="border-r-[1px] border-gray-300 box-border p-1 h-14 grid grid-rows-subgrid">
-                    {getEventsForTimeSlot(day, hour).map((event) => (
-                      <Event
-                        title={event.title}
-                        startTime={event.start_time}
-                        endTime={event.end_time}
-                      />
-                    ))}
-                  </div>
-                </div>
-              ))}
+            <div
+              key={day}
+              className="w-full h-full min-w-0 col-span-1 row-span-24 grid grid-rows-subgrid grid-cols-subgrid box-border"
+            >
+              {calendarHours.map((hour: number) => {
+                const events = getEventsForTimeSlot(day, hour);
+
+                if (events.length > 0) {
+                  return events.map((event) => (
+                    <Event
+                      title={event.title}
+                      startTime={event.start_time}
+                      endTime={event.end_time}
+                    />
+                  ));
+                } else {
+                  return (
+                    <div
+                      key={`${day}-${hour}`}
+                      className="border-r-[1px] border-b-[1px] border-gray-300 flex flex-col text-sm items-start w-full h-[56px] box-border px-4 py-1"
+                    />
+                  );
+                }
+              })}
             </div>
           ))}
         </div>
