@@ -8,7 +8,10 @@ from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 
 from api.database import get_db
+
 from api.users.repositories.user_repository import UserRepository
+from api.events.repositories.event_repository import EventRepository
+
 from api.config import Config
 
 
@@ -17,6 +20,10 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/users/login", scheme_name
 
 def get_user_repository(db: Session = Depends(get_db)) -> UserRepository:
     return UserRepository(db)
+
+
+def get_event_repository(db: Session = Depends(get_db)) -> EventRepository:
+    return EventRepository(db)
 
 
 def get_current_user(token: str = Depends(oauth2_scheme)) -> str | None:
