@@ -147,7 +147,7 @@ const Calendar = () => {
       <div className="h-full w-full overflow-y-scroll no-scrollbar">
         {calendarHours.map((hour: number) => (
           <div
-            className={`grid grid-cols-8 grid-rows-1 w-full ${
+            className={`grid grid-cols-8 grid-rows-1 w-full min-w-0 ${
               hour === calendarHours.length - 1 ? "" : "border-b"
             } `}
           >
@@ -155,7 +155,7 @@ const Calendar = () => {
               <h2 className="text-sm">{formatHour(hour)}</h2>
             </div>
             {daysOfWeek.map((day: number) => (
-              <div className="border-r-[1px] border-gray-300 flex flex-col justify-center items-center p-1 last:border-r-0">
+              <div className="border-r-[1px] border-gray-300 flex h-full flex-col justify-center items-center box-border px-1 last:border-r-0">
                 {getEventsForTimeSlot(day, hour).map((event) => (
                   <Event
                     title={event.title}
