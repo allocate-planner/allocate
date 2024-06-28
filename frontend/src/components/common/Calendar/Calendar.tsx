@@ -55,8 +55,9 @@ const Calendar = () => {
   const transformEvents = (eventsData: {
     events: IEvent[];
   }): ITransformedEvent[] => {
-    console.log(events);
     return eventsData.events.map((event: IEvent) => {
+      const eventWeekStart = startOfWeek(parseISO(event.date));
+
       const startTimeParts = event.start_time.split(":");
       const endTimeParts = event.end_time.split(":");
 
@@ -67,6 +68,7 @@ const Calendar = () => {
       return {
         ...event,
         title: event.title,
+        event_week_start: eventWeekStart,
         day: getDay(eventDate),
         start_time: +startTime,
         end_time: +endTime,
@@ -88,7 +90,9 @@ const Calendar = () => {
   const getEventsForTimeSlot = (day: number, hour: number) => {
     return events.filter(
       (event: ITransformedEvent) =>
-        event.day === day && event.start_time == hour
+        isSameDay(event.event_week_start, weekStart) &&
+        event.day === day &&
+        event.start_time == hour
     );
   };
 
