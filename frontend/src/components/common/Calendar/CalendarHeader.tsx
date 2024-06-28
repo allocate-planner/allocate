@@ -21,8 +21,8 @@ const CalendarHeader = () => {
   const weekDays = Array.from({ length: 7 }, (_, i) => addDays(weekStart, i));
 
   return (
-    <div className="grid grid-cols-7 grid-rows-1 w-full">
-      <div className="col-span-7 border-b border-gray-300 flex justify-center items-center space-x-8 p-4">
+    <div className="grid grid-cols-8 grid-rows-1 w-full">
+      <div className="col-span-8 border-b border-gray-300 flex justify-center items-center space-x-8 p-4">
         <ArrowLeftIcon
           className="w-6 h-6 cursor-pointer hover:scale-125 transform transition duration-300"
           onClick={() => moveWeek(-1)}
@@ -40,6 +40,9 @@ const CalendarHeader = () => {
         >
           Today
         </Button>
+      </div>
+      <div className="border-r border-b border-gray-300 flex flex-col justify-center items-center p-4 ">
+        <h3 className="font-light text-lg">Time</h3>
       </div>
       {weekDays.map((day: Date) => (
         <div

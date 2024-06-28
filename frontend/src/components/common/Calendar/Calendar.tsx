@@ -1,9 +1,8 @@
-import { useState } from "react";
-
 import CalendarHeader from "./CalendarHeader";
 import Event from "./Event";
 
-const calendarHours = Array.from({ length: 24 }, (_, i) => i);
+const calendarHours: number[] = Array.from({ length: 24 }, (_, i) => i);
+const weekDays: number[] = Array.from({ length: 7 }, (_, i) => i);
 
 const formatHour = (hour: number): string => {
   const period = hour < 12 ? "am" : "pm";
@@ -18,32 +17,22 @@ const Calendar = () => {
       <div className="h-full w-full overflow-y-scroll no-scrollbar">
         {calendarHours.map((index: number, hour: number) => (
           <div
-            className={`grid grid-cols-7 grid-rows-1 w-full ${
+            className={`grid grid-cols-8 grid-rows-1 w-full ${
               index === calendarHours.length - 1 ? "" : "border-b"
             } `}
           >
             <div className="border-r-[1px] border-gray-300 flex flex-col justify-center items-start p-4">
               <h2 className="text-sm">{formatHour(hour)}</h2>
             </div>
-            <div className="border-r-[1px] border-gray-300 flex flex-col justify-center items-center p-1">
-              <Event
-                title="Wake Up & Run"
-                startTime="06:00 AM"
-                endTime="07:00 AM"
-              />
-            </div>
-            <div className="border-r-[1px] border-gray-300 flex flex-col justify-center items-center p-4">
-              <h2 className="text-sm"></h2>
-            </div>
-            <div className="border-r-[1px] border-gray-300 flex flex-col justify-center items-center p-4">
-              <h2 className="text-sm"></h2>
-            </div>
-            <div className="border-r-[1px] border-gray-300 flex flex-col justify-center items-center p-4">
-              <h2 className="text-sm"></h2>
-            </div>
-            <div className="border-r-[1px] border-gray-300 flex flex-col justify-center items-center p-4">
-              <h2 className="text-sm"></h2>
-            </div>
+            {weekDays.map(() => (
+              <div className="border-r-[1px] border-gray-300 flex flex-col justify-center items-center p-1 last:border-r-0">
+                <Event
+                  title="Wake Up & Run"
+                  startTime="06:00 AM"
+                  endTime="07:00 AM"
+                />
+              </div>
+            ))}
           </div>
         ))}
       </div>
