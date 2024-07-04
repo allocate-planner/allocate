@@ -269,6 +269,7 @@ const Calendar = () => {
         <div className="col-span-1 row-span-24 w-full h-full">
           {calendarHours.map((hour: number) => (
             <div
+              key={hour}
               className={`w-full min-w-0 ${
                 hour === calendarHours.length - 1 ? "" : "border-b"
               } `}
@@ -295,6 +296,7 @@ const Calendar = () => {
                       startTime={+event.start_time}
                       endTime={+event.end_time}
                       onClick={() => handleEventDetailsClick(event)}
+                      key={`${day}-${hour}`}
                     />
                   ));
                 } else {
