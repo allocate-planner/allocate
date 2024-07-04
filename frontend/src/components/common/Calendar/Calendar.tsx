@@ -136,6 +136,11 @@ const Calendar = () => {
   };
 
   const editEvent = async (event: ITransformedEvent, title: string) => {
+    if (title.length === 0) {
+      setIsEventDetailPopupOpen(false);
+      return;
+    }
+
     const updatedEvent = {
       ...event,
       title: title,
