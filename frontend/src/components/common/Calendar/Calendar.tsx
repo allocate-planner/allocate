@@ -14,14 +14,22 @@ import {
   endOfWeek,
   isSameDay,
   parseISO,
+  formatISO,
   getDay,
+  setHours,
+  setMinutes,
+  setSeconds,
+  setMilliseconds,
 } from "date-fns";
 
 import { useAuth } from "@/AuthProvider";
 import { eventService } from "@/services/EventService";
-import { IEvent, ITransformedEvent } from "@/models/IEvent";
+import { IEvent, ITransformedEvent, IEventCreate } from "@/models/IEvent";
+
+import EventPopup from "./EventPopup";
 
 import Event from "./Event";
+import { toast } from "sonner";
 
 const currentWeekAtom = atom(new Date());
 
@@ -29,6 +37,8 @@ const Calendar = () => {
   const [currentWeek, setCurrentWeek] = useAtom(currentWeekAtom);
 
   const [events, setEvents] = useState<ITransformedEvent[]>([]);
+  const [selectedSlot, setSelectedSlot] = useState<IEventCreate | null>();
+  const [isEventPopupOpen, setIsEventPopupOpen] = useState<boolean>(false);
 
   const { getAccessToken } = useAuth();
   const accessToken = getAccessToken();
@@ -50,6 +60,17 @@ const Calendar = () => {
     const period = hour < 12 ? "am" : "pm";
 
     return `${hour.toString().padStart(2, "0")}:00${period}`;
+  };
+
+  const formatTimeFromHour = (hour: number): string => {
+    const date = new Date();
+
+    const timeWithHour = setHours(date, hour);
+    const timeWithMinutes = setMinutes(timeWithHour, 0);
+    const timeWithSeconds = setSeconds(timeWithMinutes, 0);
+    const timeWithMilliseconds = setMilliseconds(timeWithSeconds, 0);
+
+    return formatISO(timeWithMilliseconds, { representation: "time" });
   };
 
   const transformEvents = (eventsData: {
@@ -87,6 +108,27 @@ const Calendar = () => {
     }
   };
 
+  const createEvent = async (title: string, selectedSlot: IEventCreate) => {
+    const selectedSlotWithTitle = {
+      ...selectedSlot,
+      title: title,
+    };
+
+    try {
+      if (accessToken) {
+        await eventService.createEvent(selectedSlotWithTitle, accessToken);
+        toast.success("Event was created");
+
+        eventData();
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Event was not created");
+    }
+
+    setIsEventPopupOpen(false);
+  };
+
   const getEventsForTimeSlot = (day: number, hour: number) => {
     return events.filter(
       (event: ITransformedEvent) =>
@@ -94,6 +136,24 @@ const Calendar = () => {
         event.day === day &&
         event.start_time == hour
     );
+  };
+
+  const handleEventClick = (day: number, hour: number) => {
+    const dateFromWeekAndDay = addDays(weekStart, day);
+
+    const newEvent: IEventCreate = {
+      date: format(dateFromWeekAndDay, "yyyy-MM-dd"),
+      start_time: formatTimeFromHour(hour),
+      end_time: formatTimeFromHour(hour + 1),
+    };
+
+    setSelectedSlot(newEvent);
+    setIsEventPopupOpen(true);
+  };
+
+  const closeEventPopup = () => {
+    setSelectedSlot(null);
+    setIsEventPopupOpen(false);
   };
 
   useEffect(() => {
@@ -181,12 +241,21 @@ const Calendar = () => {
                     <div
                       key={`${day}-${hour}`}
                       className="border-r-[1px] border-b-[1px] border-gray-300 flex flex-col text-sm items-start w-full h-[56px] box-border px-4 py-1 row-span-1"
+                      onClick={() => handleEventClick(day, hour)}
                     />
                   );
                 }
               })}
             </div>
           ))}
+          {selectedSlot && (
+            <EventPopup
+              isOpen={isEventPopupOpen}
+              onClose={closeEventPopup}
+              selectedSlot={selectedSlot}
+              createEvent={createEvent}
+            />
+          )}
         </div>
       </div>
     </div>

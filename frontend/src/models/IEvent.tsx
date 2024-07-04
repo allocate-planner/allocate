@@ -7,10 +7,10 @@ export interface IEvent {
 }
 
 export interface IEventCreate {
-  title: string;
-  date: Date;
-  start_time: Date;
-  end_time: Date;
+  title?: string;
+  date: string;
+  start_time: string;
+  end_time: string;
 }
 
 export interface ITransformedEvent {

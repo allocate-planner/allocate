@@ -4,14 +4,22 @@ import { IEventCreate } from "../models/IEvent";
 import { API_BASE_URL } from "@/utils/Constants";
 
 export const eventService = {
-  createEvent: async (eventDetails: IEventCreate) => {
+  createEvent: async (eventDetails: IEventCreate, accessToken: string) => {
     return await axios
-      .post(`${API_BASE_URL}/events`, {
-        title: eventDetails.title,
-        date: eventDetails.date,
-        start_time: eventDetails.start_time,
-        end_time: eventDetails.end_time,
-      })
+      .post(
+        `${API_BASE_URL}/events`,
+        {
+          title: eventDetails.title,
+          date: eventDetails.date,
+          start_time: eventDetails.start_time,
+          end_time: eventDetails.end_time,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      )
       .catch((error) => {
         if (
           error.response &&

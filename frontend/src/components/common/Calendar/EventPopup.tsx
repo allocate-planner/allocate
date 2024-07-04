@@ -1,3 +1,6 @@
+import { useState } from "react";
+
+import { IEventCreate } from "@/models/IEvent";
 import { Button } from "../Button";
 
 import {
@@ -12,9 +15,18 @@ import {
 import { Input } from "../Input";
 import { Label } from "../Label";
 
-const EventPopup = () => {
+interface IProps {
+  isOpen: boolean;
+  selectedSlot: IEventCreate;
+  onClose: () => void;
+  createEvent: (title: string, selectedSlot: IEventCreate) => void;
+}
+
+const EventPopup = (props: IProps) => {
+  const [title, setTitle] = useState<string>("");
+
   return (
-    <Dialog>
+    <Dialog open={props.isOpen} onOpenChange={props.onClose}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader className="space-y-4">
           <DialogTitle>Add to Calendar</DialogTitle>
@@ -23,15 +35,25 @@ const EventPopup = () => {
           </DialogDescription>
         </DialogHeader>
         <div className="flex flex-col justify-start items-start">
-          <div className="flex flex-row items-center space-x-4">
+          <div className="flex flex-row items-center justify-between space-x-4">
             <Label htmlFor="name" className="text-right">
-              Event Title
+              Title
             </Label>
-            <Input id="name" placeholder="New Event" className="col-span-3" />
+            <Input
+              id="title"
+              placeholder="New Event"
+              onChange={(e) => setTitle(e.target.value)}
+            />
           </div>
         </div>
         <DialogFooter>
-          <Button className="bg-violet-500 hover:bg-violet-700" type="submit">
+          <Button
+            className="bg-violet-500 hover:bg-violet-700"
+            type="submit"
+            onClick={() => {
+              props.createEvent(title, props.selectedSlot);
+            }}
+          >
             Create
           </Button>
         </DialogFooter>
