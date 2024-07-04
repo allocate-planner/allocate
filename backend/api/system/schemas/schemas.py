@@ -1,23 +1,33 @@
-from pydantic import BaseModel
-
 from typing import List
+from typing_extensions import Annotated
+
+from pydantic import BaseModel, ConfigDict, EmailStr, StringConstraints
 
 from datetime import date, time
 
 
-class UserBase(BaseModel):
-    email_address: str
+class FrozenBaseModel(BaseModel):
+    model_config: ConfigDict = ConfigDict(
+        frozen=True, extra="ignore", from_attributes=True
+    )
+
+
+class UserBase(FrozenBaseModel):
+    email_address: Annotated[
+        EmailStr,
+        StringConstraints(strip_whitespace=True, max_length=256),
+    ]
 
 
 class UserDetails(UserBase):
-    password: str
+    password: Annotated[
+        str,
+        StringConstraints(strip_whitespace=True, max_length=256),
+    ]
 
 
 class User(UserBase):
     id: int
-
-    class Config:
-        from_attributes = True
 
 
 class UserWithToken(UserBase):
@@ -26,12 +36,12 @@ class UserWithToken(UserBase):
     access_token: str
     refresh_token: str
 
-    class Config:
-        from_attributes = True
 
-
-class EventBase(BaseModel):
-    title: str
+class EventBase(FrozenBaseModel):
+    title: Annotated[
+        str,
+        StringConstraints(strip_whitespace=True, max_length=256),
+    ]
     date: date
     start_time: time
     end_time: time
@@ -40,9 +50,6 @@ class EventBase(BaseModel):
 class Event(EventBase):
     id: int
 
-    class Config:
-        from_attributes = True
 
-
-class EventList(BaseModel):
+class EventList(FrozenBaseModel):
     events: List[Event]
