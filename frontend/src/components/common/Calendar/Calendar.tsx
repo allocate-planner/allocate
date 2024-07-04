@@ -114,15 +114,10 @@ const Calendar = () => {
     }
   };
 
-  const createEvent = async (title: string, event: IEventCreate) => {
-    const eventWithTitle = {
-      ...event,
-      title: title,
-    };
-
+  const createEvent = async (event: IEventCreate) => {
     try {
       if (accessToken) {
-        await eventService.createEvent(eventWithTitle, accessToken);
+        await eventService.createEvent(event, accessToken);
         toast.success("Event was created");
 
         eventData();

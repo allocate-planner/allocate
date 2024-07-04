@@ -1,6 +1,8 @@
 export interface IEvent {
   id: number;
   title: string;
+  description?: string;
+  location?: string;
   date: string;
   start_time: string;
   end_time: string;
@@ -8,6 +10,8 @@ export interface IEvent {
 
 export interface IEventCreate {
   title?: string;
+  description?: string;
+  location?: string;
   date: string;
   start_time: string;
   end_time: string;
