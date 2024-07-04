@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 import { ITransformedEvent } from "@/models/IEvent";
 import { Button } from "../Button";
 
@@ -12,7 +14,6 @@ import {
 
 import { Input } from "../Input";
 import { Label } from "../Label";
-import { useState } from "react";
 
 interface IProps {
   isOpen: boolean;
@@ -24,6 +25,12 @@ interface IProps {
 
 const EventDetailPopup = (props: IProps) => {
   const [title, setTitle] = useState<string>(props.event.title);
+
+  useEffect(() => {
+    if (props.isOpen) {
+      setTitle("");
+    }
+  }, [props.isOpen]);
 
   return (
     <Dialog open={props.isOpen} onOpenChange={props.onClose}>

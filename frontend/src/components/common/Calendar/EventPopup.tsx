@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { IEventCreate } from "@/models/IEvent";
 import { Button } from "../Button";
@@ -24,6 +24,12 @@ interface IProps {
 
 const EventPopup = (props: IProps) => {
   const [title, setTitle] = useState<string>("");
+
+  useEffect(() => {
+    if (props.isOpen) {
+      setTitle("");
+    }
+  }, [props.isOpen]);
 
   return (
     <Dialog open={props.isOpen} onOpenChange={props.onClose}>
