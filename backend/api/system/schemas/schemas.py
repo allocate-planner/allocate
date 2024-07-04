@@ -42,6 +42,14 @@ class EventBase(FrozenBaseModel):
         str,
         StringConstraints(strip_whitespace=True, max_length=256),
     ]
+    description: Annotated[
+        str,
+        StringConstraints(strip_whitespace=True, max_length=1024),
+    ]
+    location: Annotated[
+        str,
+        StringConstraints(strip_whitespace=True, max_length=256),
+    ]
     date: date
     start_time: time
     end_time: time

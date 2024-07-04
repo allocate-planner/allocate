@@ -1,3 +1,5 @@
+from typing import Dict, Any
+
 from api.system.models.models import Event
 
 from api.system.schemas.schemas import EventBase
@@ -26,14 +28,22 @@ class CreateEventUseCase:
         if user is None:
             raise UserNotFound("User not found")
 
-        event = Event(
-            title=request.title,
-            date=request.date,
-            start_time=request.start_time,
-            end_time=request.end_time,
-            user_id=user.id,
-            user=user,
-        )
+        event_data: Dict[str, Any] = {
+            "title": request.title,
+            "date": request.date,
+            "start_time": request.start_time,
+            "end_time": request.end_time,
+            "user_id": user.id,
+            "user": user,
+        }
+
+        if request.description is not None:
+            event_data["description"] = request.description
+
+        if request.location is not None:
+            event_data["location"] = request.location
+
+        event = Event(**event_data)
 
         self.event_repository.add(event)
 

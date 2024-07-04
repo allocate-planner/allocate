@@ -24,6 +24,9 @@ class Event(Base):
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
 
     title = Column(String(256), nullable=False)
+    description = Column(String(1024), nullable=True)
+    location = Column(String(256), nullable=True)
+
     date = Column(Date, nullable=False)
     start_time = Column(Time, nullable=False)
     end_time = Column(Time, nullable=False)
