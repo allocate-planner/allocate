@@ -92,8 +92,6 @@ const EventPopup = (props: IProps) => {
       end_time: convertToISO(endTime),
     };
 
-    console.log(newEvent);
-
     props.onCreate(newEvent);
   };
 
