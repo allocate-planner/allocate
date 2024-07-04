@@ -13,10 +13,7 @@ export interface IEventCreate {
   end_time: string;
 }
 
-export interface ITransformedEvent {
-  title: string;
+export interface ITransformedEvent extends IEvent {
   event_week_start: Date;
   day: number;
-  start_time: number;
-  end_time: number;
 }

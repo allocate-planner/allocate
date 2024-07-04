@@ -27,6 +27,7 @@ import { eventService } from "@/services/EventService";
 import { IEvent, ITransformedEvent, IEventCreate } from "@/models/IEvent";
 
 import EventPopup from "./EventPopup";
+import EventDetailPopup from "./EventDetailPopup";
 
 import Event from "./Event";
 import { toast } from "sonner";
@@ -37,8 +38,14 @@ const Calendar = () => {
   const [currentWeek, setCurrentWeek] = useAtom(currentWeekAtom);
 
   const [events, setEvents] = useState<ITransformedEvent[]>([]);
+
   const [selectedSlot, setSelectedSlot] = useState<IEventCreate | null>();
   const [isEventPopupOpen, setIsEventPopupOpen] = useState<boolean>(false);
+
+  const [selectedEvent, setSelectedEvent] =
+    useState<ITransformedEvent | null>();
+  const [isEventDetailPopupOpen, setIsEventDetailPopupOpen] =
+    useState<boolean>(false);
 
   const { getAccessToken } = useAuth();
   const accessToken = getAccessToken();
@@ -88,11 +95,10 @@ const Calendar = () => {
 
       return {
         ...event,
-        title: event.title,
         event_week_start: eventWeekStart,
         day: getDay(eventDate),
-        start_time: +startTime,
-        end_time: +endTime,
+        start_time: startTime,
+        end_time: endTime,
       };
     });
   };
@@ -108,15 +114,15 @@ const Calendar = () => {
     }
   };
 
-  const createEvent = async (title: string, selectedSlot: IEventCreate) => {
-    const selectedSlotWithTitle = {
-      ...selectedSlot,
+  const createEvent = async (title: string, event: IEventCreate) => {
+    const eventWithTitle = {
+      ...event,
       title: title,
     };
 
     try {
       if (accessToken) {
-        await eventService.createEvent(selectedSlotWithTitle, accessToken);
+        await eventService.createEvent(eventWithTitle, accessToken);
         toast.success("Event was created");
 
         eventData();
@@ -129,12 +135,51 @@ const Calendar = () => {
     setIsEventPopupOpen(false);
   };
 
+  const editEvent = async (event: ITransformedEvent, title: string) => {
+    const updatedEvent = {
+      ...event,
+      title: title,
+      start_time: formatTimeFromHour(+event.start_time),
+      end_time: formatTimeFromHour(+event.start_time + 1),
+    };
+
+    try {
+      if (accessToken) {
+        await eventService.editEvent(updatedEvent, accessToken);
+        toast.success("Event was edited");
+
+        eventData();
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Event was not edited");
+    }
+
+    setIsEventDetailPopupOpen(false);
+  };
+
+  const deleteEvent = async (event: ITransformedEvent) => {
+    try {
+      if (accessToken) {
+        await eventService.deleteEvent(event.id, accessToken);
+        toast.success("Event was deleted");
+
+        eventData();
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Event was not deleted");
+    }
+
+    setIsEventDetailPopupOpen(false);
+  };
+
   const getEventsForTimeSlot = (day: number, hour: number) => {
     return events.filter(
       (event: ITransformedEvent) =>
         isSameDay(event.event_week_start, weekStart) &&
         event.day === day &&
-        event.start_time == hour
+        +event.start_time == hour
     );
   };
 
@@ -151,9 +196,19 @@ const Calendar = () => {
     setIsEventPopupOpen(true);
   };
 
+  const handleEventDetailsClick = (event: ITransformedEvent) => {
+    setSelectedEvent(event);
+    setIsEventDetailPopupOpen(true);
+  };
+
   const closeEventPopup = () => {
     setSelectedSlot(null);
     setIsEventPopupOpen(false);
+  };
+
+  const closeEventDetailPopup = () => {
+    setSelectedEvent(null);
+    setIsEventDetailPopupOpen(false);
   };
 
   useEffect(() => {
@@ -232,8 +287,9 @@ const Calendar = () => {
                   return events.map((event) => (
                     <Event
                       title={event.title}
-                      startTime={event.start_time}
-                      endTime={event.end_time}
+                      startTime={+event.start_time}
+                      endTime={+event.end_time}
+                      onClick={() => handleEventDetailsClick(event)}
                     />
                   ));
                 } else {
@@ -251,9 +307,19 @@ const Calendar = () => {
           {selectedSlot && (
             <EventPopup
               isOpen={isEventPopupOpen}
+              event={selectedSlot}
               onClose={closeEventPopup}
-              selectedSlot={selectedSlot}
-              createEvent={createEvent}
+              onCreate={createEvent}
+            />
+          )}
+
+          {selectedEvent && (
+            <EventDetailPopup
+              isOpen={isEventDetailPopupOpen}
+              event={selectedEvent}
+              onClose={closeEventDetailPopup}
+              onEdit={editEvent}
+              onDelete={deleteEvent}
             />
           )}
         </div>

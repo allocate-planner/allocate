@@ -1,6 +1,4 @@
-import { useState } from "react";
-
-import { IEventCreate } from "@/models/IEvent";
+import { ITransformedEvent } from "@/models/IEvent";
 import { Button } from "../Button";
 
 import {
@@ -14,24 +12,27 @@ import {
 
 import { Input } from "../Input";
 import { Label } from "../Label";
+import { useState } from "react";
 
 interface IProps {
   isOpen: boolean;
-  event: IEventCreate;
+  event: ITransformedEvent;
   onClose: () => void;
-  onCreate: (title: string, event: IEventCreate) => void;
+  onEdit: (event: ITransformedEvent, title: string) => void;
+  onDelete: (event: ITransformedEvent) => void;
 }
 
-const EventPopup = (props: IProps) => {
-  const [title, setTitle] = useState<string>("");
+const EventDetailPopup = (props: IProps) => {
+  const [title, setTitle] = useState<string>(props.event.title);
 
   return (
     <Dialog open={props.isOpen} onOpenChange={props.onClose}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader className="space-y-4">
-          <DialogTitle>Add to Calendar</DialogTitle>
+          <DialogTitle>Edit Event</DialogTitle>
           <DialogDescription>
-            Add an event to your calendar here! Click Create when you're done.
+            Edit, or delete your event. Click Save when you're done, or click
+            delete to remove the item from your calendar.
           </DialogDescription>
         </DialogHeader>
         <div className="flex flex-col justify-start items-start">
@@ -41,20 +42,29 @@ const EventPopup = (props: IProps) => {
             </Label>
             <Input
               id="title"
-              placeholder="New Event"
+              defaultValue={title}
               onChange={(e) => setTitle(e.target.value)}
             />
           </div>
         </div>
-        <DialogFooter>
+        <DialogFooter className="flex flex-row justify-between w-full">
+          <Button
+            className="bg-red-500 hover:bg-red-700"
+            type="submit"
+            onClick={() => {
+              props.onDelete(props.event);
+            }}
+          >
+            Delete
+          </Button>
           <Button
             className="bg-violet-500 hover:bg-violet-700"
             type="submit"
             onClick={() => {
-              props.onCreate(title, props.event);
+              props.onEdit(props.event, title);
             }}
           >
-            Create
+            Save
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -62,4 +72,4 @@ const EventPopup = (props: IProps) => {
   );
 };
 
-export default EventPopup;
+export default EventDetailPopup;
