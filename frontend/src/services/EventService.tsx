@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { IEventCreate } from "../models/IEvent";
+import { IEvent, IEventCreate } from "../models/IEvent";
 import { API_BASE_URL } from "@/utils/Constants";
 
 export const eventService = {
@@ -62,6 +62,72 @@ export const eventService = {
             error
           );
           throw new Error("An unknown error occurred while retrieving events.");
+        }
+      });
+  },
+
+  deleteEvent: async (event_id: number, accessToken: string) => {
+    return await axios
+      .delete(`${API_BASE_URL}/events/${event_id}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        data: {
+          event_id: event_id,
+        },
+      })
+      .catch((error) => {
+        if (
+          error.response &&
+          error.response.data &&
+          error.response.data.detail
+        ) {
+          console.error("Error: ", error.response.data.detail);
+          throw new Error(error.response.data.detail);
+        } else {
+          console.error(
+            "Error: There has been an issue when deleting the event.",
+            error
+          );
+          throw new Error(
+            "An unknown error occurred while deleting the event."
+          );
+        }
+      });
+  },
+
+  editEvent: async (eventDetails: IEvent, accessToken: string) => {
+    return await axios
+      .put(
+        `${API_BASE_URL}/events/${eventDetails.id}`,
+        {
+          title: eventDetails.title,
+          date: eventDetails.date,
+          start_time: eventDetails.start_time,
+          end_time: eventDetails.end_time,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      )
+      .catch((error) => {
+        if (
+          error.response &&
+          error.response.data &&
+          error.response.data.detail
+        ) {
+          console.error("Error: ", error.response.data.detail);
+          throw new Error(error.response.data.detail);
+        } else {
+          console.error(
+            "Error: There has been an issue when deleting the event.",
+            error
+          );
+          throw new Error(
+            "An unknown error occurred while deleting the event."
+          );
         }
       });
   },
