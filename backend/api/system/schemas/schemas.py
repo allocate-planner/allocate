@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 from typing_extensions import Annotated
 
 from pydantic import BaseModel, ConfigDict, EmailStr, StringConstraints
@@ -42,14 +42,18 @@ class EventBase(FrozenBaseModel):
         str,
         StringConstraints(strip_whitespace=True, max_length=256),
     ]
-    description: Annotated[
-        str,
-        StringConstraints(strip_whitespace=True, max_length=1024),
-    ]
-    location: Annotated[
-        str,
-        StringConstraints(strip_whitespace=True, max_length=256),
-    ]
+    description: Optional[
+        Annotated[
+            str,
+            StringConstraints(strip_whitespace=True, max_length=1024),
+        ]
+    ] = None
+    location: Optional[
+        Annotated[
+            str,
+            StringConstraints(strip_whitespace=True, max_length=256),
+        ]
+    ] = None
     date: date
     start_time: time
     end_time: time
