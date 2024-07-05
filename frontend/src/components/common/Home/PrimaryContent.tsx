@@ -24,7 +24,7 @@ const PrimaryContent = () => {
       <div className="w-3/5">
         <img
           src="/calendar.png"
-          alt="An image showcasing the Dashboard of Allocate"
+          alt="An image showcasing the Allocate Calendar"
         />
       </div>
     </div>

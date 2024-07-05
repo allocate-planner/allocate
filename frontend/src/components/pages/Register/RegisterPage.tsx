@@ -26,7 +26,7 @@ const RegisterPage = () => {
     document.title = "allocate — Register";
 
     if (isAuthenticated) {
-      navigate("/dashboard");
+      navigate("/calendar");
     }
   }, [navigate, isAuthenticated]);
 

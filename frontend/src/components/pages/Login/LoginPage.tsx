@@ -25,7 +25,7 @@ const LoginPage = () => {
     document.title = "allocate — Login";
 
     if (isAuthenticated) {
-      navigate("/dashboard");
+      navigate("/calendar");
     }
   }, [navigate, isAuthenticated]);
 
@@ -47,7 +47,7 @@ const LoginPage = () => {
       await userService.authenticateUser(userDetails);
       updateAuthentication(true);
       toast.success("You have successfully been authenticated!");
-      navigate("/dashboard");
+      navigate("/calendar");
     } catch (error) {
       console.error(error);
 
