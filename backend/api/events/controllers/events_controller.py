@@ -12,7 +12,7 @@ from api.events.dependencies import get_events_for_user_use_case
 from api.events.dependencies import delete_event_use_case
 from api.events.dependencies import edit_event_use_case
 
-from api.middleware.dependencies import get_current_user
+from api.dependencies import get_current_user
 
 from api.users.errors.user_not_found import UserNotFound
 from api.events.errors.event_not_found import EventNotFound

@@ -1,6 +1,6 @@
 from fastapi import Depends
 
-from api.middleware.dependencies import UserRepository
+from api.dependencies import UserRepository
 
 from api.users.hashers.bcrypt_hasher import BCryptHasher
 
@@ -12,7 +12,7 @@ from api.users.validators import PasswordValidator
 
 from api.config import Config
 
-from api.middleware.dependencies import get_user_repository
+from api.dependencies import get_user_repository
 
 
 def get_bcrypt_hasher() -> BCryptHasher:

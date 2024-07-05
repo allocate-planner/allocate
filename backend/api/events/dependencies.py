@@ -1,15 +1,15 @@
 from fastapi import Depends
 
-from api.middleware.dependencies import EventRepository
-from api.middleware.dependencies import UserRepository
+from api.dependencies import EventRepository
+from api.dependencies import UserRepository
 
 from api.events.use_cases.create_event_use_case import CreateEventUseCase
 from api.events.use_cases.get_events_for_user_use_case import GetEventsForUserUseCase
 from api.events.use_cases.delete_event_use_case import DeleteEventUseCase
 from api.events.use_cases.edit_event_use_case import EditEventUseCase
 
-from api.middleware.dependencies import get_event_repository
-from api.middleware.dependencies import get_user_repository
+from api.dependencies import get_event_repository
+from api.dependencies import get_user_repository
 
 
 def create_event_use_case(
