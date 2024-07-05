@@ -1,4 +1,4 @@
-import { parse, format, parseISO, formatISO, set } from "date-fns";
+import { parse, format, parseISO, formatISO, set, isAfter } from "date-fns";
 
 export const calendarHours: number[] = Array.from({ length: 24 }, (_, i) => i);
 export const daysOfWeek: number[] = Array.from({ length: 7 }, (_, i) => i);
@@ -51,4 +51,11 @@ export const formatTimeFromHour = (hour: number): string => {
 // Output: "2024-07-05"
 export const formatDate = (date: Date): string => {
   return format(date, "yyyy-MM-dd");
+};
+
+export const compareDates = (startTime: string, endTime: string): boolean => {
+  const startTimeAsDate = parse(startTime, "hh:mma", new Date());
+  const endTimeAsDate = parse(endTime, "hh:mma", new Date());
+
+  return isAfter(startTimeAsDate, endTimeAsDate);
 };

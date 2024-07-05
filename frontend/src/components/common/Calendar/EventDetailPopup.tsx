@@ -29,6 +29,7 @@ import { Label } from "../Label";
 import { toast } from "sonner";
 
 import {
+  compareDates,
   convertToISO,
   convertToTimePeriodFromHH,
   times,
@@ -56,8 +57,9 @@ const EventDetailPopup = (props: IProps) => {
   );
 
   const handleEventUpdate = () => {
-    if (startTime <= endTime) {
-      toast.error("Start time must be greater than end time");
+    if (compareDates(startTime, endTime)) {
+      toast.error("Start time must be before the end time");
+      return;
     }
 
     const newEvent = {
