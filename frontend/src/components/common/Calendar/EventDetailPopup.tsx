@@ -46,9 +46,9 @@ interface IProps {
 const EventDetailPopup = (props: IProps) => {
   const [title, setTitle] = useState<string>(props.event.title);
   const [description, setDescription] = useState<string>(
-    props.event.description
+    props.event.description ?? ""
   );
-  const [location, setLocation] = useState<string>(props.event.location);
+  const [location, setLocation] = useState<string>(props.event.location ?? "");
   const [startTime, setStartTime] = useState<string>(
     convertToTimePeriodFromHH(props.event.start_time)
   );
