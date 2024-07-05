@@ -86,7 +86,7 @@ const EventDetailPopup = (props: IProps) => {
         </DialogHeader>
         <div className="flex flex-col justify-between items-start w-full space-y-4">
           <div className="flex flex-row items-center justify-between space-x-4 w-full">
-            <Label htmlFor="name" className="w-1/3">
+            <Label htmlFor="title" className="w-1/3">
               Title
             </Label>
             <Input
@@ -122,9 +122,7 @@ const EventDetailPopup = (props: IProps) => {
             />
           </div>
           <div className="flex flex-row items-center justify-between space-x-4 w-full">
-            <Label htmlFor="time" className="w-1/3">
-              Time
-            </Label>
+            <Label className="w-1/3">Time</Label>
             <div className="flex flex-row justify-center items-center w-2/3 space-x-2">
               <Select
                 onValueChange={(value) => {
