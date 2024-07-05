@@ -31,6 +31,13 @@ import EventDetailPopup from "./EventDetailPopup";
 
 import Event from "./Event";
 import { toast } from "sonner";
+import {
+  calendarHours,
+  daysOfWeek,
+  formatDate,
+  formatHour,
+  formatTimeFromHour,
+} from "@/utils/TimeUtils";
 
 const currentWeekAtom = atom(new Date());
 
@@ -53,31 +60,12 @@ const Calendar = () => {
   const weekStart = startOfWeek(currentWeek);
   const weekEnd = endOfWeek(currentWeek);
 
-  const calendarHours: number[] = Array.from({ length: 24 }, (_, i) => i);
-  const daysOfWeek: number[] = Array.from({ length: 7 }, (_, i) => i);
   const weekDays: Date[] = Array.from({ length: 7 }, (_, i) =>
     addDays(weekStart, i)
   );
 
   const moveWeek = (direction: number): void => {
     setCurrentWeek((prevWeek: Date) => addDays(prevWeek, direction * 7));
-  };
-
-  const formatHour = (hour: number): string => {
-    const period = hour < 12 ? "am" : "pm";
-
-    return `${hour.toString().padStart(2, "0")}:00${period}`;
-  };
-
-  const formatTimeFromHour = (hour: number): string => {
-    const date = new Date();
-
-    const timeWithHour = setHours(date, hour);
-    const timeWithMinutes = setMinutes(timeWithHour, 0);
-    const timeWithSeconds = setSeconds(timeWithMinutes, 0);
-    const timeWithMilliseconds = setMilliseconds(timeWithSeconds, 0);
-
-    return formatISO(timeWithMilliseconds, { representation: "time" });
   };
 
   const transformEvents = (eventsData: {
@@ -175,7 +163,7 @@ const Calendar = () => {
     const dateFromWeekAndDay = addDays(weekStart, day);
 
     const newEvent: IEventCreate = {
-      date: format(dateFromWeekAndDay, "yyyy-MM-dd"),
+      date: formatDate(dateFromWeekAndDay),
       start_time: formatTimeFromHour(hour),
       end_time: formatTimeFromHour(hour + 1),
     };

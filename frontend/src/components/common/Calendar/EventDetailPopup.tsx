@@ -26,33 +26,13 @@ import {
 
 import { Input } from "../Input";
 import { Label } from "../Label";
+import { toast } from "sonner";
 
-const times = [
-  "12:00am",
-  "01:00am",
-  "02:00am",
-  "03:00am",
-  "04:00am",
-  "05:00am",
-  "06:00am",
-  "07:00am",
-  "08:00am",
-  "09:00am",
-  "10:00am",
-  "11:00am",
-  "12:00pm",
-  "01:00pm",
-  "02:00pm",
-  "03:00pm",
-  "04:00pm",
-  "05:00pm",
-  "06:00pm",
-  "07:00pm",
-  "08:00pm",
-  "09:00pm",
-  "10:00pm",
-  "11:00pm",
-];
+import {
+  convertToISO,
+  convertToTimePeriodFromHH,
+  times,
+} from "@/utils/TimeUtils";
 
 interface IProps {
   isOpen: boolean;
@@ -63,28 +43,23 @@ interface IProps {
 }
 
 const EventDetailPopup = (props: IProps) => {
-  const convertToAMPM = (time: string): string => {
-    const date = parse(time, "HH", new Date());
-    return format(date, "hh:mma").toLowerCase();
-  };
-
-  const convertToISO = (time: string) => {
-    return format(parse(time, "hh:mma", new Date()), "HH:mm:ss" + "+01:00");
-  };
-
   const [title, setTitle] = useState<string>(props.event.title);
   const [description, setDescription] = useState<string>(
     props.event.description
   );
   const [location, setLocation] = useState<string>(props.event.location);
   const [startTime, setStartTime] = useState<string>(
-    convertToAMPM(props.event.start_time)
+    convertToTimePeriodFromHH(props.event.start_time)
   );
   const [endTime, setEndTime] = useState<string>(
-    convertToAMPM(props.event.end_time)
+    convertToTimePeriodFromHH(props.event.end_time)
   );
 
   const handleEventUpdate = () => {
+    if (startTime <= endTime) {
+      toast.error("Start time must be greater than end time");
+    }
+
     const newEvent = {
       ...props.event,
       title: title,

@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 import { IEventCreate } from "@/models/IEvent";
 import { Button } from "../Button";
 
-import { parse, format, parseISO } from "date-fns";
+import { isAfter } from "date-fns";
 
 import {
   Dialog,
@@ -26,33 +26,13 @@ import {
 
 import { Input } from "../Input";
 import { Label } from "../Label";
+import { toast } from "sonner";
 
-const times = [
-  "12:00am",
-  "01:00am",
-  "02:00am",
-  "03:00am",
-  "04:00am",
-  "05:00am",
-  "06:00am",
-  "07:00am",
-  "08:00am",
-  "09:00am",
-  "10:00am",
-  "11:00am",
-  "12:00pm",
-  "01:00pm",
-  "02:00pm",
-  "03:00pm",
-  "04:00pm",
-  "05:00pm",
-  "06:00pm",
-  "07:00pm",
-  "08:00pm",
-  "09:00pm",
-  "10:00pm",
-  "11:00pm",
-];
+import {
+  convertToISO,
+  convertToTimePeriodFromISO,
+  times,
+} from "@/utils/TimeUtils";
 
 interface IProps {
   isOpen: boolean;
@@ -62,34 +42,32 @@ interface IProps {
 }
 
 const EventPopup = (props: IProps) => {
-  const convertToAMPM = (time: string) => {
-    const dummyISOString = `1970-01-01T${time}`;
-
-    return format(parseISO(dummyISOString), "hh:mma").toLowerCase();
-  };
-
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [location, setLocation] = useState<string>("");
   const [startTime, setStartTime] = useState<string>(
-    convertToAMPM(props.event.start_time)
+    convertToTimePeriodFromISO(props.event.start_time)
   );
   const [endTime, setEndTime] = useState<string>(
-    convertToAMPM(props.event.end_time)
+    convertToTimePeriodFromISO(props.event.end_time)
   );
 
-  const convertToISO = (time: string) => {
-    return format(parse(time, "hh:mma", new Date()), "HH:mm:ss" + "+01:00");
-  };
-
   const handleEventCreation = () => {
+    const convertedStartTime = convertToISO(startTime);
+    const convertedEndTime = convertToISO(endTime);
+
+    if (isAfter(convertedStartTime, convertedEndTime)) {
+      toast.error("Start time must be greater than end time");
+      return;
+    }
+
     const newEvent = {
       ...props.event,
       title: title,
       description: description,
       location: location,
-      start_time: convertToISO(startTime),
-      end_time: convertToISO(endTime),
+      start_time: convertedStartTime,
+      end_time: convertedEndTime,
     };
 
     props.onCreate(newEvent);
