@@ -34,11 +34,11 @@ const Sidebar = () => {
           <img src="/logo.svg" alt="Allocate Logo" />
         </div>
         <div className="mt-4 flex flex-col items-center space-y-2">
-          <div className="flex flex-row items-center space-x-2 border border-1 border-[#DBDBDB] rounded-xl bg-[#F8F8F8] w-4/5 py-1">
+          <div className="flex flex-row items-center space-x-2 border border-1 border-[#DBDBDB] rounded-xl bg-[#F8F8F8] w-4/5 py-1 hover:cursor-pointer">
             <CalendarDaysIcon className="ml-2 w-6 h-6" />
             <h2>Calendar</h2>
           </div>
-          <div className="flex flex-row items-center space-x-2 w-4/5 py-1">
+          <div className="flex flex-row items-center space-x-2 w-4/5 py-1 hover:cursor-pointer">
             <Cog6ToothIcon className="ml-2 w-6 h-6" />
             <h1>Settings</h1>
           </div>
