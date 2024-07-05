@@ -154,12 +154,11 @@ const Calendar = () => {
     );
   };
 
-  const handleEventClick = (day: number, hour: number, colour: string) => {
+  const handleEventClick = (day: number, hour: number) => {
     const dateFromWeekAndDay = addDays(weekStart, day);
 
     const newEvent: IEventCreate = {
       date: formatDate(dateFromWeekAndDay),
-      colour: colour,
       start_time: formatTimeFromHour(hour),
       end_time: formatTimeFromHour(hour + 1),
     };
@@ -272,7 +271,7 @@ const Calendar = () => {
                     <div
                       key={`${day}-${hour}`}
                       className="border-r-[1px] border-b-[1px] border-gray-300 flex flex-col text-sm items-start w-full h-[56px] box-border px-4 py-1 row-span-1"
-                      onClick={() => handleEventClick(day, hour, event.colour)}
+                      onClick={() => handleEventClick(day, hour)}
                     />
                   );
                 }

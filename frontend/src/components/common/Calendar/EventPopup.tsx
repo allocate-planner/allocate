@@ -3,8 +3,6 @@ import { useState } from "react";
 import { IEventCreate } from "@/models/IEvent";
 import { Button } from "../Button";
 
-import { isAfter } from "date-fns";
-
 import {
   Dialog,
   DialogContent,

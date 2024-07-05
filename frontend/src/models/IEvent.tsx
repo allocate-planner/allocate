@@ -13,8 +13,8 @@ export interface IEventCreate {
   title?: string;
   description?: string;
   location?: string;
+  colour?: string;
   date: string;
-  colour: string;
   start_time: string;
   end_time: string;
 }
