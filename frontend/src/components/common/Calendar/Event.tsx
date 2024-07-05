@@ -11,11 +11,16 @@ interface IProps {
 }
 
 const Event = memo((props: IProps) => {
+  const startHour = Math.floor(props.startTime);
   const duration = props.endTime - props.startTime;
+
   return (
     <div
-      className={`border-r-[1px] border-b-[1px] border-gray-300 flex flex-col text-sm items-start w-full h-full rounded-xl box-border px-4 py-1 hover:cursor-pointer`}
-      style={{ gridRow: `span ${duration}`, backgroundColor: props.colour }}
+      className={`border-r-[1px] border-b-[1px] border-gray-300 flex flex-col text-sm items-start w-full h-full rounded-xl box-border px-4 py-1 hover:cursor-pointer z-10`}
+      style={{
+        backgroundColor: props.colour,
+        gridRow: `${startHour + 1} / span ${duration}`,
+      }}
       onClick={props.onClick}
     >
       <h2 className="font-bold text-sm">{props.title}</h2>
