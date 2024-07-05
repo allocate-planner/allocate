@@ -13,6 +13,14 @@ export const eventService = {
           date: eventDetails.date,
           start_time: eventDetails.start_time,
           end_time: eventDetails.end_time,
+          ...(eventDetails.description &&
+            eventDetails.description !== undefined && {
+              description: eventDetails.description,
+            }),
+          ...(eventDetails.location &&
+            eventDetails.location !== undefined && {
+              location: eventDetails.location,
+            }),
         },
         {
           headers: {
@@ -105,6 +113,14 @@ export const eventService = {
           date: eventDetails.date,
           start_time: eventDetails.start_time,
           end_time: eventDetails.end_time,
+          ...(eventDetails.description &&
+            eventDetails.description !== undefined && {
+              description: eventDetails.description,
+            }),
+          ...(eventDetails.location &&
+            eventDetails.location !== undefined && {
+              location: eventDetails.location,
+            }),
         },
         {
           headers: {

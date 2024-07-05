@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { ITransformedEvent } from "@/models/IEvent";
 import { Button } from "../Button";
 
+import { parse, format } from "date-fns";
+
 import {
   Dialog,
   DialogContent,
@@ -12,25 +14,88 @@ import {
   DialogTitle,
 } from "../Dialog";
 
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "../Select";
+
 import { Input } from "../Input";
 import { Label } from "../Label";
+
+const times = [
+  "12:00am",
+  "01:00am",
+  "02:00am",
+  "03:00am",
+  "04:00am",
+  "05:00am",
+  "06:00am",
+  "07:00am",
+  "08:00am",
+  "09:00am",
+  "10:00am",
+  "11:00am",
+  "12:00pm",
+  "01:00pm",
+  "02:00pm",
+  "03:00pm",
+  "04:00pm",
+  "05:00pm",
+  "06:00pm",
+  "07:00pm",
+  "08:00pm",
+  "09:00pm",
+  "10:00pm",
+  "11:00pm",
+];
 
 interface IProps {
   isOpen: boolean;
   event: ITransformedEvent;
   onClose: () => void;
-  onEdit: (event: ITransformedEvent, title: string) => void;
+  onEdit: (event: ITransformedEvent) => void;
   onDelete: (event: ITransformedEvent) => void;
 }
 
 const EventDetailPopup = (props: IProps) => {
-  const [title, setTitle] = useState<string>(props.event.title);
+  const convertToAMPM = (time: string): string => {
+    const date = parse(time, "HH", new Date());
+    return format(date, "hh:mma").toLowerCase();
+  };
 
-  useEffect(() => {
-    if (props.isOpen) {
-      setTitle("");
-    }
-  }, [props.isOpen]);
+  const convertToISO = (time: string) => {
+    return format(parse(time, "hh:mma", new Date()), "HH:mm:ss" + "+01:00");
+  };
+
+  const [title, setTitle] = useState<string>(props.event.title);
+  const [description, setDescription] = useState<string>(
+    props.event.description
+  );
+  const [location, setLocation] = useState<string>(props.event.location);
+  const [startTime, setStartTime] = useState<string>(
+    convertToAMPM(props.event.start_time)
+  );
+  const [endTime, setEndTime] = useState<string>(
+    convertToAMPM(props.event.end_time)
+  );
+
+  const handleEventUpdate = () => {
+    const newEvent = {
+      ...props.event,
+      title: title,
+      description: description,
+      location: location,
+      start_time: convertToISO(startTime),
+      end_time: convertToISO(endTime),
+    };
+
+    props.onEdit(newEvent);
+  };
 
   return (
     <Dialog open={props.isOpen} onOpenChange={props.onClose}>
@@ -42,16 +107,92 @@ const EventDetailPopup = (props: IProps) => {
             delete to remove the item from your calendar.
           </DialogDescription>
         </DialogHeader>
-        <div className="flex flex-col justify-start items-start">
-          <div className="flex flex-row items-center justify-between space-x-4">
-            <Label htmlFor="name" className="text-right">
+        <div className="flex flex-col justify-between items-start w-full space-y-4">
+          <div className="flex flex-row items-center justify-between space-x-4 w-full">
+            <Label htmlFor="name" className="w-1/3">
               Title
             </Label>
             <Input
               id="title"
               defaultValue={title}
+              placeholder="Call with Joe"
               onChange={(e) => setTitle(e.target.value)}
+              className="w-2/3"
             />
+          </div>
+          <div className="flex flex-row items-center justify-between space-x-4 w-full">
+            <Label htmlFor="description" className="w-1/3">
+              Description
+            </Label>
+            <Input
+              id="description"
+              defaultValue={description}
+              placeholder="Discuss new Product Name"
+              onChange={(e) => setDescription(e.target.value)}
+              className="w-2/3"
+            />
+          </div>
+          <div className="flex flex-row items-center justify-between space-x-4 w-full">
+            <Label htmlFor="location" className="w-1/3">
+              Location
+            </Label>
+            <Input
+              id="location"
+              defaultValue={location}
+              placeholder="1600 Amphitheatre Parkway"
+              onChange={(e) => setLocation(e.target.value)}
+              className="w-2/3"
+            />
+          </div>
+          <div className="flex flex-row items-center justify-between space-x-4 w-full">
+            <Label htmlFor="time" className="w-1/3">
+              Time
+            </Label>
+            <div className="flex flex-row justify-center items-center w-2/3 space-x-2">
+              <Select
+                onValueChange={(value) => {
+                  setStartTime(value);
+                }}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder={startTime} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Start Time</SelectLabel>
+                    {times.map((time, index) => (
+                      <SelectItem
+                        key={index}
+                        value={time}
+                        onClick={() => setStartTime(time)}
+                      >
+                        {time}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+              <Label>To</Label>
+              <Select
+                onValueChange={(value) => {
+                  setEndTime(value);
+                }}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder={endTime} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>End Time</SelectLabel>
+                    {times.map((time, index) => (
+                      <SelectItem key={index} value={time}>
+                        {time}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
         </div>
         <DialogFooter className="flex flex-row justify-between w-full">
@@ -68,7 +209,7 @@ const EventDetailPopup = (props: IProps) => {
             className="bg-violet-500 hover:bg-violet-700"
             type="submit"
             onClick={() => {
-              props.onEdit(props.event, title);
+              handleEventUpdate();
             }}
           >
             Save

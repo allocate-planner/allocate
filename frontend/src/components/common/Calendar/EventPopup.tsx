@@ -95,12 +95,6 @@ const EventPopup = (props: IProps) => {
     props.onCreate(newEvent);
   };
 
-  useEffect(() => {
-    if (props.isOpen) {
-      setTitle("");
-    }
-  }, [props.isOpen]);
-
   return (
     <Dialog open={props.isOpen} onOpenChange={props.onClose}>
       <DialogContent className="sm:max-w-[425px]">

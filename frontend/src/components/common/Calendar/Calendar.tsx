@@ -130,22 +130,10 @@ const Calendar = () => {
     setIsEventPopupOpen(false);
   };
 
-  const editEvent = async (event: ITransformedEvent, title: string) => {
-    if (title.length === 0) {
-      setIsEventDetailPopupOpen(false);
-      return;
-    }
-
-    const updatedEvent = {
-      ...event,
-      title: title,
-      start_time: formatTimeFromHour(+event.start_time),
-      end_time: formatTimeFromHour(+event.start_time + 1),
-    };
-
+  const editEvent = async (event: ITransformedEvent) => {
     try {
       if (accessToken) {
-        await eventService.editEvent(updatedEvent, accessToken);
+        await eventService.editEvent(event, accessToken);
         toast.success("Event was edited");
 
         eventData();
