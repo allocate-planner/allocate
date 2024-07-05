@@ -38,6 +38,15 @@ export const formatHour = (hour: number): string => {
   ).toLowerCase();
 };
 
+// Input:  "10"
+// Output: "10:00am"
+export const formatHourToHA = (hour: number): string => {
+  return format(
+    set(new Date(), { hours: hour, minutes: 0 }),
+    "ha"
+  ).toUpperCase();
+};
+
 // Input:  "5"
 // Output: "05:00:00+01:00"
 export const formatTimeFromHour = (hour: number): string => {

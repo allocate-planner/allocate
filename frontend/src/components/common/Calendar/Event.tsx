@@ -1,3 +1,5 @@
+import { formatHourToHA } from "@/utils/TimeUtils";
+
 interface IEventProps {
   title: string;
   startTime: number;
@@ -16,7 +18,7 @@ const Event = (props: IEventProps) => {
     >
       <h2 className="font-bold text-sm">{props.title}</h2>
       <h3 className="text-xs">
-        {props.startTime} — {props.endTime}
+        {formatHourToHA(props.startTime)} — {formatHourToHA(props.endTime)}
       </h3>
     </div>
   );
