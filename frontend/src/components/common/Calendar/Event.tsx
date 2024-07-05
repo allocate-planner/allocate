@@ -11,7 +11,7 @@ interface IProps {
 }
 
 const Event = memo((props: IProps) => {
-  const duration = props.endTime - props.startTime + 1;
+  const duration = props.endTime - props.startTime;
   return (
     <div
       className={`border-r-[1px] border-b-[1px] border-gray-300 flex flex-col text-sm items-start w-full h-full rounded-xl box-border px-4 py-1 hover:cursor-pointer`}
