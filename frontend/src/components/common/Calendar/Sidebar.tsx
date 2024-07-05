@@ -11,7 +11,7 @@ import { toast } from "sonner";
 
 const Sidebar = () => {
   const navigate = useNavigate();
-  const { updateAuthentication } = useAuth();
+  const { firstName, lastName, emailAddress, updateAuthentication } = useAuth();
 
   const logout = async () => {
     try {
@@ -46,8 +46,10 @@ const Sidebar = () => {
       </div>
       <div className="border-t-[1px] border-gray-300 flex flex-row justify-between items-center p-6">
         <div className="flex flex-col">
-          <h1 className="font-bold">John Doe</h1>
-          <h2 className="font-light text-sm">john@doe.com</h2>
+          <h1 className="font-bold">
+            {firstName} {lastName}
+          </h1>
+          <h2 className="font-light text-sm">{emailAddress}</h2>
         </div>
         <ArrowLeftStartOnRectangleIcon
           className="w-6 h-6 hover:cursor-pointer"

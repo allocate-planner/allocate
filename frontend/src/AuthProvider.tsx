@@ -5,6 +5,9 @@ import { IAuthContext, IAuthProvider } from "./models/IAuth";
 const defaultAuthContext: IAuthContext = {
   id: 0,
   isAuthenticated: false,
+  firstName: "",
+  lastName: "",
+  emailAddress: "",
   updateAuthentication: () => {},
   getAccessToken: () => null,
 };
@@ -19,7 +22,18 @@ export const AuthProvider = ({ children }: IAuthProvider) => {
   };
 
   const [localData, setLocalData] = useState(retrieveLocalData());
+
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(!!localData);
+  const [firstName, setFirstName] = useState(
+    localData ? localData.first_name : ""
+  );
+  const [lastName, setLastName] = useState(
+    localData ? localData.last_name : ""
+  );
+  const [emailAddress, setEmailAddress] = useState(
+    localData ? localData.email_address : ""
+  );
+  const [id, setId] = useState(localData ? localData.id : 0);
 
   const updateAuthentication = (status: boolean) => {
     setIsAuthenticated(status);
@@ -29,18 +43,13 @@ export const AuthProvider = ({ children }: IAuthProvider) => {
     if (userData) {
       const parsedUserData = JSON.parse(userData);
       setLocalData(parsedUserData);
+
+      setFirstName(parsedUserData.first_name || "");
+      setLastName(parsedUserData.last_name || "");
+      setEmailAddress(parsedUserData.email_address || "");
+      setId(parsedUserData.id || 0);
     }
   };
-
-  const retrieveId = () => {
-    if (localData) {
-      return localData.id;
-    }
-
-    return 0;
-  };
-
-  const [id] = useState(retrieveId());
 
   const getAccessToken = () => {
     try {
@@ -54,6 +63,9 @@ export const AuthProvider = ({ children }: IAuthProvider) => {
     <AuthContext.Provider
       value={{
         id,
+        firstName,
+        lastName,
+        emailAddress,
         isAuthenticated,
         updateAuthentication,
         getAccessToken,
