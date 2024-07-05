@@ -33,10 +33,13 @@ const Header = () => {
         </a>
       </div>
       <div className="flex flex-row justify-center items-center text-center space-x-8">
-        <h2 className="text-gray-600 text-sm font-semibold cursor-pointer hover:text-violet-500">
+        <a
+          href="/login"
+          className="text-gray-600 text-sm font-semibold cursor-pointer hover:text-violet-500"
+        >
           Login
-        </h2>
-        <a href="/login">
+        </a>
+        <a href="/register">
           <Button className="bg-violet-500 hover:bg-violet-700 h-1/3">
             Sign Up
           </Button>
