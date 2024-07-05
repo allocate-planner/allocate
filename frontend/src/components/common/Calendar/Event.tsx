@@ -1,3 +1,5 @@
+import { memo } from "react";
+
 import { formatHourToHA } from "@/utils/TimeUtils";
 
 interface IProps {
@@ -8,7 +10,7 @@ interface IProps {
   onClick?: () => void;
 }
 
-const Event = (props: IProps) => {
+const Event = memo((props: IProps) => {
   const duration = props.endTime - props.startTime + 1;
   return (
     <div
@@ -22,6 +24,6 @@ const Event = (props: IProps) => {
       </h3>
     </div>
   );
-};
+});
 
 export default Event;

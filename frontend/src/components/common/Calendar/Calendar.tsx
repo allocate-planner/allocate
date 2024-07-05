@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 
 import { atom, useAtom } from "jotai";
 
@@ -167,10 +167,20 @@ const Calendar = () => {
     setIsEventPopupOpen(true);
   };
 
-  const handleEventDetailsClick = (event: ITransformedEvent) => {
+  const handleEventDetailsClick = useCallback((event: ITransformedEvent) => {
     setSelectedEvent(event);
     setIsEventDetailPopupOpen(true);
-  };
+  }, []);
+
+  const eventClickHandlers = useMemo(() => {
+    const handlers = new Map();
+
+    events.forEach((event: ITransformedEvent) => {
+      handlers.set(event.id, () => handleEventDetailsClick(event));
+    });
+
+    return handlers;
+  }, [events, handleEventDetailsClick]);
 
   const closeEventPopup = () => {
     setSelectedSlot(null);
@@ -262,7 +272,7 @@ const Calendar = () => {
                       colour={event.colour}
                       startTime={+event.start_time}
                       endTime={+event.end_time}
-                      onClick={() => handleEventDetailsClick(event)}
+                      onClick={eventClickHandlers.get(event.id)}
                       key={`${day}-${hour}`}
                     />
                   ));
