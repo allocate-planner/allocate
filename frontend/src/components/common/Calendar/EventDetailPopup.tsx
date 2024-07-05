@@ -1,9 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { ITransformedEvent } from "@/models/IEvent";
 import { Button } from "../Button";
-
-import { parse, format } from "date-fns";
 
 import {
   Dialog,
