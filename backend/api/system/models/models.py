@@ -31,6 +31,8 @@ class Event(Base):
     start_time = Column(Time, nullable=False)
     end_time = Column(Time, nullable=False)
 
+    colour = Column(String(256), nullable=False)
+
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
 
     user = relationship("User", back_populates="events")

@@ -4,6 +4,7 @@ export interface IEvent {
   description?: string;
   location?: string;
   date: string;
+  colour: string;
   start_time: string;
   end_time: string;
 }
@@ -13,6 +14,7 @@ export interface IEventCreate {
   description?: string;
   location?: string;
   date: string;
+  colour: string;
   start_time: string;
   end_time: string;
 }

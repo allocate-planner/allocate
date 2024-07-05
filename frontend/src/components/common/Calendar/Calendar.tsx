@@ -14,12 +14,7 @@ import {
   endOfWeek,
   isSameDay,
   parseISO,
-  formatISO,
   getDay,
-  setHours,
-  setMinutes,
-  setSeconds,
-  setMilliseconds,
 } from "date-fns";
 
 import { useAuth } from "@/AuthProvider";
@@ -159,11 +154,12 @@ const Calendar = () => {
     );
   };
 
-  const handleEventClick = (day: number, hour: number) => {
+  const handleEventClick = (day: number, hour: number, colour: string) => {
     const dateFromWeekAndDay = addDays(weekStart, day);
 
     const newEvent: IEventCreate = {
       date: formatDate(dateFromWeekAndDay),
+      colour: colour,
       start_time: formatTimeFromHour(hour),
       end_time: formatTimeFromHour(hour + 1),
     };
@@ -264,6 +260,7 @@ const Calendar = () => {
                   return events.map((event) => (
                     <Event
                       title={event.title}
+                      colour={event.colour}
                       startTime={+event.start_time}
                       endTime={+event.end_time}
                       onClick={() => handleEventDetailsClick(event)}
@@ -275,7 +272,7 @@ const Calendar = () => {
                     <div
                       key={`${day}-${hour}`}
                       className="border-r-[1px] border-b-[1px] border-gray-300 flex flex-col text-sm items-start w-full h-[56px] box-border px-4 py-1 row-span-1"
-                      onClick={() => handleEventClick(day, hour)}
+                      onClick={() => handleEventClick(day, hour, event.colour)}
                     />
                   );
                 }

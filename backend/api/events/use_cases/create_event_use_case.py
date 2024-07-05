@@ -33,6 +33,7 @@ class CreateEventUseCase:
             "date": request.date,
             "start_time": request.start_time,
             "end_time": request.end_time,
+            "colour": request.colour,
             "user_id": user.id,
             "user": user,
         }
