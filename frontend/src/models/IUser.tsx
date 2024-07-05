@@ -3,7 +3,14 @@ export interface IUser {
 }
 
 export interface IUserDetails {
-  username: string;
+  first_name: string;
+  last_name: string;
+  email_address: string;
+  password: string;
+}
+
+export interface IUserLogin {
+  email_address: string;
   password: string;
 }
 

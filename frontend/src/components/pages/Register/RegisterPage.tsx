@@ -17,6 +17,8 @@ const RegisterPage = () => {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
 
+  const [firstName, setFirstName] = useState<string>("");
+  const [lastName, setLastName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
@@ -39,7 +41,9 @@ const RegisterPage = () => {
     }
 
     const userDetails: IUserRegister = {
-      username: email,
+      first_name: firstName,
+      last_name: lastName,
+      email_address: email,
       password: password,
       confirm_password: confirmPassword,
     };
@@ -78,6 +82,24 @@ const RegisterPage = () => {
             </h2>
           </div>
           <form className="flex flex-col space-y-4" onSubmit={onSubmit}>
+            <div>
+              <Label htmlFor="firstname">First Name</Label>
+              <Input
+                id="firstname"
+                placeholder="John"
+                onChange={(e) => setFirstName(e.target.value)}
+                disabled={isLoading}
+              />
+            </div>
+            <div>
+              <Label htmlFor="lastname">Last Name</Label>
+              <Input
+                id="lastname"
+                placeholder="Doe"
+                onChange={(e) => setLastName(e.target.value)}
+                disabled={isLoading}
+              />
+            </div>
             <div>
               <Label htmlFor="email">Email</Label>
               <Input

@@ -23,7 +23,12 @@ class RegisterUserUseCase:
 
         hashed_password = self.bcrypt_hasher.hash(request.password)
 
-        user = User(email_address=request.email_address, password=hashed_password)
+        user = User(
+            first_name=request.first_name,
+            last_name=request.last_name,
+            email_address=request.email_address,
+            password=hashed_password,
+        )
 
         self.user_repository.add(user)
 

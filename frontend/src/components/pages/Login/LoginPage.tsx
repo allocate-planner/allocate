@@ -9,7 +9,7 @@ import { Spinner } from "../../common/Spinner";
 
 import { userService } from "@/services/UserService";
 import { useAuth } from "@/AuthProvider";
-import { IUserDetails } from "@/models/IUser";
+import { IUserLogin } from "@/models/IUser";
 
 import { toast } from "sonner";
 
@@ -32,15 +32,15 @@ const LoginPage = () => {
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const userDetails: IUserDetails = {
-      username: email,
+    const userDetails: IUserLogin = {
+      email_address: email,
       password: password,
     };
 
     await authenticateUser(userDetails);
   };
 
-  const authenticateUser = async (userDetails: IUserDetails) => {
+  const authenticateUser = async (userDetails: IUserLogin) => {
     setIsLoading(true);
 
     try {

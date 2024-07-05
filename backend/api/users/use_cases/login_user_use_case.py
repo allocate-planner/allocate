@@ -43,6 +43,8 @@ class LoginUserUseCase:
             id=user.id,
             access_token=access_token,
             refresh_token=refresh_token,
+            first_name=str(user.first_name),
+            last_name=str(user.last_name),
             email_address=str(user.email_address),
         )
 

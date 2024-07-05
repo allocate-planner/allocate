@@ -1,13 +1,13 @@
 import axios from "axios";
 import qs from "qs";
 
-import { IUserDetails, IUserRegister } from "../models/IUser";
+import { IUserLogin, IUserRegister } from "../models/IUser";
 import { API_BASE_URL } from "@/utils/Constants";
 
 export const userService = {
-  authenticateUser: async (userDetails: IUserDetails) => {
+  authenticateUser: async (userDetails: IUserLogin) => {
     const stringifiedData = qs.stringify({
-      username: userDetails.username,
+      username: userDetails.email_address,
       password: userDetails.password,
     });
 
@@ -46,7 +46,9 @@ export const userService = {
   registerUser: async (userDetails: IUserRegister) => {
     return await axios
       .post(`${API_BASE_URL}/users`, {
-        email_address: userDetails.username,
+        first_name: userDetails.first_name,
+        last_name: userDetails.last_name,
+        email_address: userDetails.email_address,
         password: userDetails.password,
       })
       .catch((error) => {

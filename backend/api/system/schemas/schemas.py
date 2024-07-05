@@ -13,6 +13,14 @@ class FrozenBaseModel(BaseModel):
 
 
 class UserBase(FrozenBaseModel):
+    first_name: Annotated[
+        str,
+        StringConstraints(strip_whitespace=True, max_length=64),
+    ]
+    last_name: Annotated[
+        str,
+        StringConstraints(strip_whitespace=True, max_length=64),
+    ]
     email_address: Annotated[
         EmailStr,
         StringConstraints(strip_whitespace=True, max_length=256),
