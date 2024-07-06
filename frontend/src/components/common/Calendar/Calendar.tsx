@@ -283,7 +283,7 @@ const Calendar = () => {
                   return (
                     <div
                       key={`${day}-${index}`}
-                      className="border-r-[1px] border-b-[1px] border-gray-300 flex flex-col text-sm items-start w-full h-[28px] box-border px-4 py-1 row-span-1"
+                      className="border-r-[1px] last:border-b-[0px] border-b-[1px] border-gray-300 flex flex-col text-sm items-start w-full h-[28px] box-border px-4 py-1 row-span-1"
                       onClick={() => handleEventClick(day, timeSlot)}
                     />
                   );

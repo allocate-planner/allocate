@@ -42,11 +42,11 @@ export const formatHour = (hour: number): string => {
 };
 
 // Input:  "10, 30"
-// Output: "10"
-export const formatTimeSlotToH = (hour: number, minute: number): string => {
+// Output: "10:30"
+export const formatTimeSlotToHMM = (hour: number, minute: number): string => {
   return format(
     set(new Date(), { hours: hour, minutes: minute }),
-    "h"
+    "h:mm"
   ).toUpperCase();
 };
 

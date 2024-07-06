@@ -1,6 +1,6 @@
 import { memo } from "react";
 
-import { formatTimeSlotToH, formatTimeSlotToHMMA } from "@/utils/TimeUtils";
+import { formatTimeSlotToHMM, formatTimeSlotToHMMA } from "@/utils/TimeUtils";
 
 interface IProps {
   title: string;
@@ -23,17 +23,25 @@ const Event = memo((props: IProps) => {
 
   return (
     <div
-      className={`border-r-[1px] border-b-[1px] border-gray-300 flex flex-col text-sm items-start w-full h-full rounded-xl box-border px-4 py-1 hover:cursor-pointer z-10`}
+      className={`border-r-[1px] border-b-[1px] border-gray-300 flex ${
+        duration === 1 ? "flex-row items-center space-x-2" : "flex-col"
+      } text-sm items-start w-full h-full rounded-xl box-border px-4 py-1 hover:cursor-pointer z-10`}
       style={{
         backgroundColor: props.colour,
         gridRow: `${startHour} / span ${duration}`,
       }}
       onClick={props.onClick}
     >
-      <h2 className="font-bold text-sm">{props.title}</h2>
+      <h2 className="font-bold text-sm truncate">{props.title}</h2>
       <h3 className="text-xs">
-        {formatTimeSlotToH(startTimeParts[0], startTimeParts[1])} —{" "}
-        {formatTimeSlotToHMMA(endTimeParts[0], endTimeParts[1])}
+        {duration !== 1 ? (
+          <>
+            {formatTimeSlotToHMM(startTimeParts[0], startTimeParts[1])} —{" "}
+            {formatTimeSlotToHMMA(endTimeParts[0], endTimeParts[1])}
+          </>
+        ) : (
+          formatTimeSlotToHMMA(startTimeParts[0], startTimeParts[1])
+        )}
       </h3>
     </div>
   );
