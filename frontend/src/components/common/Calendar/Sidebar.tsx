@@ -1,5 +1,4 @@
 import { useAuth } from "@/AuthProvider";
-import { userService } from "@/services/UserService";
 
 import {
   CalendarDaysIcon,
@@ -12,7 +11,11 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 import SpeechComponent from "./SpeechComponent";
+import SettingsPopup from "../Settings/SettingsPopup";
+
 import { audioService } from "@/services/AudioService";
+import { userService } from "@/services/UserService";
+import { useState } from "react";
 
 interface IProps {
   eventData: () => void;
@@ -30,6 +33,8 @@ const Sidebar = (props: IProps) => {
   } = useAuth();
 
   const accessToken = getAccessToken();
+
+  const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
 
   const logout = async () => {
     try {
@@ -59,6 +64,10 @@ const Sidebar = (props: IProps) => {
     }
   };
 
+  const closeSettings = () => {
+    setSettingsOpen(false);
+  };
+
   return (
     <nav className="h-screen w-[12.5%] flex flex-col justify-between border-r-[1px] border-gray-300">
       <div className="flex flex-col">
@@ -70,7 +79,10 @@ const Sidebar = (props: IProps) => {
             <CalendarDaysIcon className="ml-2 w-6 h-6" />
             <h2>Calendar</h2>
           </div>
-          <div className="flex flex-row items-center space-x-2 w-4/5 py-1 hover:cursor-pointer">
+          <div
+            onClick={() => setSettingsOpen(true)}
+            className="flex flex-row items-center space-x-2 w-4/5 py-1 hover:cursor-pointer"
+          >
             <Cog6ToothIcon className="ml-2 w-6 h-6" />
             <h1>Settings</h1>
           </div>
@@ -92,6 +104,16 @@ const Sidebar = (props: IProps) => {
           onClick={() => logout()}
         />
       </div>
+
+      {settingsOpen && (
+        <SettingsPopup
+          firstName={firstName}
+          lastName={lastName}
+          emailAddress={emailAddress}
+          isOpen={settingsOpen}
+          onClose={closeSettings}
+        />
+      )}
     </nav>
   );
 };
