@@ -29,7 +29,7 @@ import { toast } from "sonner";
 import {
   compareDates,
   convertToISO,
-  convertToTimePeriodFromHH,
+  convertToTimePeriodFromHHmm,
   times,
 } from "@/utils/TimeUtils";
 
@@ -48,10 +48,10 @@ const EventDetailPopup = (props: IProps) => {
   );
   const [location, setLocation] = useState<string>(props.event.location ?? "");
   const [startTime, setStartTime] = useState<string>(
-    convertToTimePeriodFromHH(props.event.start_time)
+    convertToTimePeriodFromHHmm(props.event.start_time)
   );
   const [endTime, setEndTime] = useState<string>(
-    convertToTimePeriodFromHH(props.event.end_time)
+    convertToTimePeriodFromHHmm(props.event.end_time)
   );
 
   const handleEventUpdate = () => {

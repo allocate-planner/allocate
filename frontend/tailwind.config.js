@@ -23,6 +23,7 @@ module.exports = {
       },
       gridRow: {
         "span-24": "span 24 / span 24",
+        "span-48": "span 48 / span 48",
       },
       colors: {
         border: "hsl(var(--border))",

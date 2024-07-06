@@ -3,8 +3,11 @@ import { parse, format, parseISO, formatISO, set, isAfter } from "date-fns";
 export const calendarHours: number[] = Array.from({ length: 24 }, (_, i) => i);
 export const daysOfWeek: number[] = Array.from({ length: 7 }, (_, i) => i);
 
-export const times = Array.from({ length: 24 }, (_, i) =>
-  format(set(new Date(), { hours: i, minutes: 0 }), "hh:mma").toLowerCase()
+export const times = Array.from({ length: 48 }, (_, i) =>
+  format(
+    set(new Date(), { hours: Math.floor(i / 2), minutes: (i % 2) * 30 }),
+    "hh:mma"
+  ).toLowerCase()
 );
 
 // Input:  "03:00am"
@@ -13,11 +16,11 @@ export const convertToISO = (time: string): string => {
   return format(parse(time, "hh:mma", new Date()), "HH:mm:ss" + "+01:00");
 };
 
-// Input:  "01"
+// Input:  "01:30"
 // Output: "01:00am"
-export const convertToTimePeriodFromHH = (time: string): string => {
+export const convertToTimePeriodFromHHmm = (time: string): string => {
   return format(
-    parse(time as string, "HH", new Date()),
+    parse(time as string, "HH:mm", new Date()),
     "hh:mma"
   ).toLowerCase();
 };
@@ -38,20 +41,39 @@ export const formatHour = (hour: number): string => {
   ).toLowerCase();
 };
 
-// Input:  "10"
-// Output: "10:00am"
-export const formatHourToHA = (hour: number): string => {
+// Input:  "10, 30"
+// Output: "10"
+export const formatTimeSlotToH = (hour: number, minute: number): string => {
   return format(
-    set(new Date(), { hours: hour, minutes: 0 }),
-    "ha"
+    set(new Date(), { hours: hour, minutes: minute }),
+    "h"
   ).toUpperCase();
 };
 
-// Input:  "5"
+// Input:  "10, 30"
+// Output: "10:30AM"
+export const formatTimeSlotToHMMA = (hour: number, minute: number): string => {
+    format(
+      set(new Date(), { hours: hour, minutes: minute }),
+      "h:mma"
+    ).toUpperCase()
+  );
+  return format(
+    set(new Date(), { hours: hour, minutes: minute }),
+    "h:mma"
+  ).toUpperCase();
+};
+
+// Input:  "05, 00"
 // Output: "05:00:00+01:00"
-export const formatTimeFromHour = (hour: number): string => {
+export const formatISOFromTimeSlot = (hour: number, minute: number): string => {
   return formatISO(
-    set(new Date(), { hours: hour, minutes: 0, seconds: 0, milliseconds: 0 }),
+    set(new Date(), {
+      hours: hour,
+      minutes: minute,
+      seconds: 0,
+      milliseconds: 0,
+    }),
     { representation: "time" }
   );
 };
@@ -67,4 +89,10 @@ export const compareDates = (startTime: string, endTime: string): boolean => {
   const endTimeAsDate = parse(endTime, "hh:mma", new Date());
 
   return isAfter(startTimeAsDate, endTimeAsDate);
+};
+
+// Input:  07:00pm
+// Output: 19:00
+export const transformTo24HourFormat = (time: string): string => {
+  return format(parse(time, "h:mma", new Date()), "HH:mm");
 };

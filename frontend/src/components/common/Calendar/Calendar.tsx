@@ -31,7 +31,9 @@ import {
   daysOfWeek,
   formatDate,
   formatHour,
-  formatTimeFromHour,
+  formatISOFromTimeSlot,
+  times,
+  transformTo24HourFormat,
 } from "@/utils/TimeUtils";
 
 const currentWeekAtom = atom(new Date());
@@ -73,8 +75,8 @@ const Calendar = () => {
       const endTimeParts = event.end_time.split(":");
 
       const eventDate = parseISO(event.date);
-      const startTime = startTimeParts[0];
-      const endTime = endTimeParts[0];
+      const startTime = `${startTimeParts[0]}:${startTimeParts[1]}`;
+      const endTime = `${endTimeParts[0]}:${endTimeParts[1]}`;
 
       return {
         ...event,
@@ -145,22 +147,23 @@ const Calendar = () => {
     setIsEventDetailPopupOpen(false);
   };
 
-  const getEventsForTimeSlot = (day: number, hour: number) => {
+  const getEventsForTimeSlot = (day: number, time: string) => {
     return events.filter(
       (event: ITransformedEvent) =>
         isSameDay(event.event_week_start, weekStart) &&
         event.day === day &&
-        +event.start_time == hour
+        event.start_time == transformTo24HourFormat(time)
     );
   };
 
-  const handleEventClick = (day: number, hour: number) => {
+  const handleEventClick = (day: number, time: string) => {
+    const timeSlot = transformTo24HourFormat(time).split(":").map(Number);
     const dateFromWeekAndDay = addDays(weekStart, day);
 
     const newEvent: IEventCreate = {
       date: formatDate(dateFromWeekAndDay),
-      start_time: formatTimeFromHour(hour),
-      end_time: formatTimeFromHour(hour + 1),
+      start_time: formatISOFromTimeSlot(timeSlot[0], timeSlot[1]),
+      end_time: formatISOFromTimeSlot(timeSlot[0] + 1, timeSlot[1]),
     };
 
     setSelectedSlot(newEvent);
@@ -241,8 +244,8 @@ const Calendar = () => {
         ))}
       </div>
 
-      <div className="grid grid-cols-8 grid-rows-[repeat(24,1fr))] h-full w-full overflow-y-scroll no-scrollbar">
-        <div className="col-span-1 row-span-24 w-full h-full">
+      <div className="grid grid-cols-8 grid-rows-[repeat(48,1fr))] h-full w-full overflow-y-scroll no-scrollbar">
+        <div className="col-span-1 row-span-48 w-full h-full">
           {calendarHours.map((hour: number) => (
             <div
               key={hour}
@@ -256,32 +259,32 @@ const Calendar = () => {
             </div>
           ))}
         </div>
-        <div className="w-full h-full col-span-7 row-span-24 grid-rows-subgrid grid-cols-subgrid grid">
+        <div className="w-full h-full col-span-7 row-span-48 grid-rows-subgrid grid-cols-subgrid grid">
           {daysOfWeek.map((day: number) => (
             <div
               key={day}
-              className="w-full h-full min-w-0 col-span-1 row-span-24 grid grid-rows-subgrid grid-cols-subgrid box-border"
+              className="w-full h-full min-w-0 col-span-1 row-span-48 grid grid-rows-subgrid grid-cols-subgrid box-border"
             >
-              {calendarHours.map((hour: number) => {
-                const events = getEventsForTimeSlot(day, hour);
+              {times.map((timeSlot: string, index: number) => {
+                const events = getEventsForTimeSlot(day, timeSlot);
 
                 if (events.length > 0) {
                   return events.map((event) => (
                     <Event
                       title={event.title}
                       colour={event.colour}
-                      startTime={+event.start_time}
-                      endTime={+event.end_time}
+                      startTime={event.start_time}
+                      endTime={event.end_time}
                       onClick={eventClickHandlers.get(event.id)}
-                      key={`${day}-${hour}`}
+                      key={`${day}-${index}`}
                     />
                   ));
                 } else {
                   return (
                     <div
-                      key={`${day}-${hour}`}
-                      className="border-r-[1px] border-b-[1px] border-gray-300 flex flex-col text-sm items-start w-full h-[56px] box-border px-4 py-1 row-span-1"
-                      onClick={() => handleEventClick(day, hour)}
+                      key={`${day}-${index}`}
+                      className="border-r-[1px] border-b-[1px] border-gray-300 flex flex-col text-sm items-start w-full h-[28px] box-border px-4 py-1 row-span-1"
+                      onClick={() => handleEventClick(day, timeSlot)}
                     />
                   );
                 }

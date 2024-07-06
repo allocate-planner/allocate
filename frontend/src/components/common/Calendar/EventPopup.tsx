@@ -66,6 +66,11 @@ const EventPopup = (props: IProps) => {
       return;
     }
 
+    if (title.length == 0) {
+      toast.error("A title must be provided");
+      return;
+    }
+
     const newEvent = {
       ...props.event,
       title: title,
