@@ -89,6 +89,7 @@ const Calendar = (props: IProps) => {
       toast.error("Event was not edited");
     }
 
+    setSelectedEvent(null);
     setIsEventDetailPopupOpen(false);
   };
 
@@ -105,6 +106,7 @@ const Calendar = (props: IProps) => {
       toast.error("Event was not deleted");
     }
 
+    setSelectedEvent(null);
     setIsEventDetailPopupOpen(false);
   };
 
