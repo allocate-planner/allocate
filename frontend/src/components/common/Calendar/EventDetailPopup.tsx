@@ -55,8 +55,18 @@ const EventDetailPopup = (props: IProps) => {
   );
 
   const handleEventUpdate = () => {
+    if (startTime === endTime) {
+      toast.error("Start time must be different than end time");
+      return;
+    }
+
     if (compareDates(startTime, endTime)) {
       toast.error("Start time must be before the end time");
+      return;
+    }
+
+    if (title.length == 0) {
+      toast.error("A title must be provided");
       return;
     }
 

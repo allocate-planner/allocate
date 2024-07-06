@@ -61,6 +61,11 @@ const EventPopup = (props: IProps) => {
   );
 
   const handleEventCreation = () => {
+    if (startTime === endTime) {
+      toast.error("Start time must be different than end time");
+      return;
+    }
+
     if (compareDates(startTime, endTime)) {
       toast.error("Start time must be before the end time");
       return;
