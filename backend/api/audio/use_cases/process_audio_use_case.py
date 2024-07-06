@@ -67,8 +67,6 @@ class ProcessAudioUseCase:
         for event in response.split("\n"):
             start_time, end_time, title = event.split("|")
 
-            print(event)
-
             event = EventBase(
                 title=title,
                 date=current_date,
