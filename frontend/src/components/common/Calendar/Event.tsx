@@ -32,7 +32,9 @@ const Event = memo((props: IProps) => {
       }}
       onClick={props.onClick}
     >
-      <h2 className="font-bold text-sm truncate">{props.title}</h2>
+      <h2 className="font-bold text-sm truncate overflow-hidden w-full">
+        {props.title}
+      </h2>
       <h3 className="text-xs">
         {duration !== 1 ? (
           <>
