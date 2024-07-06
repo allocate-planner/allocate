@@ -53,11 +53,6 @@ export const formatTimeSlotToH = (hour: number, minute: number): string => {
 // Input:  "10, 30"
 // Output: "10:30AM"
 export const formatTimeSlotToHMMA = (hour: number, minute: number): string => {
-    format(
-      set(new Date(), { hours: hour, minutes: minute }),
-      "h:mma"
-    ).toUpperCase()
-  );
   return format(
     set(new Date(), { hours: hour, minutes: minute }),
     "h:mma"
