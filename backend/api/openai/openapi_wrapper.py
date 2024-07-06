@@ -28,7 +28,7 @@ class OpenAIWrapper:
                 {"role": "system", "content": self.prompt},
                 {"role": "user", "content": user_message},
             ],
-            max_tokens=1024,
+            max_tokens=2048,
             temperature=0,
         )
 

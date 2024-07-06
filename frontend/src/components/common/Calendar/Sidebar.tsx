@@ -5,13 +5,27 @@ import {
   CalendarDaysIcon,
   Cog6ToothIcon,
   ArrowLeftStartOnRectangleIcon,
+  MicrophoneIcon,
 } from "@heroicons/react/24/outline";
+
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
+import SpeechComponent from "./SpeechComponent";
+import { audioService } from "@/services/AudioService";
+
 const Sidebar = () => {
   const navigate = useNavigate();
-  const { firstName, lastName, emailAddress, updateAuthentication } = useAuth();
+
+  const {
+    firstName,
+    lastName,
+    emailAddress,
+    getAccessToken,
+    updateAuthentication,
+  } = useAuth();
+
+  const accessToken = getAccessToken();
 
   const logout = async () => {
     try {
@@ -24,6 +38,18 @@ const Sidebar = () => {
     } catch (error) {
       console.error(error);
       toast.error("Something went wrong when logging out.");
+    }
+  };
+
+  const processAudio = async (audio: Blob) => {
+    try {
+      if (accessToken) {
+        await audioService.processAudio(audio, accessToken);
+        toast.success("Audio successfully processed");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Audio not processed");
     }
   };
 
@@ -41,6 +67,10 @@ const Sidebar = () => {
           <div className="flex flex-row items-center space-x-2 w-4/5 py-1 hover:cursor-pointer">
             <Cog6ToothIcon className="ml-2 w-6 h-6" />
             <h1>Settings</h1>
+          </div>
+          <div className="flex flex-row items-center space-x-2 w-4/5 py-1 hover:cursor-pointer">
+            <MicrophoneIcon className="ml-2 w-6 h-6" />
+            <SpeechComponent onProcess={processAudio} />
           </div>
         </div>
       </div>
