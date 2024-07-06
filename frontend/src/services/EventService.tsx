@@ -11,7 +11,6 @@ export const eventService = {
         {
           title: eventDetails.title,
           date: eventDetails.date,
-          colour: eventDetails.colour,
           start_time: eventDetails.start_time,
           end_time: eventDetails.end_time,
           ...(eventDetails.description &&

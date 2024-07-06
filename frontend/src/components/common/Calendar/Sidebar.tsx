@@ -14,7 +14,11 @@ import { toast } from "sonner";
 import SpeechComponent from "./SpeechComponent";
 import { audioService } from "@/services/AudioService";
 
-const Sidebar = () => {
+interface IProps {
+  eventData: () => void;
+}
+
+const Sidebar = (props: IProps) => {
   const navigate = useNavigate();
 
   const {
@@ -46,6 +50,8 @@ const Sidebar = () => {
       if (accessToken) {
         await audioService.processAudio(audio, accessToken);
         toast.success("Audio successfully processed");
+
+        props.eventData();
       }
     } catch (error) {
       console.error(error);

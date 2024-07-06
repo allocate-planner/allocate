@@ -40,15 +40,6 @@ interface IProps {
   onCreate: (event: IEventCreate) => void;
 }
 
-const backgroundColours = [
-  "#FD8A8A",
-  "#FFCBCB",
-  "#9EA1D4",
-  "#F1F7B5",
-  "#A8D1D1",
-  "#DFEBEB",
-];
-
 const EventPopup = (props: IProps) => {
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
@@ -81,8 +72,6 @@ const EventPopup = (props: IProps) => {
       title: title,
       description: description,
       location: location,
-      colour:
-        backgroundColours[Math.floor(Math.random() * backgroundColours.length)],
       start_time: convertToISO(startTime),
       end_time: convertToISO(endTime),
     };

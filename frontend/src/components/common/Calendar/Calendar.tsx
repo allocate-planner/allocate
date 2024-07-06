@@ -7,19 +7,11 @@ import { ArrowRightIcon } from "@heroicons/react/24/outline";
 
 import { Button } from "../Button";
 
-import {
-  format,
-  addDays,
-  startOfWeek,
-  endOfWeek,
-  isSameDay,
-  parseISO,
-  getDay,
-} from "date-fns";
+import { format, addDays, startOfWeek, endOfWeek, isSameDay } from "date-fns";
 
 import { useAuth } from "@/AuthProvider";
 import { eventService } from "@/services/EventService";
-import { IEvent, ITransformedEvent, IEventCreate } from "@/models/IEvent";
+import { ITransformedEvent, IEventCreate } from "@/models/IEvent";
 
 import EventPopup from "./EventPopup";
 import EventDetailPopup from "./EventDetailPopup";
@@ -38,10 +30,13 @@ import {
 
 const currentWeekAtom = atom(new Date());
 
-const Calendar = () => {
-  const [currentWeek, setCurrentWeek] = useAtom(currentWeekAtom);
+interface IProps {
+  events: ITransformedEvent[];
+  eventData: () => void;
+}
 
-  const [events, setEvents] = useState<ITransformedEvent[]>([]);
+const Calendar = (props: IProps) => {
+  const [currentWeek, setCurrentWeek] = useAtom(currentWeekAtom);
 
   const [selectedSlot, setSelectedSlot] = useState<IEventCreate | null>();
   const [isEventPopupOpen, setIsEventPopupOpen] = useState<boolean>(false);
@@ -65,47 +60,13 @@ const Calendar = () => {
     setCurrentWeek((prevWeek: Date) => addDays(prevWeek, direction * 7));
   };
 
-  const transformEvents = (eventsData: {
-    events: IEvent[];
-  }): ITransformedEvent[] => {
-    return eventsData.events.map((event: IEvent) => {
-      const eventWeekStart = startOfWeek(parseISO(event.date));
-
-      const startTimeParts = event.start_time.split(":");
-      const endTimeParts = event.end_time.split(":");
-
-      const eventDate = parseISO(event.date);
-      const startTime = `${startTimeParts[0]}:${startTimeParts[1]}`;
-      const endTime = `${endTimeParts[0]}:${endTimeParts[1]}`;
-
-      return {
-        ...event,
-        event_week_start: eventWeekStart,
-        day: getDay(eventDate),
-        start_time: startTime,
-        end_time: endTime,
-      };
-    });
-  };
-
-  const eventData = async () => {
-    try {
-      if (accessToken) {
-        const events = await eventService.getEvents(accessToken);
-        setEvents(transformEvents(events));
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   const createEvent = async (event: IEventCreate) => {
     try {
       if (accessToken) {
         await eventService.createEvent(event, accessToken);
         toast.success("Event was created");
 
-        eventData();
+        props.eventData();
       }
     } catch (error) {
       console.error(error);
@@ -121,7 +82,7 @@ const Calendar = () => {
         await eventService.editEvent(event, accessToken);
         toast.success("Event was edited");
 
-        eventData();
+        props.eventData();
       }
     } catch (error) {
       console.error(error);
@@ -137,7 +98,7 @@ const Calendar = () => {
         await eventService.deleteEvent(event.id, accessToken);
         toast.success("Event was deleted");
 
-        eventData();
+        props.eventData();
       }
     } catch (error) {
       console.error(error);
@@ -148,7 +109,7 @@ const Calendar = () => {
   };
 
   const getEventsForTimeSlot = (day: number, time: string) => {
-    return events.filter(
+    return props.events.filter(
       (event: ITransformedEvent) =>
         isSameDay(event.event_week_start, weekStart) &&
         event.day === day &&
@@ -178,12 +139,12 @@ const Calendar = () => {
   const eventClickHandlers = useMemo(() => {
     const handlers = new Map();
 
-    events.forEach((event: ITransformedEvent) => {
+    props.events.forEach((event: ITransformedEvent) => {
       handlers.set(event.id, () => handleEventDetailsClick(event));
     });
 
     return handlers;
-  }, [events, handleEventDetailsClick]);
+  }, [props.events, handleEventDetailsClick]);
 
   const closeEventPopup = () => {
     setSelectedSlot(null);
@@ -196,7 +157,7 @@ const Calendar = () => {
   };
 
   useEffect(() => {
-    eventData();
+    props.eventData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
