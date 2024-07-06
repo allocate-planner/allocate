@@ -18,9 +18,9 @@ class OpenAIWrapper:
 
         return transcription.text
 
-    def prompt_chat(self, user_message: str) -> str:
+    def prompt_chat(self, first_name: str, current_time: str, user_message: str) -> str:
         self._read_base_prompt_from_file()
-        self._populate_dynamic_content_in_prompt()
+        self._populate_dynamic_content_in_prompt(first_name, current_time)
 
         chat_completion = self.client.chat.completions.create(
             model="gpt-4o",
@@ -38,9 +38,11 @@ class OpenAIWrapper:
         with open(BASE_PROMPT_PATH, "r", encoding="utf8") as file:
             self.prompt = file.read()
 
-    def _populate_dynamic_content_in_prompt(self) -> None:
-        CURRENT_TIME: str = "6:15am"  # temporary
-        USER_NAME: str = "Jack"  # temporary
+    def _populate_dynamic_content_in_prompt(
+        self, first_name: str, current_time: str
+    ) -> None:
+        CURRENT_TIME: str = current_time
+        USER_NAME: str = first_name
 
         self.prompt = self.prompt.format(
             work_start_time="09:00",

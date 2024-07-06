@@ -41,7 +41,11 @@ class ProcessAudioUseCase:
             buffer = self._parse_file_into_buffer(file)
             transcribed_audio = self.openai_wrapper.transcribe_audio(buffer)
 
-            llm_response = self.openai_wrapper.prompt_chat(transcribed_audio)
+            llm_response = self.openai_wrapper.prompt_chat(
+                str(user.first_name),
+                datetime.now().strftime("%H:%M"),
+                transcribed_audio,
+            )
 
             return ProcessAudioUseCase._transform_llm_output_to_pydantic_objects(
                 llm_response, create_event_use_case, current_user
