@@ -78,7 +78,7 @@ class ImportEventsUseCase:
                 date=date,
                 start_time=start_time,
                 end_time=end_time,
-                colour="#FD8A8A",
+                colour=CreateEventUseCase._random_background_colour(),
             )
 
             events.append(event)

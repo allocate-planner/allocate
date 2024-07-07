@@ -1,5 +1,4 @@
 import io
-import random
 
 from io import BytesIO
 from typing import List
@@ -76,22 +75,10 @@ class ProcessAudioUseCase:
                 date=current_date,
                 start_time=datetime.strptime(start_time, "%H:%M").time(),
                 end_time=datetime.strptime(end_time, "%H:%M").time(),
-                colour=ProcessAudioUseCase._random_background_colour(),
+                colour=CreateEventUseCase._random_background_colour(),
             )
 
             events.append(event)
             create_event_use_case.execute(event, current_user)
 
         return events
-
-    @staticmethod
-    def _random_background_colour() -> str:
-        bg_colours: List[str] = [
-            "#FD8A8A",
-            "#FFCBCB",
-            "#9EA1D4",
-            "#F1F7B5",
-            "#A8D1D1",
-            "#DFEBEB",
-        ]
-        return random.choice(bg_colours)

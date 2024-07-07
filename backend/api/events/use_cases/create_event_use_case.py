@@ -1,4 +1,6 @@
-from typing import Dict, Any
+import random
+
+from typing import Dict, List, Any
 
 from api.system.models.models import Event
 
@@ -49,3 +51,15 @@ class CreateEventUseCase:
         self.event_repository.add(event)
 
         return EventSchema.model_validate(event)
+
+    @staticmethod
+    def _random_background_colour() -> str:
+        bg_colours: List[str] = [
+            "#FD8A8A",
+            "#FFCBCB",
+            "#9EA1D4",
+            "#F1F7B5",
+            "#A8D1D1",
+            "#DFEBEB",
+        ]
+        return random.choice(bg_colours)

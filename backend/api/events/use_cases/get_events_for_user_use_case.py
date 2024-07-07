@@ -23,9 +23,9 @@ class GetEventsForUserUseCase:
             raise UserNotFound("User not found")
 
         events = self.event_repository.get_events(
-            user.id,
+            user.id,  # type: ignore
             request.start_date,
-            request.end_date,  # type: ignore
+            request.end_date,
         )
 
         if events is None:
