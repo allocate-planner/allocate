@@ -1,6 +1,6 @@
 from typing import List
 
-from api.system.schemas.schemas import EventList, Event
+from api.system.schemas.schemas import EventList, Event, GetEvent
 
 from api.events.repositories.event_repository import EventRepository
 from api.users.repositories.user_repository import UserRepository
@@ -16,16 +16,17 @@ class GetEventsForUserUseCase:
         self.event_repository = event_repository
         self.user_repository = user_repository
 
-    def execute(
-        self,
-        current_user: str,
-    ) -> EventList:
+    def execute(self, current_user: str, request: GetEvent) -> EventList:
         user = self.user_repository.find_by_email(current_user)
 
         if user is None:
             raise UserNotFound("User not found")
 
-        events = self.event_repository.get_events(user.id)  # type: ignore
+        events = self.event_repository.get_events(
+            user.id,
+            request.start_date,
+            request.end_date,  # type: ignore
+        )
 
         if events is None:
             raise EventsNotFound("Events not found")

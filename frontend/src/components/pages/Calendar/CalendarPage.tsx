@@ -10,7 +10,15 @@ import { eventService } from "@/services/EventService";
 
 import { IEvent, ITransformedEvent } from "@/models/IEvent";
 
-import { startOfWeek, parseISO, getDay } from "date-fns";
+import {
+  startOfWeek,
+  parseISO,
+  getDay,
+  format,
+  endOfWeek,
+  subWeeks,
+  addWeeks,
+} from "date-fns";
 
 const CalendarPage = () => {
   const navigate = useNavigate();
@@ -20,10 +28,24 @@ const CalendarPage = () => {
 
   const [events, setEvents] = useState<ITransformedEvent[]>([]);
 
-  const eventData = async () => {
+  const calculatePaginationDates = (currentWeek: Date) => {
+    const startDate = endOfWeek(subWeeks(currentWeek, 1), { weekStartsOn: 0 });
+    const endDate = endOfWeek(addWeeks(currentWeek, 1), { weekStartsOn: 0 });
+
+    return {
+      startDate: format(startDate, "yyyy-MM-dd"),
+      endDate: format(endDate, "yyyy-MM-dd"),
+    };
+  };
+
+  const eventData = async (startDate: string, endDate: string) => {
     try {
       if (accessToken) {
-        const events = await eventService.getEvents(accessToken);
+        const events = await eventService.getEvents(
+          startDate,
+          endDate,
+          accessToken
+        );
         setEvents(transformEvents(events));
       }
     } catch (error) {
@@ -64,8 +86,12 @@ const CalendarPage = () => {
 
   return (
     <div className="flex flex-row h-screen">
-      <Sidebar eventData={eventData} />
-      <Calendar events={events} eventData={eventData} />
+      <Sidebar eventData={eventData} dateData={calculatePaginationDates} />
+      <Calendar
+        events={events}
+        eventData={eventData}
+        dateData={calculatePaginationDates}
+      />
     </div>
   );
 };

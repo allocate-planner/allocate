@@ -18,7 +18,8 @@ import { userService } from "@/services/UserService";
 import { useState } from "react";
 
 interface IProps {
-  eventData: () => void;
+  eventData: (startDate: string, endDate: string) => void;
+  dateData: (currentWeek: Date) => { startDate: string; endDate: string };
 }
 
 const Sidebar = (props: IProps) => {
@@ -56,7 +57,9 @@ const Sidebar = (props: IProps) => {
         await audioService.processAudio(audio, accessToken);
         toast.success("Audio successfully processed");
 
-        props.eventData();
+        const { startDate, endDate } = props.dateData(new Date());
+
+        props.eventData(startDate, endDate);
       }
     } catch (error) {
       console.error(error);

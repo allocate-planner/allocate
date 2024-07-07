@@ -7,7 +7,15 @@ import { ArrowRightIcon } from "@heroicons/react/24/outline";
 
 import { Button } from "../Button";
 
-import { format, addDays, startOfWeek, endOfWeek, isSameDay } from "date-fns";
+import {
+  format,
+  addDays,
+  startOfWeek,
+  endOfWeek,
+  isSameDay,
+  parseISO,
+  isWithinInterval,
+} from "date-fns";
 
 import { useAuth } from "@/AuthProvider";
 import { eventService } from "@/services/EventService";
@@ -32,7 +40,8 @@ const currentWeekAtom = atom(new Date());
 
 interface IProps {
   events: ITransformedEvent[];
-  eventData: () => void;
+  eventData: (startDate: string, endDate: string) => void;
+  dateData: (currentWeek: Date) => { startDate: string; endDate: string };
 }
 
 const Calendar = (props: IProps) => {
@@ -66,7 +75,9 @@ const Calendar = (props: IProps) => {
         await eventService.createEvent(event, accessToken);
         toast.success("Event was created");
 
-        props.eventData();
+        const { startDate, endDate } = props.dateData(currentWeek);
+
+        props.eventData(startDate, endDate);
       }
     } catch (error) {
       console.error(error);
@@ -82,7 +93,9 @@ const Calendar = (props: IProps) => {
         await eventService.editEvent(event, accessToken);
         toast.success("Event was edited");
 
-        props.eventData();
+        const { startDate, endDate } = props.dateData(currentWeek);
+
+        props.eventData(startDate, endDate);
       }
     } catch (error) {
       console.error(error);
@@ -99,7 +112,9 @@ const Calendar = (props: IProps) => {
         await eventService.deleteEvent(event.id, accessToken);
         toast.success("Event was deleted");
 
-        props.eventData();
+        const { startDate, endDate } = props.dateData(currentWeek);
+
+        props.eventData(startDate, endDate);
       }
     } catch (error) {
       console.error(error);
@@ -158,10 +173,22 @@ const Calendar = (props: IProps) => {
     setIsEventDetailPopupOpen(false);
   };
 
+  const isCurrentWeekWithinRange = (start_date: string, end_date: string) => {
+    const startDate = parseISO(start_date);
+    const endDate = parseISO(end_date);
+
+    return isWithinInterval(currentWeek, { start: startDate, end: endDate });
+  };
+
   useEffect(() => {
-    props.eventData();
+    const { startDate, endDate } = props.dateData(currentWeek);
+
+    if (isCurrentWeekWithinRange(startDate, endDate)) {
+      props.eventData(startDate, endDate);
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [currentWeek]);
 
   return (
     <div className="w-[87.5%] flex flex-col items-start border-[1px] bg-[#F8F8F8] rounded-xl border-gray-300 m-12">

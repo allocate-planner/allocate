@@ -79,5 +79,10 @@ class Event(EventBase):
     id: int
 
 
+class GetEvent(FrozenBaseModel):
+    start_date: date
+    end_date: date
+
+
 class EventList(FrozenBaseModel):
     events: List[Event]

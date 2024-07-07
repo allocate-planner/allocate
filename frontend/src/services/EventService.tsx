@@ -48,9 +48,14 @@ export const eventService = {
       });
   },
 
-  getEvents: async (accessToken: string) => {
+  getEvents: async (
+    startDate: string,
+    endDate: string,
+    accessToken: string
+  ) => {
     return await axios
       .get(`${API_BASE_URL}/events`, {
+        params: { start_date: startDate, end_date: endDate },
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },

@@ -42,13 +42,14 @@ def create_event(
 
 @events.get("/api/v1/events", response_model=schemas.EventList)
 def get_events(
+    request: schemas.GetEvent = Depends(),
     get_events_for_user_use_case: GetEventsForUserUseCase = Depends(
         get_events_for_user_use_case
     ),
     current_user: str = Depends(get_current_user),
 ):
     try:
-        return get_events_for_user_use_case.execute(current_user)
+        return get_events_for_user_use_case.execute(current_user, request)
     except UserNotFound as e:
         raise HTTPException(status_code=404, detail=str(e))
     except EventsNotFound as e:

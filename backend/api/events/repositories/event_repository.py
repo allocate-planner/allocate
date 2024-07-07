@@ -1,5 +1,7 @@
 from typing import List
 
+from datetime import date
+
 from sqlalchemy.orm import Session
 
 from api.system.models.models import Event
@@ -20,8 +22,16 @@ class EventRepository:
     def find_by_id(self, event_id: int) -> Event | None:
         return self.db.query(Event).filter_by(id=event_id).first()
 
-    def get_events(self, user_id: int) -> List[Event]:
-        return self.db.query(Event).filter_by(user_id=user_id).all()
+    def get_events(self, user_id: int, start_date: date, end_date: date) -> List[Event]:
+        return (
+            self.db.query(Event)
+            .filter(
+                Event.user_id == user_id,
+                Event.date >= start_date,
+                Event.date <= end_date,
+            )
+            .all()
+        )
 
     def edit(self, event: Event, updates: EventBase) -> Event:
         for key, value in updates:
