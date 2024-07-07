@@ -25,12 +25,19 @@ interface IProps {
 const SettingsPopup = (props: IProps) => {
   const [selectedSettingsSubpage, setSelectedSettingsSubPage] =
     useState<string>("account");
+  const [file, setFile] = useState<File | null>(null);
+
+  const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setFile(e.target.files[0]);
+    }    
+  };
 
   return (
     <Dialog open={props.isOpen} onOpenChange={props.onClose}>
-      <DialogContent className="sm:max-w-[900px] p-0 gap-0">
+      <DialogContent className="sm:max-w-[800px] p-0 gap-0">
         <DialogHeader className="space-y-4 border-b-[1px] border-gray-300 p-8">
-          <DialogTitle>Settings</DialogTitle>
+          <DialogTitle className="text-2xl">Settings</DialogTitle>
           <DialogDescription>
             Modify your user, or system settings here.
           </DialogDescription>
@@ -119,7 +126,22 @@ const SettingsPopup = (props: IProps) => {
               </div>
             </section>
           ) : (
-            ""
+            <section className="w-2/3 flex flex-col space-y-8 m-4">
+              <div>
+                <label
+                  htmlFor="file"
+                  className="hover:cursor-pointer bg-violet-500 hover:bg-violet-700 w-1/4 text-white px-4 py-3 rounded-md text-sm"
+                >
+                  Import .ics file
+                </label>
+                <input
+                  id="file"
+                  type="file"
+                  onChange={handleUpload}
+                  className="hidden"
+                />
+              </div>
+            </section>
           )}
         </nav>
       </DialogContent>
