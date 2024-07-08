@@ -68,11 +68,11 @@ class EventBase(FrozenBaseModel):
     end_time: time
 
     colour: Annotated[
-        str,
+        str | None,
         StringConstraints(
             strip_whitespace=True, max_length=256, pattern="^#(?:[0-9a-fA-F]{3}){1,2}$"
         ),
-    ]
+    ] = None
 
 
 class Event(EventBase):
