@@ -35,7 +35,9 @@ class CreateEventUseCase:
             "date": request.date,
             "start_time": request.start_time,
             "end_time": request.end_time,
-            "colour": CreateEventUseCase._random_background_colour(),
+            "colour": request.colour
+            if request.colour
+            else CreateEventUseCase._random_background_colour(),
             "user_id": user.id,
             "user": user,
         }
