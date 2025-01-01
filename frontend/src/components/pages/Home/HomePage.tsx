@@ -12,9 +12,9 @@ const HomePage = () => {
   });
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full space-y-8 2xl:space-y-0">
       <Header />
-      <div className="space-y-64">
+      <div className="2xl:space-y-32">
         <section id="primary">
           <PrimaryContent />
         </section>
