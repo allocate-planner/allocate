@@ -1,8 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from api.config import ProductionConfig, DevelopmentConfig
-
+from api.config import DevelopmentConfig, ProductionConfig
 
 database_url = DevelopmentConfig.DATABASE_URL or ProductionConfig.DATABASE_URL
 

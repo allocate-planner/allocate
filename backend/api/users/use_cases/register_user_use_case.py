@@ -1,25 +1,24 @@
 from api.system.models.models import User
-
-from api.system.schemas.schemas import UserDetails
 from api.system.schemas.schemas import User as UserSchema
-
-from api.users.repositories.user_repository import UserRepository
-
-from api.users.errors.user_already_exists import UserAlreadyExists
-
+from api.system.schemas.schemas import UserDetails
+from api.users.errors.user_already_exists_error import UserAlreadyExistsError
 from api.users.hashers.bcrypt_hasher import BCryptHasher
+from api.users.repositories.user_repository import UserRepository
 
 
 class RegisterUserUseCase:
     def __init__(
-        self, user_repository: UserRepository, bcrypt_hasher: BCryptHasher
+        self,
+        user_repository: UserRepository,
+        bcrypt_hasher: BCryptHasher,
     ) -> None:
         self.user_repository = user_repository
         self.bcrypt_hasher = bcrypt_hasher
 
     def execute(self, request: UserDetails) -> UserSchema:
         if self.user_repository.find_by_email(request.email_address):
-            raise UserAlreadyExists("User already exists.")
+            msg = "User already exists."
+            raise UserAlreadyExistsError(msg)
 
         hashed_password = self.bcrypt_hasher.hash(request.password)
 

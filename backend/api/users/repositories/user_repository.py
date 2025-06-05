@@ -4,7 +4,7 @@ from api.system.models.models import User
 
 
 class UserRepository:
-    def __init__(self, db: Session):
+    def __init__(self, db: Session) -> None:
         self.db = db
 
     def add(self, user: User) -> None:

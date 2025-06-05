@@ -1,3 +1,3 @@
-class InvalidCredentials(Exception):
+class UserAlreadyExistsError(Exception):
     def __init__(self, message: str) -> None:
         self.message = message

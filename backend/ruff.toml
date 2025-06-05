@@ -1,0 +1,24 @@
+line-length = 88
+target-version = "py312"
+
+[lint]
+select = ["ALL"]
+fixable = ["ALL"]
+ignore = [
+    "D100",
+    "D101",
+    "D102",
+    "D103",
+    "D104",
+    "D107",
+    "PTH123",
+    "PLR0911",
+    "PLR0915",
+    "T201",
+    "ANN201",
+    "BLE001",
+    "ANN101",
+]
+
+[format]
+quote-style = "double"

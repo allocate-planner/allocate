@@ -1,22 +1,20 @@
-from typing import List, Any
-
-from icalendar import Calendar
+from typing import Any
 
 from fastapi import UploadFile
+from icalendar import Calendar
 
 from api.events.repositories.event_repository import EventRepository
-from api.users.repositories.user_repository import UserRepository
-
 from api.events.use_cases.create_event_use_case import CreateEventUseCase
-
 from api.system.schemas.schemas import EventBase
-
-from api.users.errors.user_not_found import UserNotFound
+from api.users.errors.user_not_found_error import UserNotFoundError
+from api.users.repositories.user_repository import UserRepository
 
 
 class ImportEventsUseCase:
     def __init__(
-        self, event_repository: EventRepository, user_repository: UserRepository
+        self,
+        event_repository: EventRepository,
+        user_repository: UserRepository,
     ) -> None:
         self.event_repository = event_repository
         self.user_repository = user_repository
@@ -26,29 +24,32 @@ class ImportEventsUseCase:
         current_user: str,
         file: UploadFile,
         create_event_use_case: CreateEventUseCase,
-    ) -> List[EventBase]:
+    ) -> list[EventBase]:
         user = self.user_repository.find_by_email(current_user)
 
         if user is None:
-            raise UserNotFound("User not found")
+            msg = "User not found"
+            raise UserNotFoundError(msg)
 
-        calendar_object = self._load_ICS(file)
+        calendar_object = self._load_ics(file)
         return self._traverse_calendar(
-            calendar_object, create_event_use_case, current_user
+            calendar_object,
+            create_event_use_case,
+            current_user,
         )
 
-    def _load_ICS(self, file: UploadFile) -> Any:
+    def _load_ics(self, file: UploadFile) -> Any:  # noqa: ANN401
         ics_content = file.file.read().decode("utf-8")
 
         return Calendar.from_ical(ics_content)
 
     def _traverse_calendar(
         self,
-        calendar_object: Any,
+        calendar_object: Any,  # noqa: ANN401
         create_event_use_case: CreateEventUseCase,
         current_user: str,
-    ) -> List[EventBase]:
-        events: List = []
+    ) -> list[EventBase]:
+        events: list = []
 
         for event in calendar_object.walk("VEVENT"):
             summary = event.get("SUMMARY")
@@ -71,14 +72,14 @@ class ImportEventsUseCase:
             description = str(description)[:1024] if description else None
             location = str(location)[:256] if location else None
 
-            event = EventBase(
+            event = EventBase(  # noqa: PLW2901
                 title=title,
                 description=description,
                 location=location,
                 date=date,
                 start_time=start_time,
                 end_time=end_time,
-                colour=CreateEventUseCase._random_background_colour(),
+                colour=CreateEventUseCase.random_background_colour(),
             )
 
             events.append(event)

@@ -1,14 +1,14 @@
-from typing import List, Optional
-from typing_extensions import Annotated
+from datetime import date, time
+from typing import Annotated
 
 from pydantic import BaseModel, ConfigDict, EmailStr, StringConstraints
-
-from datetime import date, time
 
 
 class FrozenBaseModel(BaseModel):
     model_config: ConfigDict = ConfigDict(
-        frozen=True, extra="ignore", from_attributes=True
+        frozen=True,
+        extra="ignore",
+        from_attributes=True,
     )
 
 
@@ -50,18 +50,12 @@ class EventBase(FrozenBaseModel):
         str,
         StringConstraints(strip_whitespace=True, max_length=256),
     ]
-    description: Optional[
-        Annotated[
-            str,
-            StringConstraints(strip_whitespace=True, max_length=1024),
-        ]
-    ] = None
-    location: Optional[
-        Annotated[
-            str,
-            StringConstraints(strip_whitespace=True, max_length=256),
-        ]
-    ] = None
+    description: (
+        Annotated[str, StringConstraints(strip_whitespace=True, max_length=1024)] | None
+    ) = None
+    location: (
+        Annotated[str, StringConstraints(strip_whitespace=True, max_length=256)] | None
+    ) = None
 
     date: date
     start_time: time
@@ -70,7 +64,9 @@ class EventBase(FrozenBaseModel):
     colour: Annotated[
         str | None,
         StringConstraints(
-            strip_whitespace=True, max_length=256, pattern="^#(?:[0-9a-fA-F]{3}){1,2}$"
+            strip_whitespace=True,
+            max_length=256,
+            pattern="^#(?:[0-9a-fA-F]{3}){1,2}$",
         ),
     ] = None
 
@@ -85,4 +81,4 @@ class GetEvent(FrozenBaseModel):
 
 
 class EventList(FrozenBaseModel):
-    events: List[Event]
+    events: list[Event]

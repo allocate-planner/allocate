@@ -1,3 +1,3 @@
-class UserNotFound(Exception):
+class InvalidCredentialsError(Exception):
     def __init__(self, message: str) -> None:
         self.message = message

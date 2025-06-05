@@ -1,4 +1,4 @@
-from bcrypt import hashpw, checkpw, gensalt
+from bcrypt import checkpw, gensalt, hashpw
 
 
 class BCryptHasher:

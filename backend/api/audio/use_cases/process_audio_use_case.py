@@ -1,26 +1,22 @@
 import io
-
-from io import BytesIO
-from typing import List
 from datetime import date, datetime
+from io import BytesIO
 
 from fastapi import UploadFile
 
-from api.openai.openapi_wrapper import OpenAIWrapper
-
-from api.users.repositories.user_repository import UserRepository
-
-from api.events.use_cases.create_event_use_case import CreateEventUseCase
-
-from api.system.schemas.schemas import EventBase
-
 from api.audio.errors.audio_processing_error import AudioProcessingError
-from api.users.errors.user_not_found import UserNotFound
+from api.events.use_cases.create_event_use_case import CreateEventUseCase
+from api.openai.openapi_wrapper import OpenAIWrapper
+from api.system.schemas.schemas import EventBase
+from api.users.errors.user_not_found_error import UserNotFoundError
+from api.users.repositories.user_repository import UserRepository
 
 
 class ProcessAudioUseCase:
     def __init__(
-        self, openai_wrapper: OpenAIWrapper, user_repository: UserRepository
+        self,
+        openai_wrapper: OpenAIWrapper,
+        user_repository: UserRepository,
     ) -> None:
         self.openai_wrapper = openai_wrapper
         self.user_repository = user_repository
@@ -30,11 +26,12 @@ class ProcessAudioUseCase:
         current_user: str,
         file: UploadFile,
         create_event_use_case: CreateEventUseCase,
-    ) -> List[EventBase]:
+    ) -> list[EventBase]:
         user = self.user_repository.find_by_email(current_user)
 
         if user is None:
-            raise UserNotFound("User not found")
+            msg = "User not found"
+            raise UserNotFoundError(msg)
 
         try:
             buffer = self._parse_file_into_buffer(file)
@@ -42,15 +39,18 @@ class ProcessAudioUseCase:
 
             llm_response = self.openai_wrapper.prompt_chat(
                 str(user.first_name),
-                datetime.now().strftime("%H:%M"),
+                datetime.now().strftime("%H:%M"),  # noqa: DTZ005
                 transcribed_audio,
             )
 
             return ProcessAudioUseCase._transform_llm_output_to_pydantic_objects(
-                llm_response, create_event_use_case, current_user
+                llm_response,
+                create_event_use_case,
+                current_user,
             )
         except Exception as e:
-            raise AudioProcessingError(f"Error processing audio file: {str(e)}")
+            msg = f"Error processing audio file: {e!s}"
+            raise AudioProcessingError(msg) from e
 
     def _parse_file_into_buffer(self, file: UploadFile) -> BytesIO:
         file_content = file.file.read()
@@ -62,20 +62,22 @@ class ProcessAudioUseCase:
 
     @staticmethod
     def _transform_llm_output_to_pydantic_objects(
-        response: str, create_event_use_case: CreateEventUseCase, current_user: str
-    ) -> List[EventBase]:
-        events: List = []
-        current_date = date.today()
+        response: str,
+        create_event_use_case: CreateEventUseCase,
+        current_user: str,
+    ) -> list[EventBase]:
+        events: list = []
+        current_date = date.today()  # noqa: DTZ011
 
         for event in response.split("\n"):
             start_time, end_time, title = event.split("|")
 
-            event = EventBase(
+            event = EventBase(  # noqa: PLW2901
                 title=title,
                 date=current_date,
-                start_time=datetime.strptime(start_time, "%H:%M").time(),
-                end_time=datetime.strptime(end_time, "%H:%M").time(),
-                colour=CreateEventUseCase._random_background_colour(),
+                start_time=datetime.strptime(start_time, "%H:%M").time(),  # noqa: DTZ007
+                end_time=datetime.strptime(end_time, "%H:%M").time(),  # noqa: DTZ007
+                colour=CreateEventUseCase.random_background_colour(),
             )
 
             events.append(event)

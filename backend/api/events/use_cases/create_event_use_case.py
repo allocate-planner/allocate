@@ -1,21 +1,19 @@
 import random
-
-from typing import Dict, List, Any
-
-from api.system.models.models import Event
-
-from api.system.schemas.schemas import EventBase
-from api.system.schemas.schemas import Event as EventSchema
+from typing import Any
 
 from api.events.repositories.event_repository import EventRepository
-from api.users.repositories.user_repository import UserRepository
-
+from api.system.models.models import Event
+from api.system.schemas.schemas import Event as EventSchema
+from api.system.schemas.schemas import EventBase
 from api.users.errors.user_not_found import UserNotFound
+from api.users.repositories.user_repository import UserRepository
 
 
 class CreateEventUseCase:
     def __init__(
-        self, event_repository: EventRepository, user_repository: UserRepository
+        self,
+        event_repository: EventRepository,
+        user_repository: UserRepository,
     ) -> None:
         self.event_repository = event_repository
         self.user_repository = user_repository
@@ -28,16 +26,17 @@ class CreateEventUseCase:
         user = self.user_repository.find_by_email(current_user)
 
         if user is None:
-            raise UserNotFound("User not found")
+            msg = "User not found"
+            raise UserNotFound(msg)
 
-        event_data: Dict[str, Any] = {
+        event_data: dict[str, Any] = {
             "title": request.title,
             "date": request.date,
             "start_time": request.start_time,
             "end_time": request.end_time,
             "colour": request.colour
             if request.colour
-            else CreateEventUseCase._random_background_colour(),
+            else CreateEventUseCase.random_background_colour(),
             "user_id": user.id,
             "user": user,
         }
@@ -55,8 +54,8 @@ class CreateEventUseCase:
         return EventSchema.model_validate(event)
 
     @staticmethod
-    def _random_background_colour() -> str:
-        bg_colours: List[str] = [
+    def random_background_colour() -> str:
+        bg_colours: list[str] = [
             "#FD8A8A",
             "#FFCBCB",
             "#9EA1D4",
@@ -64,4 +63,4 @@ class CreateEventUseCase:
             "#A8D1D1",
             "#DFEBEB",
         ]
-        return random.choice(bg_colours)
+        return random.choice(bg_colours)  # noqa: S311

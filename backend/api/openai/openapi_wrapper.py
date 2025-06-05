@@ -1,6 +1,6 @@
 from io import BytesIO
-from openai import OpenAI
 
+from openai import OpenAI
 
 BASE_PROMPT_PATH: str = "base.prompt"
 
@@ -35,15 +35,14 @@ class OpenAIWrapper:
         return str(chat_completion.choices[0].message.content)
 
     def _read_base_prompt_from_file(self) -> None:
-        with open(BASE_PROMPT_PATH, "r", encoding="utf8") as file:
+        with open(BASE_PROMPT_PATH, encoding="utf8") as file:
             self.prompt = file.read()
 
     def _populate_dynamic_content_in_prompt(
-        self, first_name: str, current_time: str
+        self,
+        first_name: str,
+        current_time: str,
     ) -> None:
-        CURRENT_TIME: str = current_time
-        USER_NAME: str = first_name
-
         self.prompt = self.prompt.format(
             work_start_time="09:00",
             work_end_time="17:00",
@@ -58,4 +57,4 @@ class OpenAIWrapper:
             habit_explanation_1="finds it too difficult to focus",
         )
 
-        self.prompt = f"{CURRENT_TIME}, {USER_NAME} | {self.prompt}"
+        self.prompt = f"{current_time}, {first_name} | {self.prompt}"
