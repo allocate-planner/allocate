@@ -27,14 +27,8 @@ const PricingCard = ({
     <div className="p-6 md:p-8 border border-1 border-[#DBDBDB] rounded-2xl bg-[#F8F8F8] space-y-6 md:space-y-8 shadow-xl">
       <div className="flex flex-col space-y-2">
         <div className="flex flex-row justify-between items-center">
-          <h1 className="text-2xl md:text-3xl lg:text-4xl font-extrabold">
-            {title}
-          </h1>
-          {pricing && (
-            <h1 className="text-sm md:text-base font-light">
-              ${pricing}/month
-            </h1>
-          )}
+          <h1 className="text-2xl md:text-3xl lg:text-4xl font-extrabold">{title}</h1>
+          {pricing && <h1 className="text-sm md:text-base font-light">${pricing}/month</h1>}
         </div>
         <h2 className="text-base md:text-lg font-light">{subtitle}</h2>
       </div>

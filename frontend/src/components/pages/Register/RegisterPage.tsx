@@ -9,7 +9,7 @@ import { Spinner } from "../../common/Spinner";
 
 import { userService } from "@/services/UserService";
 import { useAuth } from "@/AuthProvider";
-import { IUserRegister } from "@/models/IUser";
+import type { IUserRegister } from "@/models/IUser";
 
 import { toast } from "sonner";
 
@@ -59,10 +59,7 @@ const RegisterPage = () => {
       toast.success("You have successfully created an account.");
       navigate("/login");
     } catch (error) {
-      console.error(error);
-
-      const errorMessage =
-        error instanceof Error ? error.message : "An unknown error occurred.";
+      const errorMessage = error instanceof Error ? error.message : "An unknown error occurred.";
 
       toast.error(errorMessage);
     } finally {
@@ -87,7 +84,7 @@ const RegisterPage = () => {
               <Input
                 id="firstname"
                 placeholder="John"
-                onChange={(e) => setFirstName(e.target.value)}
+                onChange={e => setFirstName(e.target.value)}
                 disabled={isLoading}
               />
             </div>
@@ -96,7 +93,7 @@ const RegisterPage = () => {
               <Input
                 id="lastname"
                 placeholder="Doe"
-                onChange={(e) => setLastName(e.target.value)}
+                onChange={e => setLastName(e.target.value)}
                 disabled={isLoading}
               />
             </div>
@@ -106,7 +103,7 @@ const RegisterPage = () => {
                 id="email"
                 placeholder="name@example.com"
                 type="email"
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={e => setEmail(e.target.value)}
                 disabled={isLoading}
               />
             </div>
@@ -116,7 +113,7 @@ const RegisterPage = () => {
                 id="password"
                 placeholder="•••••••••"
                 type="password"
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={e => setPassword(e.target.value)}
                 disabled={isLoading}
               />
             </div>
@@ -126,7 +123,7 @@ const RegisterPage = () => {
                 id="confirm_password"
                 placeholder="•••••••••"
                 type="password"
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                onChange={e => setConfirmPassword(e.target.value)}
                 disabled={isLoading}
               />
             </div>

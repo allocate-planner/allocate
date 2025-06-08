@@ -1,4 +1,4 @@
-export interface IEvent {
+export type IEvent = {
   id: number;
   title: string;
   description?: string;
@@ -9,7 +9,7 @@ export interface IEvent {
   end_time: string;
 }
 
-export interface IEventCreate {
+export type IEventCreate = {
   title?: string;
   description?: string;
   location?: string;
@@ -19,7 +19,7 @@ export interface IEventCreate {
   end_time: string;
 }
 
-export interface ITransformedEvent extends IEvent {
+export type ITransformedEvent = IEvent & {
   event_week_start: Date;
   day: number;
 }

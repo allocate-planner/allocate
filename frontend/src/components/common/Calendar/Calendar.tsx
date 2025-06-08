@@ -19,7 +19,7 @@ import {
 
 import { useAuth } from "@/AuthProvider";
 import { eventService } from "@/services/EventService";
-import { ITransformedEvent, IEventCreate } from "@/models/IEvent";
+import type { ITransformedEvent, IEventCreate } from "@/models/IEvent";
 
 import EventPopup from "./EventPopup";
 import EventDetailPopup from "./EventDetailPopup";
@@ -50,10 +50,8 @@ const Calendar = (props: IProps) => {
   const [selectedSlot, setSelectedSlot] = useState<IEventCreate | null>();
   const [isEventPopupOpen, setIsEventPopupOpen] = useState<boolean>(false);
 
-  const [selectedEvent, setSelectedEvent] =
-    useState<ITransformedEvent | null>();
-  const [isEventDetailPopupOpen, setIsEventDetailPopupOpen] =
-    useState<boolean>(false);
+  const [selectedEvent, setSelectedEvent] = useState<ITransformedEvent | null>();
+  const [isEventDetailPopupOpen, setIsEventDetailPopupOpen] = useState<boolean>(false);
 
   const { getAccessToken } = useAuth();
   const accessToken = getAccessToken();
@@ -61,9 +59,7 @@ const Calendar = (props: IProps) => {
   const weekStart = startOfWeek(currentWeek);
   const weekEnd = endOfWeek(currentWeek);
 
-  const weekDays: Date[] = Array.from({ length: 7 }, (_, i) =>
-    addDays(weekStart, i)
-  );
+  const weekDays: Date[] = Array.from({ length: 7 }, (_, i) => addDays(weekStart, i));
 
   const moveWeek = (direction: number): void => {
     setCurrentWeek((prevWeek: Date) => addDays(prevWeek, direction * 7));
@@ -80,7 +76,6 @@ const Calendar = (props: IProps) => {
         props.eventData(startDate, endDate);
       }
     } catch (error) {
-      console.error(error);
       toast.error("Event was not created");
     }
 
@@ -98,7 +93,6 @@ const Calendar = (props: IProps) => {
         props.eventData(startDate, endDate);
       }
     } catch (error) {
-      console.error(error);
       toast.error("Event was not edited");
     }
 
@@ -117,7 +111,6 @@ const Calendar = (props: IProps) => {
         props.eventData(startDate, endDate);
       }
     } catch (error) {
-      console.error(error);
       toast.error("Event was not deleted");
     }
 
@@ -140,8 +133,8 @@ const Calendar = (props: IProps) => {
 
     const newEvent: IEventCreate = {
       date: formatDate(dateFromWeekAndDay),
-      start_time: formatISOFromTimeSlot(timeSlot[0], timeSlot[1]),
-      end_time: formatISOFromTimeSlot(timeSlot[0] + 1, timeSlot[1]),
+      start_time: formatISOFromTimeSlot(timeSlot[0]!, timeSlot[1]!),
+      end_time: formatISOFromTimeSlot(timeSlot[0]! + 1, timeSlot[1]!),
     };
 
     setSelectedSlot(newEvent);
@@ -220,11 +213,7 @@ const Calendar = (props: IProps) => {
             key={day.toISOString()}
             className={`
             border-r border-b
-            ${
-              isSameDay(day, new Date())
-                ? "border-b-violet-400"
-                : "border-gray-300"
-            } 
+            ${isSameDay(day, new Date()) ? "border-b-violet-400" : "border-gray-300"} 
             flex flex-col justify-center items-center p-4 last:border-r-0
           `}
           >
@@ -239,9 +228,7 @@ const Calendar = (props: IProps) => {
           {calendarHours.map((hour: number) => (
             <div
               key={hour}
-              className={`w-full min-w-0 ${
-                hour === calendarHours.length - 1 ? "" : "border-b"
-              } `}
+              className={`w-full min-w-0 ${hour === calendarHours.length - 1 ? "" : "border-b"} `}
             >
               <div className="border-r-[1px] border-gray-300 flex flex-col justify-center items-start h-[56px] p-4">
                 <h2 className="text-sm">{formatHour(hour)}</h2>
@@ -259,7 +246,7 @@ const Calendar = (props: IProps) => {
                 const events = getEventsForTimeSlot(day, timeSlot);
 
                 if (events.length > 0) {
-                  return events.map((event) => (
+                  return events.map(event => (
                     <Event
                       title={event.title}
                       colour={event.colour}

@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { IEventCreate } from "@/models/IEvent";
+import type { IEventCreate } from "@/models/IEvent";
 import { Button } from "../Button";
 
 import {
@@ -26,12 +26,7 @@ import { Input } from "../Input";
 import { Label } from "../Label";
 import { toast } from "sonner";
 
-import {
-  compareDates,
-  convertToISO,
-  convertToTimePeriodFromISO,
-  times,
-} from "@/utils/TimeUtils";
+import { compareDates, convertToISO, convertToTimePeriodFromISO, times } from "@/utils/TimeUtils";
 
 interface IProps {
   isOpen: boolean;
@@ -47,9 +42,7 @@ const EventPopup = (props: IProps) => {
   const [startTime, setStartTime] = useState<string>(
     convertToTimePeriodFromISO(props.event.start_time)
   );
-  const [endTime, setEndTime] = useState<string>(
-    convertToTimePeriodFromISO(props.event.end_time)
-  );
+  const [endTime, setEndTime] = useState<string>(convertToTimePeriodFromISO(props.event.end_time));
 
   const handleEventCreation = () => {
     if (startTime === endTime) {
@@ -85,7 +78,7 @@ const EventPopup = (props: IProps) => {
         <DialogHeader className="space-y-4">
           <DialogTitle>Add to Calendar</DialogTitle>
           <DialogDescription>
-            Add an event to your calendar here! Click Create when you're done.
+            Add an event to your calendar here! Click Create when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
         <div className="flex flex-col justify-between items-start w-full space-y-4">
@@ -96,7 +89,7 @@ const EventPopup = (props: IProps) => {
             <Input
               id="title"
               placeholder="Call with Joe"
-              onChange={(e) => setTitle(e.target.value)}
+              onChange={e => setTitle(e.target.value)}
               className="w-2/3"
             />
           </div>
@@ -107,7 +100,7 @@ const EventPopup = (props: IProps) => {
             <Input
               id="description"
               placeholder="Discuss new Product Name"
-              onChange={(e) => setDescription(e.target.value)}
+              onChange={e => setDescription(e.target.value)}
               className="w-2/3"
             />
           </div>
@@ -118,7 +111,7 @@ const EventPopup = (props: IProps) => {
             <Input
               id="location"
               placeholder="1600 Amphitheatre Parkway"
-              onChange={(e) => setLocation(e.target.value)}
+              onChange={e => setLocation(e.target.value)}
               className="w-2/3"
             />
           </div>
@@ -126,7 +119,7 @@ const EventPopup = (props: IProps) => {
             <Label className="w-1/3">Time</Label>
             <div className="flex flex-row justify-center items-center w-2/3 space-x-2">
               <Select
-                onValueChange={(value) => {
+                onValueChange={value => {
                   setStartTime(value);
                 }}
               >
@@ -137,11 +130,7 @@ const EventPopup = (props: IProps) => {
                   <SelectGroup>
                     <SelectLabel>Start Time</SelectLabel>
                     {times.map((time, index) => (
-                      <SelectItem
-                        key={index}
-                        value={time}
-                        onClick={() => setStartTime(time)}
-                      >
+                      <SelectItem key={index} value={time} onClick={() => setStartTime(time)}>
                         {time}
                       </SelectItem>
                     ))}
@@ -150,7 +139,7 @@ const EventPopup = (props: IProps) => {
               </Select>
               <Label>To</Label>
               <Select
-                onValueChange={(value) => {
+                onValueChange={value => {
                   setEndTime(value);
                 }}
               >

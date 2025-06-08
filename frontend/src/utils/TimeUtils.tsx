@@ -19,10 +19,7 @@ export const convertToISO = (time: string): string => {
 // Input:  "01:30"
 // Output: "01:00am"
 export const convertToTimePeriodFromHHmm = (time: string): string => {
-  return format(
-    parse(time as string, "HH:mm", new Date()),
-    "hh:mma"
-  ).toLowerCase();
+  return format(parse(time as string, "HH:mm", new Date()), "hh:mma").toLowerCase();
 };
 
 // Input:  "02:00:00+01:00"
@@ -35,28 +32,19 @@ export const convertToTimePeriodFromISO = (time: string) => {
 // Input:  "10"
 // Output: "10:00am"
 export const formatHour = (hour: number): string => {
-  return format(
-    set(new Date(), { hours: hour, minutes: 0 }),
-    "hh:mma"
-  ).toLowerCase();
+  return format(set(new Date(), { hours: hour, minutes: 0 }), "hh:mma").toLowerCase();
 };
 
 // Input:  "10, 30"
 // Output: "10:30"
 export const formatTimeSlotToHMM = (hour: number, minute: number): string => {
-  return format(
-    set(new Date(), { hours: hour, minutes: minute }),
-    "h:mm"
-  ).toUpperCase();
+  return format(set(new Date(), { hours: hour, minutes: minute }), "h:mm").toUpperCase();
 };
 
 // Input:  "10, 30"
 // Output: "10:30AM"
 export const formatTimeSlotToHMMA = (hour: number, minute: number): string => {
-  return format(
-    set(new Date(), { hours: hour, minutes: minute }),
-    "h:mma"
-  ).toUpperCase();
+  return format(set(new Date(), { hours: hour, minutes: minute }), "h:mma").toUpperCase();
 };
 
 // Input:  "05, 00"

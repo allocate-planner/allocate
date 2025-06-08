@@ -1,9 +1,5 @@
 import { motion } from "framer-motion";
-import {
-  containerVariants,
-  headerVariants,
-  cardVariants,
-} from "./MotionVariants";
+import { containerVariants, headerVariants, cardVariants } from "./MotionVariants";
 import PricingCard from "./PricingCard";
 
 const Pricing = () => {
@@ -15,19 +11,12 @@ const Pricing = () => {
       whileInView="visible"
       viewport={{ once: true, amount: 0.2 }}
     >
-      <motion.div
-        className="flex flex-col text-center"
-        variants={headerVariants}
-      >
+      <motion.div className="flex flex-col text-center" variants={headerVariants}>
         <div className="flex flex-col md:flex-row items-center justify-center md:space-x-12 mb-4">
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold">
             Pricing Plans
           </h1>
-          <motion.img
-            src="/dollar.svg"
-            alt="Dollar Sign"
-            className="hidden md:block md:mt-8"
-          />
+          <motion.img src="/dollar.svg" alt="Dollar Sign" className="hidden md:block md:mt-8" />
         </div>
         <p className="text-base md:text-lg font-light max-w-md px-4">
           No surprises, no hidden fees. Just simple, transparent pricing.

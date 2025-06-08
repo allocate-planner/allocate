@@ -5,7 +5,7 @@ from api.events.repositories.event_repository import EventRepository
 from api.system.models.models import Event
 from api.system.schemas.schemas import Event as EventSchema
 from api.system.schemas.schemas import EventBase
-from api.users.errors.user_not_found import UserNotFound
+from api.users.errors.user_not_found_error import UserNotFoundError
 from api.users.repositories.user_repository import UserRepository
 
 
@@ -27,7 +27,7 @@ class CreateEventUseCase:
 
         if user is None:
             msg = "User not found"
-            raise UserNotFound(msg)
+            raise UserNotFoundError(msg)
 
         event_data: dict[str, Any] = {
             "title": request.title,

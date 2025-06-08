@@ -20,6 +20,7 @@ module.exports = {
     'react/prop-types': 'off',
     'no-console': 'warn',
     'prefer-const': 'error',
+    'no-undef': 'off',
   },
   settings: {
     react: { version: 'detect' },

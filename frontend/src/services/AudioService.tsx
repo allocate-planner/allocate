@@ -14,22 +14,11 @@ export const audioService = {
           "Content-Type": "multipart/form-data",
         },
       })
-      .catch((error) => {
-        if (
-          error.response &&
-          error.response.data &&
-          error.response.data.detail
-        ) {
-          console.error("Error: ", error.response.data.detail);
+      .catch(error => {
+        if (error.response && error.response.data && error.response.data.detail) {
           throw new Error(error.response.data.detail);
         } else {
-          console.error(
-            "Error: There has been an issue while processing the audio",
-            error
-          );
-          throw new Error(
-            "An unknown error occurred while processing the audio"
-          );
+          throw new Error("An unknown error occurred while processing the audio");
         }
       });
   },

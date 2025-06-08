@@ -25,13 +25,7 @@ interface IProps {
 const Sidebar = (props: IProps) => {
   const navigate = useNavigate();
 
-  const {
-    firstName,
-    lastName,
-    emailAddress,
-    getAccessToken,
-    updateAuthentication,
-  } = useAuth();
+  const { firstName, lastName, emailAddress, getAccessToken, updateAuthentication } = useAuth();
 
   const accessToken = getAccessToken();
 
@@ -46,7 +40,6 @@ const Sidebar = (props: IProps) => {
       updateAuthentication(false);
       navigate("/");
     } catch (error) {
-      console.error(error);
       toast.error("Something went wrong when logging out.");
     }
   };
@@ -62,7 +55,6 @@ const Sidebar = (props: IProps) => {
         props.eventData(startDate, endDate);
       }
     } catch (error) {
-      console.error(error);
       toast.error("Audio not processed");
     }
   };

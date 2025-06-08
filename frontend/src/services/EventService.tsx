@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { IEvent, IEventCreate } from "../models/IEvent";
+import type { IEvent, IEventCreate } from "../models/IEvent";
 import { API_BASE_URL } from "@/utils/Constants";
 
 export const eventService = {
@@ -28,31 +28,16 @@ export const eventService = {
           },
         }
       )
-      .catch((error) => {
-        if (
-          error.response &&
-          error.response.data &&
-          error.response.data.detail
-        ) {
-          console.error("Error: ", error.response.data.detail);
+      .catch(error => {
+        if (error.response && error.response.data && error.response.data.detail) {
           throw new Error(error.response.data.detail);
         } else {
-          console.error(
-            "Error: There has been an issue when creating the event.",
-            error
-          );
-          throw new Error(
-            "An unknown error occurred while creating the event."
-          );
+          throw new Error("An unknown error occurred while creating the event.");
         }
       });
   },
 
-  getEvents: async (
-    startDate: string,
-    endDate: string,
-    accessToken: string
-  ) => {
+  getEvents: async (startDate: string, endDate: string, accessToken: string) => {
     return await axios
       .get(`${API_BASE_URL}/events`, {
         params: { start_date: startDate, end_date: endDate },
@@ -60,20 +45,11 @@ export const eventService = {
           Authorization: `Bearer ${accessToken}`,
         },
       })
-      .then((response) => response.data)
-      .catch((error) => {
-        if (
-          error.response &&
-          error.response.data &&
-          error.response.data.detail
-        ) {
-          console.error("Error: ", error.response.data.detail);
+      .then(response => response.data)
+      .catch(error => {
+        if (error.response && error.response.data && error.response.data.detail) {
           throw new Error(error.response.data.detail);
         } else {
-          console.error(
-            "Error: There has been an issue when retrieving events.",
-            error
-          );
           throw new Error("An unknown error occurred while retrieving events.");
         }
       });
@@ -89,22 +65,11 @@ export const eventService = {
           event_id: event_id,
         },
       })
-      .catch((error) => {
-        if (
-          error.response &&
-          error.response.data &&
-          error.response.data.detail
-        ) {
-          console.error("Error: ", error.response.data.detail);
+      .catch(error => {
+        if (error.response && error.response.data && error.response.data.detail) {
           throw new Error(error.response.data.detail);
         } else {
-          console.error(
-            "Error: There has been an issue when deleting the event.",
-            error
-          );
-          throw new Error(
-            "An unknown error occurred while deleting the event."
-          );
+          throw new Error("An unknown error occurred while deleting the event.");
         }
       });
   },
@@ -134,22 +99,11 @@ export const eventService = {
           },
         }
       )
-      .catch((error) => {
-        if (
-          error.response &&
-          error.response.data &&
-          error.response.data.detail
-        ) {
-          console.error("Error: ", error.response.data.detail);
+      .catch(error => {
+        if (error.response && error.response.data && error.response.data.detail) {
           throw new Error(error.response.data.detail);
         } else {
-          console.error(
-            "Error: There has been an issue when deleting the event.",
-            error
-          );
-          throw new Error(
-            "An unknown error occurred while deleting the event."
-          );
+          throw new Error("An unknown error occurred while deleting the event.");
         }
       });
   },

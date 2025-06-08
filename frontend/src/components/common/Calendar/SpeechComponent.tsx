@@ -11,9 +11,7 @@ const SpeechComponent = (props: IProps) => {
   const [permission, setPermission] = useState<boolean>(false);
   const [stream, setStream] = useState<MediaStream | null>(null);
   const mediaRecorder = useRef<MediaRecorder | null>(null);
-  const [recordingStatus, setRecordingStatus] = useState<
-    "inactive" | "recording"
-  >("inactive");
+  const [recordingStatus, setRecordingStatus] = useState<"inactive" | "recording">("inactive");
   const audioChunksRef = useRef<Blob[]>([]);
 
   const handleAudioProcessing = (audioBlob: Blob) => {

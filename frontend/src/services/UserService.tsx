@@ -1,7 +1,7 @@
 import axios from "axios";
 import qs from "qs";
 
-import { IUserLogin, IUserRegister } from "../models/IUser";
+import type { IUserLogin, IUserRegister } from "../models/IUser";
 import { API_BASE_URL } from "@/utils/Constants";
 
 export const userService = {
@@ -19,25 +19,20 @@ export const userService = {
 
     return await axios
       .post(`${API_BASE_URL}/users/login`, stringifiedData, headers)
-      .then((response) => {
+      .then(response => {
         if (response.data) {
           localStorage.setItem("user", JSON.stringify(response.data));
         }
       })
-      .catch((error) => {
+      .catch(error => {
         if (
           error.response &&
           error.response.data &&
           error.response.data.detail &&
           typeof error.response.data.detail === "string"
         ) {
-          console.error("Error: ", error.response.data.detail);
           throw new Error(error.response.data.detail);
         } else {
-          console.error(
-            "Error: There has been an issue when authenticating.",
-            error
-          );
           throw new Error("An unknown error occurred while authenticating.");
         }
       });
@@ -51,22 +46,11 @@ export const userService = {
         email_address: userDetails.email_address,
         password: userDetails.password,
       })
-      .catch((error) => {
-        if (
-          error.response &&
-          error.response.data &&
-          error.response.data.detail
-        ) {
-          console.error("Error: ", error.response.data.detail);
+      .catch(error => {
+        if (error.response && error.response.data && error.response.data.detail) {
           throw new Error(error.response.data.detail);
         } else {
-          console.error(
-            "Error: There has been an issue when creating an account.",
-            error
-          );
-          throw new Error(
-            "An unknown error occurred while creating an account."
-          );
+          throw new Error("An unknown error occurred while creating an account.");
         }
       });
   },

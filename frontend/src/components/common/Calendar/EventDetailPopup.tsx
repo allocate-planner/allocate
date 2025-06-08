@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { ITransformedEvent } from "@/models/IEvent";
+import type { ITransformedEvent } from "@/models/IEvent";
 import { Button } from "../Button";
 
 import {
@@ -26,12 +26,7 @@ import { Input } from "../Input";
 import { Label } from "../Label";
 import { toast } from "sonner";
 
-import {
-  compareDates,
-  convertToISO,
-  convertToTimePeriodFromHHmm,
-  times,
-} from "@/utils/TimeUtils";
+import { compareDates, convertToISO, convertToTimePeriodFromHHmm, times } from "@/utils/TimeUtils";
 
 interface IProps {
   isOpen: boolean;
@@ -43,16 +38,12 @@ interface IProps {
 
 const EventDetailPopup = (props: IProps) => {
   const [title, setTitle] = useState<string>(props.event.title);
-  const [description, setDescription] = useState<string>(
-    props.event.description ?? ""
-  );
+  const [description, setDescription] = useState<string>(props.event.description ?? "");
   const [location, setLocation] = useState<string>(props.event.location ?? "");
   const [startTime, setStartTime] = useState<string>(
     convertToTimePeriodFromHHmm(props.event.start_time)
   );
-  const [endTime, setEndTime] = useState<string>(
-    convertToTimePeriodFromHHmm(props.event.end_time)
-  );
+  const [endTime, setEndTime] = useState<string>(convertToTimePeriodFromHHmm(props.event.end_time));
 
   const handleEventUpdate = () => {
     if (startTime === endTime) {
@@ -88,8 +79,8 @@ const EventDetailPopup = (props: IProps) => {
         <DialogHeader className="space-y-4">
           <DialogTitle>Edit Event</DialogTitle>
           <DialogDescription>
-            Edit, or delete your event. Click Save when you're done, or click
-            delete to remove the item from your calendar.
+            Edit, or delete your event. Click Save when you&apos;re done, or click delete to remove
+            the item from your calendar.
           </DialogDescription>
         </DialogHeader>
         <div className="flex flex-col justify-between items-start w-full space-y-4">
@@ -101,7 +92,7 @@ const EventDetailPopup = (props: IProps) => {
               id="title"
               defaultValue={title}
               placeholder="Call with Joe"
-              onChange={(e) => setTitle(e.target.value)}
+              onChange={e => setTitle(e.target.value)}
               className="w-2/3"
             />
           </div>
@@ -113,7 +104,7 @@ const EventDetailPopup = (props: IProps) => {
               id="description"
               defaultValue={description}
               placeholder="Discuss new Product Name"
-              onChange={(e) => setDescription(e.target.value)}
+              onChange={e => setDescription(e.target.value)}
               className="w-2/3"
             />
           </div>
@@ -125,7 +116,7 @@ const EventDetailPopup = (props: IProps) => {
               id="location"
               defaultValue={location}
               placeholder="1600 Amphitheatre Parkway"
-              onChange={(e) => setLocation(e.target.value)}
+              onChange={e => setLocation(e.target.value)}
               className="w-2/3"
             />
           </div>
@@ -133,7 +124,7 @@ const EventDetailPopup = (props: IProps) => {
             <Label className="w-1/3">Time</Label>
             <div className="flex flex-row justify-center items-center w-2/3 space-x-2">
               <Select
-                onValueChange={(value) => {
+                onValueChange={value => {
                   setStartTime(value);
                 }}
               >
@@ -144,11 +135,7 @@ const EventDetailPopup = (props: IProps) => {
                   <SelectGroup>
                     <SelectLabel>Start Time</SelectLabel>
                     {times.map((time, index) => (
-                      <SelectItem
-                        key={index}
-                        value={time}
-                        onClick={() => setStartTime(time)}
-                      >
+                      <SelectItem key={index} value={time} onClick={() => setStartTime(time)}>
                         {time}
                       </SelectItem>
                     ))}
@@ -157,7 +144,7 @@ const EventDetailPopup = (props: IProps) => {
               </Select>
               <Label>To</Label>
               <Select
-                onValueChange={(value) => {
+                onValueChange={value => {
                   setEndTime(value);
                 }}
               >

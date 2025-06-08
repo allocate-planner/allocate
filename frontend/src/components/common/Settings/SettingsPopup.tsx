@@ -1,10 +1,4 @@
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "../Dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "../Dialog";
 
 import { Button } from "../Button";
 
@@ -23,14 +17,14 @@ interface IProps {
 }
 
 const SettingsPopup = (props: IProps) => {
-  const [selectedSettingsSubpage, setSelectedSettingsSubPage] =
-    useState<string>("account");
-  const [file, setFile] = useState<File | null>(null);
+  const [selectedSettingsSubpage, setSelectedSettingsSubPage] = useState<string>("account");
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
+  const [_, setFile] = useState<File | null>(null);
 
   const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
+    if (e.target.files && e.target.files[0]) {
       setFile(e.target.files[0]);
-    }    
+    }
   };
 
   return (
@@ -38,9 +32,7 @@ const SettingsPopup = (props: IProps) => {
       <DialogContent className="sm:max-w-[800px] p-0 gap-0">
         <DialogHeader className="space-y-4 border-b-[1px] border-gray-300 p-8">
           <DialogTitle className="text-2xl">Settings</DialogTitle>
-          <DialogDescription>
-            Modify your user, or system settings here.
-          </DialogDescription>
+          <DialogDescription>Modify your user, or system settings here.</DialogDescription>
         </DialogHeader>
         <nav className="h-[400px] flex flex-row">
           <div className="h-full w-1/3 flex flex-col justify-between border-r-[1px] border-gray-300">
@@ -80,19 +72,11 @@ const SettingsPopup = (props: IProps) => {
               <div className="w-4/5 space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="firstname">First Name</Label>
-                  <Input
-                    id="firstname"
-                    defaultValue={props.firstName}
-                    placeholder="John"
-                  />
+                  <Input id="firstname" defaultValue={props.firstName} placeholder="John" />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="lastname">Last Name</Label>
-                  <Input
-                    id="lastname"
-                    defaultValue={props.lastName}
-                    placeholder="Doe"
-                  />
+                  <Input id="lastname" defaultValue={props.lastName} placeholder="Doe" />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="email">Email</Label>
@@ -105,22 +89,13 @@ const SettingsPopup = (props: IProps) => {
                 </div>
               </div>
               <div className="flex flex-row space-x-4">
-                <Button
-                  className="bg-red-500 hover:bg-red-700 font-bold"
-                  type="submit"
-                >
+                <Button className="bg-red-500 hover:bg-red-700 font-bold" type="submit">
                   Delete Account
                 </Button>
-                <Button
-                  className="bg-gray-50 hover:bg-gray-100 text-red-500"
-                  type="submit"
-                >
+                <Button className="bg-gray-50 hover:bg-gray-100 text-red-500" type="submit">
                   Disable Account
                 </Button>
-                <Button
-                  className="bg-violet-500 hover:bg-violet-700"
-                  type="submit"
-                >
+                <Button className="bg-violet-500 hover:bg-violet-700" type="submit">
                   Save Changes
                 </Button>
               </div>
@@ -134,12 +109,7 @@ const SettingsPopup = (props: IProps) => {
                 >
                   Import .ics file
                 </label>
-                <input
-                  id="file"
-                  type="file"
-                  onChange={handleUpload}
-                  className="hidden"
-                />
+                <input id="file" type="file" onChange={handleUpload} className="hidden" />
               </div>
             </section>
           )}

@@ -42,9 +42,7 @@ const Header = () => {
             Login
           </a>
           <a href="/register">
-            <Button className="bg-violet-500 hover:bg-violet-700 px-4 py-2">
-              Sign Up
-            </Button>
+            <Button className="bg-violet-500 hover:bg-violet-700 px-4 py-2">Sign Up</Button>
           </a>
         </div>
         <motion.button

@@ -9,7 +9,7 @@ import { Spinner } from "../../common/Spinner";
 
 import { userService } from "@/services/UserService";
 import { useAuth } from "@/AuthProvider";
-import { IUserLogin } from "@/models/IUser";
+import type { IUserLogin } from "@/models/IUser";
 
 import { toast } from "sonner";
 
@@ -49,10 +49,7 @@ const LoginPage = () => {
       toast.success("You have successfully been authenticated!");
       navigate("/calendar");
     } catch (error) {
-      console.error(error);
-
-      const errorMessage =
-        error instanceof Error ? error.message : "An unknown error occurred.";
+      const errorMessage = error instanceof Error ? error.message : "An unknown error occurred.";
 
       toast.error(errorMessage);
     } finally {
@@ -78,7 +75,7 @@ const LoginPage = () => {
                 id="email"
                 placeholder="name@example.com"
                 type="email"
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={e => setEmail(e.target.value)}
                 disabled={isLoading}
               />
             </div>
@@ -88,7 +85,7 @@ const LoginPage = () => {
                 id="password"
                 placeholder="•••••••••"
                 type="password"
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={e => setPassword(e.target.value)}
                 disabled={isLoading}
               />
             </div>
