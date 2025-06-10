@@ -1,8 +1,12 @@
 import { memo } from "react";
 
+import { useDraggable } from "@dnd-kit/core";
+import { CSS } from "@dnd-kit/utilities";
+
 import { formatTimeSlotToHMM, formatTimeSlotToHMMA } from "@/utils/TimeUtils";
 
 interface IProps {
+  id: number;
   title: string;
   colour: string;
   startTime: string;
@@ -20,16 +24,32 @@ const Event = memo((props: IProps) => {
   const durationInMinutes = endTimeInMinutes - startTimeInMinutes;
   const duration = Math.ceil(durationInMinutes / 30);
 
+  const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
+    id: props.id,
+  });
+
+  const style = {
+    transform: CSS.Translate.toString(transform),
+    opacity: isDragging ? 0.5 : 1,
+    zIndex: isDragging ? 1000 : 10,
+  };
+
   return (
     <div
-      className={`border-r-[1px] border-b-[1px] border-gray-300 flex ${
-        duration === 1 ? "flex-row items-center space-x-2" : "flex-col"
-      } text-sm items-start w-full h-full rounded-xl box-border px-4 py-1 hover:cursor-pointer z-10`}
+      ref={setNodeRef}
       style={{
         backgroundColor: props.colour,
         gridRow: `${startHour} / span ${duration}`,
+        ...style,
       }}
+      className={`border-r-[1px] border-b-[1px] border-gray-300 flex ${
+        duration === 1 ? "flex-row items-center space-x-2" : "flex-col"
+      } text-sm items-start w-full h-full rounded-xl box-border px-4 py-1 hover:cursor-pointer ${
+        isDragging ? "cursor-grabbing" : "cursor-grab"
+      }`}
       onClick={props.onClick}
+      {...listeners}
+      {...attributes}
     >
       <h2 className="font-bold text-sm truncate overflow-hidden w-full">{props.title}</h2>
       <h3 className="text-xs">
