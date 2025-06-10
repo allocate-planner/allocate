@@ -79,3 +79,52 @@ export const compareDates = (startTime: string, endTime: string): boolean => {
 export const transformTo24HourFormat = (time: string): string => {
   return format(parse(time, "h:mma", new Date()), "HH:mm");
 };
+
+// Input: currentDate "2025-06-10", currentDay 2, newDaySlot "0:2"
+// Output: "2025-06-08" (moved from day 2 to day 0, so -2 days)
+export const calculateNewDateFromDaySlot = (
+  currentDate: string,
+  currentDay: number,
+  newDaySlot: string
+): string => {
+  const [newDayStr] = newDaySlot.split(":");
+  const newDay = parseInt(newDayStr!);
+  const dayDifference = newDay - currentDay;
+
+  const date = parseISO(currentDate);
+  const newDate = set(date, {
+    date: date.getDate() + dayDifference,
+  });
+
+  return formatDate(newDate);
+};
+
+// Input: 6-1
+// Output: 00:30:00+01:00
+export const convertTimeSlotIndexToISO = (timeSlotIndex: string): string => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
+  const [_, slotStr] = timeSlotIndex.split("-");
+  const slot = parseInt(slotStr!);
+  const hour = Math.floor(slot / 2);
+  const minutes = (slot % 2) * 30;
+
+  return formatISOFromTimeSlot(hour, minutes);
+};
+
+// Input: originalStartTime "02:30", originalEndTime "03:30", newDaySlot "0-1"
+// Output: "0-3" (slot 1 + 2 slots difference = slot 3)
+export const calculateNewEndSlot = (
+  originalStartTime: string,
+  originalEndTime: string,
+  newDaySlot: string
+): string => {
+  const startDate = parse(originalStartTime, "HH:mm", new Date());
+  const endDate = parse(originalEndTime, "HH:mm", new Date());
+  const durationMinutes = (endDate.getTime() - startDate.getTime()) / (1000 * 60);
+  const slotDifference = durationMinutes / 30;
+
+  const [day, slotStr] = newDaySlot.split("-");
+  const newEndSlot = parseInt(slotStr!) + slotDifference;
+
+  return `${day}-${newEndSlot}`;
+};

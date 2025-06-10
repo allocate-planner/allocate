@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback, useMemo } from "react";
-import { DndContext, useSensors, useSensor, MouseSensor } from "@dnd-kit/core";
+import { DndContext, useSensors, useSensor, MouseSensor, type DragEndEvent } from "@dnd-kit/core";
 
 import { atom, useAtom } from "jotai";
 
@@ -28,7 +28,10 @@ import EventDetailPopup from "./EventDetailPopup";
 import Event from "./Event";
 import { toast } from "sonner";
 import {
+  calculateNewDateFromDaySlot,
+  calculateNewEndSlot,
   calendarHours,
+  convertTimeSlotIndexToISO,
   daysOfWeek,
   formatDate,
   formatHour,
@@ -193,8 +196,29 @@ const Calendar = (props: IProps) => {
     })
   );
 
+  const onDragEnd = (event: DragEndEvent) => {
+    const { over, active } = event;
+
+    const eventId = active.id;
+    const dropDateSlot = over?.id as string;
+
+    const draggedEvent = props.events.find(e => e.id === eventId);
+    if (!draggedEvent) return;
+
+    const newEvent: ITransformedEvent = {
+      ...draggedEvent,
+      date: calculateNewDateFromDaySlot(draggedEvent.date, draggedEvent.day, dropDateSlot),
+      start_time: convertTimeSlotIndexToISO(dropDateSlot),
+      end_time: convertTimeSlotIndexToISO(
+        calculateNewEndSlot(draggedEvent.start_time, draggedEvent.end_time, dropDateSlot)
+      ),
+    };
+
+    editEvent(newEvent);
+  };
+
   return (
-    <DndContext sensors={sensors}>
+    <DndContext sensors={sensors} onDragEnd={onDragEnd}>
       <div className="w-[87.5%] flex flex-col items-start border-[1px] bg-[#F8F8F8] rounded-xl border-gray-300 m-12">
         <div className="grid grid-cols-8 grid-rows-1 w-full">
           <div className="col-span-8 border-b border-gray-300 flex justify-center items-center space-x-8 p-4">
