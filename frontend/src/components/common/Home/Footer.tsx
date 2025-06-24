@@ -1,29 +1,51 @@
-import { motion } from "framer-motion";
-import { footerVariants } from "./MotionVariants";
+const footerNavigation = {
+  company: [
+    { name: "About", href: "#" },
+    { name: "Contact Us", href: "#" },
+  ],
+  legal: [
+    { name: "Terms of Service", href: "#" },
+    { name: "Privacy Policy", href: "#" },
+  ],
+};
 
 const Footer = () => {
   return (
-    <motion.footer
-      className="flex flex-col md:flex-row justify-between items-center w-full px-4 md:px-8 lg:px-12 py-6 md:py-8 border-t border-gray-100 space-y-4 md:space-y-0"
-      variants={footerVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true }}
-    >
-      <div className="flex items-center">
-        <span className="text-sm font-medium">allocate</span>
+    <footer className="relative mx-auto mt-32 max-w-7xl px-6 lg:px-8">
+      <div className="border-t border-gray-900/10 py-16 sm:py-24 lg:py-32">
+        <div className="xl:grid xl:grid-cols-3 xl:gap-8">
+          <img alt="allocate" src="logo.svg" className="h-9" />
+          <div className="mt-16 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0 justify-self-end">
+            <div className="md:grid md:grid-cols-2 md:gap-8">
+              <div>
+                <h3 className="text-sm/6 font-semibold text-gray-900">Company</h3>
+                <ul role="list" className="mt-6 space-y-4">
+                  {footerNavigation.company.map(item => (
+                    <li key={item.name}>
+                      <a href={item.href} className="text-sm/6 text-gray-600 hover:text-gray-900">
+                        {item.name}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="mt-10 md:mt-0">
+                <h3 className="text-sm/6 font-semibold text-gray-900">Legal</h3>
+                <ul role="list" className="mt-6 space-y-4">
+                  {footerNavigation.legal.map(item => (
+                    <li key={item.name}>
+                      <a href={item.href} className="text-sm/6 text-gray-600 hover:text-gray-900">
+                        {item.name}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-
-      <div className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-8 text-center md:text-left">
-        <a href="/" className="text-sm text-gray-500 hover:text-gray-700 transition-colors">
-          Terms of Service
-        </a>
-        <a href="/" className="text-sm text-gray-500 hover:text-gray-700 transition-colors">
-          Privacy
-        </a>
-        <span className="text-sm text-gray-400">© 2025 allocate. All rights reserved.</span>
-      </div>
-    </motion.footer>
+    </footer>
   );
 };
 

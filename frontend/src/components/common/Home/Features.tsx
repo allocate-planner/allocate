@@ -1,87 +1,67 @@
 import {
-  BoltIcon,
+  CalendarDaysIcon,
+  LinkIcon,
   MicrophoneIcon,
   SparklesIcon,
-  ArrowPathIcon,
-  StarIcon,
-  CloudArrowDownIcon,
 } from "@heroicons/react/24/outline";
-import { motion } from "framer-motion";
-import { containerVariants, headerVariants, cardVariants } from "./MotionVariants";
-import FeatureCard from "./FeatureCard";
+
+const features = [
+  {
+    name: "Voice-first scheduling",
+    description:
+      'Just say "I need to finish the auth ticket today" and watch your calendar organize itself with the right time blocks and links.',
+    icon: MicrophoneIcon,
+  },
+  {
+    name: "Powerful integrations",
+    description:
+      "Seamlessly connects to Notion, Linear, GitHub, Gmail, and more. Mention a ticket or PR and it automatically pulls in all the context you need.",
+    icon: LinkIcon,
+  },
+  {
+    name: "Universal calendar",
+    description:
+      "Import your schedules from Google Calendar, Proton Calendar and others in just one click. Your existing workflow, supercharged.",
+    icon: CalendarDaysIcon,
+  },
+  {
+    name: "Intuitive UI",
+    description:
+      "Beautiful, clean interface that gets out of your way. Drag and drop when you want to, or just speak your plans into existence.",
+    icon: SparklesIcon,
+  },
+];
 
 const Features = () => {
   return (
-    <motion.div
-      className="w-full flex flex-col justify-center items-center space-y-8 px-4 py-12 md:py-16"
-      variants={containerVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.2 }}
-    >
-      <motion.div
-        className="flex flex-col space-y-2 md:-space-y-4 text-center"
-        variants={headerVariants}
-      >
-        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold">
-          Only the features you want
-        </h1>
-        <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 items-center justify-center">
-          <p className="text-base md:text-lg font-light">
-            Everything you need to manage your schedule efficiently and effortlessly.
-          </p>
-          <motion.img src="/scribble.svg" alt="Scribble" className="hidden md:block md:mt-8" />
-        </div>
-      </motion.div>
-
-      <motion.div
-        className="bg-wiggle w-full md:w-4/5 lg:w-3/4 xl:w-2/3 grid grid-cols-1 md:grid-cols-2 p-4 md:p-8 lg:p-12 rounded-3xl gap-4 md:gap-6 lg:gap-8"
-        variants={containerVariants}
-      >
-        <motion.div variants={cardVariants} viewport={{ once: true, amount: 0.5 }}>
-          <FeatureCard
-            Icon={BoltIcon}
-            title="Psychology"
-            description="Let us build your daily schedule using science-backed productivity patterns with the use of AI."
-          />
-        </motion.div>
-        <motion.div variants={cardVariants} viewport={{ once: true, amount: 0.5 }}>
-          <FeatureCard
-            Icon={MicrophoneIcon}
-            title="Dialogue"
-            description="Simply talk to your calendar to schedule your entire day - no manual actions needed."
-          />
-        </motion.div>
-        <motion.div variants={cardVariants} viewport={{ once: true, amount: 0.5 }}>
-          <FeatureCard
-            Icon={SparklesIcon}
-            title="Simplicity"
-            description="A clean, minimalist interface that helps you focus on your day without distractions."
-          />
-        </motion.div>
-        <motion.div variants={cardVariants} viewport={{ once: true, amount: 0.5 }}>
-          <FeatureCard
-            Icon={ArrowPathIcon}
-            title="Universal"
-            description="Import your schedules from Google Calendar, Proton Calendar and others in just one click."
-          />
-        </motion.div>
-        <motion.div variants={cardVariants} viewport={{ once: true, amount: 0.5 }}>
-          <FeatureCard
-            Icon={StarIcon}
-            title="Priorities"
-            description="Got certain goals? Our AI will keep those in mind, and create a perfect day for you."
-          />
-        </motion.div>
-        <motion.div variants={cardVariants} viewport={{ once: true, amount: 0.5 }}>
-          <FeatureCard
-            Icon={CloudArrowDownIcon}
-            title="Integration"
-            description="Need to use Google Calendar? We have cross-sync enabled, making it a breeze."
-          />
-        </motion.div>
-      </motion.div>
-    </motion.div>
+    <div className="mx-auto mt-32 max-w-7xl px-6 lg:px-8">
+      <div className="mx-auto max-w-2xl lg:text-center">
+        <h2 className="text-base/7 font-semibold text-indigo-600">Plan smarter</h2>
+        <p className="mt-2 text-pretty text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl lg:text-balance">
+          Everything you need to plan your perfect day
+        </p>
+        <p className="mt-6 text-pretty text-lg/8 text-gray-600">
+          Stop playing calendar tetris and start speaking your schedule into existence. Our
+          AI-powered planner understands your day, finds optimal time slots, and connects all your
+          tools automatically.
+        </p>
+      </div>
+      <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-4xl">
+        <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-10 lg:max-w-none lg:grid-cols-2 lg:gap-y-16">
+          {features.map(feature => (
+            <div key={feature.name} className="relative pl-16">
+              <dt className="text-base/7 font-semibold text-gray-900">
+                <div className="absolute left-0 top-0 flex size-10 items-center justify-center rounded-lg bg-indigo-600">
+                  <feature.icon aria-hidden="true" className="size-6 text-white" />
+                </div>
+                {feature.name}
+              </dt>
+              <dd className="mt-2 text-base/7 text-gray-600">{feature.description}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </div>
   );
 };
 

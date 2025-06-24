@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 
-import Header from "../../common/Home/Header";
-import PrimaryContent from "../../common/Home/PrimaryContent";
-import Features from "../../common/Home/Features";
-import Pricing from "../../common/Home/Pricing";
-import Footer from "../../common/Home/Footer";
+import Header from "@/components/common/Home/Header";
+import Hero from "@/components/common/Home/Hero";
+import Features from "@/components/common/Home/Features";
+import CTA from "@/components/common/Home/CTA";
+import Footer from "@/components/common/Home/Footer";
 
 const HomePage = () => {
   useEffect(() => {
@@ -15,14 +15,14 @@ const HomePage = () => {
     <div className="w-full h-full space-y-8 2xl:space-y-0">
       <Header />
       <div className="2xl:space-y-32">
-        <section id="primary">
-          <PrimaryContent />
+        <section id="hero">
+          <Hero />
         </section>
         <section id="features">
           <Features />
         </section>
-        <section id="pricing">
-          <Pricing />
+        <section id="cta">
+          <CTA />
         </section>
         <section id="footer">
           <Footer />
