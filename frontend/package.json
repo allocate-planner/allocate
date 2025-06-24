@@ -15,7 +15,7 @@
     "@dnd-kit/modifiers": "^7.0.0",
     "@dnd-kit/utilities": "^3.2.2",
     "@heroicons/react": "^2.1.4",
-    "@radix-ui/react-dialog": "^1.1.1",
+    "@radix-ui/react-dialog": "^1.1.14",
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-select": "^2.1.1",
     "@radix-ui/react-slot": "^1.0.2",

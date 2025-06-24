@@ -30,6 +30,7 @@ const Sidebar = (props: IProps) => {
   const accessToken = getAccessToken();
 
   const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
+  const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
 
   const logout = async () => {
     try {
@@ -64,7 +65,7 @@ const Sidebar = (props: IProps) => {
   };
 
   return (
-    <nav className="h-screen w-[12.5%] flex flex-col justify-between border-r-[1px] border-gray-300">
+    <nav className="hidden h-screen w-72 lg:flex flex-col justify-between border-r-[1px] border-gray-300 flex-shrink-0">
       <div className="flex flex-col">
         <div className="border-b-[1px] border-gray-300 flex flex-col justify-between items-center p-12">
           <img src="/logo.svg" alt="Allocate Logo" />
