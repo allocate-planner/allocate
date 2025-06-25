@@ -254,7 +254,7 @@ const Calendar = (props: IProps) => {
 
   return (
     <DndContext sensors={sensors} onDragEnd={onDragEnd}>
-      <div className="w-full flex flex-col items-start bg-[#F8F8F8] rounded-xl">
+      <div className="w-full flex flex-col items-start bg-gray-50 rounded-xl">
         <div className={`${gridCols} grid grid-rows-1 w-full`}>
           <div className="col-span-8 border-b flex justify-center items-center space-x-8 p-4">
             <ArrowLeftIcon
@@ -294,7 +294,7 @@ const Calendar = (props: IProps) => {
         </div>
 
         <div
-          className={`${gridCols} grid row-span-48 h-full w-full overflow-y-scroll no-scrollbar`}
+          className={`${gridCols} grid row-span-48 h-full w-full overflow-y-scroll no-scrollbar divide-gray-200 divide-x`}
         >
           <div className={"col-span-1 row-span-48 w-full h-full"}>
             {calendarHours.map((hour: number) => (
@@ -309,12 +309,12 @@ const Calendar = (props: IProps) => {
             ))}
           </div>
           <div
-            className={`${colSpan} w-full h-full row-span-48 grid-rows-subgrid grid-cols-subgrid grid`}
+            className={`${colSpan} w-full h-full row-span-48 grid-rows-subgrid grid-cols-subgrid grid divide-gray-200 divide-x`}
           >
             {daysOfWeek.map((day: number) => (
               <div
                 key={day}
-                className="w-full h-full min-w-0 col-span-1 row-span-48 grid grid-rows-subgrid grid-cols-subgrid box-border divide-gray-200 divide-x divide-y"
+                className="w-full h-full min-w-0 col-span-1 row-span-48 grid grid-rows-subgrid grid-cols-subgrid box-border divide-gray-200 divide-y"
               >
                 {times.map((timeSlot: string, index: number) => {
                   const events = getEventsForTimeSlot(day, timeSlot);
