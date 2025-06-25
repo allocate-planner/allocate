@@ -240,7 +240,7 @@ const Calendar = (props: IProps) => {
 
   const gridCols =
     calendarView === "single"
-      ? "grid-cols-2"
+      ? "grid-cols-[100px_1fr]"
       : calendarView === "triple"
         ? "grid-cols-4"
         : "grid-cols-8";
@@ -254,7 +254,7 @@ const Calendar = (props: IProps) => {
 
   return (
     <DndContext sensors={sensors} onDragEnd={onDragEnd}>
-      <div className="w-[87.5%] flex flex-col items-start border-[1px] bg-[#F8F8F8] rounded-xl m-12">
+      <div className="w-full flex flex-col items-start bg-[#F8F8F8] rounded-xl">
         <div className={`${gridCols} grid grid-rows-1 w-full`}>
           <div className="col-span-8 border-b flex justify-center items-center space-x-8 p-4">
             <ArrowLeftIcon
