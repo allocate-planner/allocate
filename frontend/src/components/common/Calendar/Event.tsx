@@ -42,7 +42,7 @@ const Event = memo((props: IProps) => {
         gridRow: `${startHour} / span ${duration}`,
         ...style,
       }}
-      className={`border-r-[1px] border-b-[1px] border-gray-300 flex ${
+      className={`flex ${
         duration === 1 ? "flex-row items-center space-x-2" : "flex-col"
       } text-sm items-start w-full h-full rounded-xl box-border px-4 py-1 hover:cursor-pointer ${
         isDragging ? "cursor-grabbing" : "cursor-grab"

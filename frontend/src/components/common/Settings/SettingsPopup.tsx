@@ -30,12 +30,12 @@ const SettingsPopup = (props: IProps) => {
   return (
     <Dialog open={props.isOpen} onOpenChange={props.onClose}>
       <DialogContent className="sm:max-w-[800px] p-0 gap-0">
-        <DialogHeader className="space-y-4 border-b-[1px] border-gray-300 p-8">
+        <DialogHeader className="space-y-4 border-b-[1px] border-gray-200 p-8">
           <DialogTitle className="text-2xl">Settings</DialogTitle>
           <DialogDescription>Modify your user, or system settings here.</DialogDescription>
         </DialogHeader>
         <nav className="h-[400px] flex flex-row">
-          <div className="h-full w-1/3 flex flex-col justify-between border-r-[1px] border-gray-300">
+          <div className="h-full w-1/3 flex flex-col justify-between border-r-[1px] border-gray-200">
             <div className="flex flex-col">
               <div className="flex flex-col">
                 <div

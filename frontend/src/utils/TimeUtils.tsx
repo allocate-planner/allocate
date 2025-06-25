@@ -1,7 +1,6 @@
 import { parse, format, parseISO, formatISO, set, isAfter } from "date-fns";
 
 export const calendarHours: number[] = Array.from({ length: 24 }, (_, i) => i);
-export const daysOfWeek: number[] = Array.from({ length: 7 }, (_, i) => i);
 
 export const times = Array.from({ length: 48 }, (_, i) =>
   format(

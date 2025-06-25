@@ -65,9 +65,9 @@ const Sidebar = (props: IProps) => {
   };
 
   return (
-    <nav className="hidden h-screen w-72 lg:flex flex-col justify-between border-r-[1px] border-gray-300 flex-shrink-0">
+    <nav className="hidden h-screen w-72 lg:flex flex-col justify-between border-r-[1px] border-gray-200 flex-shrink-0">
       <div className="flex flex-col">
-        <div className="border-b-[1px] border-gray-300 flex flex-col justify-between items-center p-12">
+        <div className="border-b-[1px] border-gray-200 flex flex-col justify-between items-center p-12">
           <img src="/logo.svg" alt="Allocate Logo" />
         </div>
         <div className="mt-4 flex flex-col items-center space-y-2">
@@ -88,7 +88,7 @@ const Sidebar = (props: IProps) => {
           </div>
         </div>
       </div>
-      <div className="border-t-[1px] border-gray-300 flex flex-row justify-between items-center p-6">
+      <div className="border-t-[1px] border-gray-200 flex flex-row justify-between items-center p-6">
         <div className="flex flex-col">
           <h1 className="font-bold">
             {firstName} {lastName}

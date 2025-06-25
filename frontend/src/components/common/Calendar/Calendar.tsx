@@ -32,7 +32,6 @@ import {
   calculateNewEndSlot,
   calendarHours,
   convertTimeSlotIndexToISO,
-  daysOfWeek,
   formatDate,
   formatHour,
   formatISOFromTimeSlot,
@@ -58,13 +57,13 @@ const Calendar = (props: IProps) => {
   const [selectedEvent, setSelectedEvent] = useState<ITransformedEvent | null>();
   const [isEventDetailPopupOpen, setIsEventDetailPopupOpen] = useState<boolean>(false);
 
+  const [calendarView, setCalendarView] = useState<"single" | "triple" | "full">("full");
+
   const { getAccessToken } = useAuth();
   const accessToken = getAccessToken();
 
   const weekStart = startOfWeek(currentWeek);
   const weekEnd = endOfWeek(currentWeek);
-
-  const weekDays: Date[] = Array.from({ length: 7 }, (_, i) => addDays(weekStart, i));
 
   const moveWeek = (direction: number): void => {
     setCurrentWeek((prevWeek: Date) => addDays(prevWeek, direction * 7));
@@ -179,6 +178,24 @@ const Calendar = (props: IProps) => {
   };
 
   useEffect(() => {
+    const updateViewMode = () => {
+      const width = window.innerWidth;
+
+      if (width < 1024) {
+        setCalendarView("single");
+      } else if (width < 1280) {
+        setCalendarView("triple");
+      } else {
+        setCalendarView("full");
+      }
+    };
+
+    updateViewMode();
+    window.addEventListener("resize", updateViewMode);
+    return () => window.removeEventListener("resize", updateViewMode);
+  }, []);
+
+  useEffect(() => {
     const { startDate, endDate } = props.dateData(currentWeek);
 
     if (isCurrentWeekWithinRange(startDate, endDate)) {
@@ -217,11 +234,29 @@ const Calendar = (props: IProps) => {
     editEvent(newEvent);
   };
 
+  const daysCount = calendarView === "single" ? 1 : calendarView === "triple" ? 3 : 7;
+  const daysOfWeek = Array.from({ length: daysCount }, (_, i) => i);
+  const weekDays = Array.from({ length: daysCount }, (_, i) => addDays(weekStart, i));
+
+  const gridCols =
+    calendarView === "single"
+      ? "grid-cols-2"
+      : calendarView === "triple"
+        ? "grid-cols-4"
+        : "grid-cols-8";
+
+  const colSpan =
+    calendarView === "single"
+      ? "col-span-1"
+      : calendarView === "triple"
+        ? "col-span-3"
+        : "col-span-7";
+
   return (
     <DndContext sensors={sensors} onDragEnd={onDragEnd}>
-      <div className="w-[87.5%] flex flex-col items-start border-[1px] bg-[#F8F8F8] rounded-xl border-gray-300 m-12">
-        <div className="grid grid-cols-8 grid-rows-1 w-full">
-          <div className="col-span-8 border-b border-gray-300 flex justify-center items-center space-x-8 p-4">
+      <div className="w-[87.5%] flex flex-col items-start border-[1px] bg-[#F8F8F8] rounded-xl m-12">
+        <div className={`${gridCols} grid grid-rows-1 w-full`}>
+          <div className="col-span-8 border-b flex justify-center items-center space-x-8 p-4">
             <ArrowLeftIcon
               className="w-6 h-6 cursor-pointer hover:scale-125 transform transition duration-300"
               onClick={() => moveWeek(-1)}
@@ -240,7 +275,7 @@ const Calendar = (props: IProps) => {
               Today
             </Button>
           </div>
-          <div className="border-r border-b border-gray-300 flex flex-col justify-center items-center p-4 ">
+          <div className="border-r border-b flex flex-col justify-center items-center p-4 ">
             <h3 className="font-light text-lg">Time</h3>
           </div>
           {weekDays.map((day: Date) => (
@@ -248,8 +283,8 @@ const Calendar = (props: IProps) => {
               key={day.toISOString()}
               className={`
             border-r border-b
-            ${isSameDay(day, new Date()) ? "border-b-violet-400" : "border-gray-300"} 
-            flex flex-col justify-center items-center p-4 last:border-r-0
+            ${isSameDay(day, new Date()) ? "border-b-violet-400" : "border-gray-200"} 
+            flex flex-col justify-center items-center p-4
           `}
             >
               <h3 className="font-bold text-lg">{format(day, "EEEE")}</h3>
@@ -258,24 +293,28 @@ const Calendar = (props: IProps) => {
           ))}
         </div>
 
-        <div className="grid grid-cols-8 grid-rows-[repeat(48,1fr))] h-full w-full overflow-y-scroll no-scrollbar">
-          <div className="col-span-1 row-span-48 w-full h-full">
+        <div
+          className={`${gridCols} grid row-span-48 h-full w-full overflow-y-scroll no-scrollbar`}
+        >
+          <div className={"col-span-1 row-span-48 w-full h-full"}>
             {calendarHours.map((hour: number) => (
               <div
                 key={hour}
                 className={`w-full min-w-0 ${hour === calendarHours.length - 1 ? "" : "border-b"} `}
               >
-                <div className="border-r-[1px] border-gray-300 flex flex-col justify-center items-start h-[56px] p-4">
+                <div className="flex flex-col justify-center items-start h-[56px] p-4">
                   <h2 className="text-sm">{formatHour(hour)}</h2>
                 </div>
               </div>
             ))}
           </div>
-          <div className="w-full h-full col-span-7 row-span-48 grid-rows-subgrid grid-cols-subgrid grid">
+          <div
+            className={`${colSpan} w-full h-full row-span-48 grid-rows-subgrid grid-cols-subgrid grid`}
+          >
             {daysOfWeek.map((day: number) => (
               <div
                 key={day}
-                className="w-full h-full min-w-0 col-span-1 row-span-48 grid grid-rows-subgrid grid-cols-subgrid box-border"
+                className="w-full h-full min-w-0 col-span-1 row-span-48 grid grid-rows-subgrid grid-cols-subgrid box-border divide-gray-200 divide-x divide-y"
               >
                 {times.map((timeSlot: string, index: number) => {
                   const events = getEventsForTimeSlot(day, timeSlot);

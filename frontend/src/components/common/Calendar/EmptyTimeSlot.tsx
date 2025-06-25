@@ -11,7 +11,7 @@ const EmptyTimeSlot = (props: IProps) => {
   return (
     <div
       ref={setNodeRef}
-      className={`border-r-[1px] last:border-b-[0px] border-b-[1px] border-gray-300 flex flex-col text-sm items-start w-full h-[28px] box-border px-4 py-1 row-span-1 ${
+      className={`flex flex-col text-sm items-start w-full h-[28px] box-border px-4 py-1 row-span-1 ${
         isOver ? "bg-violet-100" : ""
       }`}
       onClick={props.onClick}
