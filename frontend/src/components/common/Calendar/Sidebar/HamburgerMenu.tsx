@@ -36,13 +36,13 @@ const HamburgerMenu = ({
             <img src="/logo.svg" alt="Allocate Logo" />
           </div>
           <SheetDescription>
-            <div className="mt-4 text-black">
+            <div className="mt-4 text-black space-y-1">
               {menuItems.map((item: MenuItem, index: number) => (
                 <div
                   key={index}
                   onClick={item.onClick}
                   className={`
-            flex flex-row items-center space-x-2 w-full py-1
+            flex flex-row items-center space-x-2 w-full py-2
             ${item.hasBackground ? "border border-[#DBDBDB] rounded-xl bg-[#F8F8F8]" : ""}
             ${item.onClick ? "hover:cursor-pointer" : ""}
           `}
