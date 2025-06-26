@@ -21,7 +21,7 @@ export const userService = {
       .post(`${API_BASE_URL}/users/login`, stringifiedData, headers)
       .then(response => {
         if (response.data) {
-          localStorage.setItem("user", JSON.stringify(response.data));
+          localStorage.setItem("user_session", JSON.stringify(response.data));
         }
       })
       .catch(error => {
