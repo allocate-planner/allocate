@@ -1,11 +1,6 @@
 import { useAuth } from "@/AuthProvider";
 
-import {
-  CalendarDaysIcon,
-  Cog6ToothIcon,
-  ArrowLeftStartOnRectangleIcon,
-  MicrophoneIcon,
-} from "@heroicons/react/24/outline";
+import { CalendarDaysIcon, Cog6ToothIcon, MicrophoneIcon } from "@heroicons/react/24/outline";
 
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
