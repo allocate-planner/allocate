@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import Sidebar from "@/components/common/Calendar/Sidebar";
+import Sidebar from "@/components/common/Calendar/Sidebar/Sidebar";
 import Calendar from "@/components/common/Calendar/Calendar";
 
 import { useNavigate } from "react-router-dom";
@@ -19,6 +19,7 @@ const CalendarPage = () => {
   const accessToken = getAccessToken();
 
   const [events, setEvents] = useState<ITransformedEvent[]>([]);
+  const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
 
   const calculatePaginationDates = (currentWeek: Date) => {
     const startDate = endOfWeek(subWeeks(currentWeek, 1), { weekStartsOn: 0 });
@@ -68,8 +69,19 @@ const CalendarPage = () => {
 
   return (
     <div className="flex flex-row h-screen">
-      <Sidebar eventData={eventData} dateData={calculatePaginationDates} />
-      <Calendar events={events} eventData={eventData} dateData={calculatePaginationDates} />
+      <Sidebar
+        eventData={eventData}
+        dateData={calculatePaginationDates}
+        sidebarOpen={sidebarOpen}
+        setSidebarOpen={setSidebarOpen}
+      />
+      <Calendar
+        events={events}
+        eventData={eventData}
+        dateData={calculatePaginationDates}
+        sidebarOpen={sidebarOpen}
+        setSidebarOpen={setSidebarOpen}
+      />
     </div>
   );
 };

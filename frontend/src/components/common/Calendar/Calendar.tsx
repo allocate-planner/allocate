@@ -3,8 +3,7 @@ import { DndContext, useSensors, useSensor, MouseSensor, type DragEndEvent } fro
 
 import { atom, useAtom } from "jotai";
 
-import { ArrowLeftIcon } from "@heroicons/react/24/outline";
-import { ArrowRightIcon } from "@heroicons/react/24/outline";
+import { ArrowLeftIcon, ArrowRightIcon, Bars3Icon } from "@heroicons/react/24/outline";
 
 import { Button } from "../Button";
 
@@ -39,6 +38,7 @@ import {
   transformTo24HourFormat,
 } from "@/utils/TimeUtils";
 import EmptyTimeSlot from "./EmptyTimeSlot";
+import { SidebarOpen } from "lucide-react";
 
 const currentWeekAtom = atom(new Date());
 
@@ -46,6 +46,8 @@ interface IProps {
   events: ITransformedEvent[];
   eventData: (startDate: string, endDate: string) => void;
   dateData: (currentWeek: Date) => { startDate: string; endDate: string };
+  sidebarOpen: boolean;
+  setSidebarOpen: (open: boolean) => void;
 }
 
 const Calendar = (props: IProps) => {
@@ -256,24 +258,34 @@ const Calendar = (props: IProps) => {
     <DndContext sensors={sensors} onDragEnd={onDragEnd}>
       <div className="w-full flex flex-col items-start bg-gray-50 rounded-xl">
         <div className={`${gridCols} grid grid-rows-1 w-full`}>
-          <div className="col-span-8 border-b flex justify-center items-center space-x-8 p-4">
-            <ArrowLeftIcon
-              className="w-6 h-6 cursor-pointer hover:scale-125 transform transition duration-300"
-              onClick={() => moveWeek(-1)}
-            />
-            <h2 className="text-lg font-semibold">
-              {format(weekStart, "d MMMM")} — {format(weekEnd, "d MMMM yyyy")}
-            </h2>
-            <ArrowRightIcon
-              className="w-6 h-6 cursor-pointer hover:scale-125 transform transition duration-300"
-              onClick={() => moveWeek(1)}
-            />
-            <Button
-              className="bg-violet-100 border border-violet-400 text-violet-700 h-2/3 rounded-xl hover:bg-violet-200"
-              onClick={() => setCurrentWeek(new Date())}
-            >
-              Today
-            </Button>
+          <div className="col-span-8 border-b flex justify-between">
+            <div className="p-4 flex items-center">
+              {calendarView === "single" ? (
+                <Bars3Icon
+                  className="w-6 h-6 cursor-pointer"
+                  onClick={() => props.setSidebarOpen(!props.sidebarOpen)}
+                />
+              ) : null}
+            </div>
+            <div className="flex justify-center items-center space-x-8 p-4">
+              <ArrowLeftIcon
+                className="w-6 h-6 cursor-pointer hover:scale-125 transform transition duration-300"
+                onClick={() => moveWeek(-1)}
+              />
+              <h2 className="text-lg font-semibold">
+                {format(weekStart, "d MMMM")} — {format(weekEnd, "d MMMM yyyy")}
+              </h2>
+              <ArrowRightIcon
+                className="w-6 h-6 cursor-pointer hover:scale-125 transform transition duration-300"
+                onClick={() => moveWeek(1)}
+              />
+              <Button
+                className="bg-violet-100 border border-violet-400 text-violet-700 h-2/3 rounded-xl hover:bg-violet-200"
+                onClick={() => setCurrentWeek(new Date())}
+              >
+                Today
+              </Button>
+            </div>
           </div>
           <div className="border-r border-b flex flex-col justify-center items-center p-4 ">
             <h3 className="font-light text-lg">Time</h3>
