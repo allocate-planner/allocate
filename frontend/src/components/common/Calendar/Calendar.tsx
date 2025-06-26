@@ -238,7 +238,15 @@ const Calendar = (props: IProps) => {
 
   const daysCount = calendarView === "single" ? 1 : calendarView === "triple" ? 3 : 7;
   const daysOfWeek = Array.from({ length: daysCount }, (_, i) => i);
-  const weekDays = Array.from({ length: daysCount }, (_, i) => addDays(weekStart, i));
+
+  const viewStartDate =
+    calendarView === "single"
+      ? new Date()
+      : calendarView === "triple"
+        ? addDays(new Date(), -1)
+        : weekStart;
+
+  const weekDays = Array.from({ length: daysCount }, (_, i) => addDays(viewStartDate, i));
 
   const gridCols =
     calendarView === "single"
