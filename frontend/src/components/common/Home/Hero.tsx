@@ -22,7 +22,7 @@ const Hero = () => {
         />
       </div>
       <motion.div className="py-24 sm:py-32 lg:pb-40" variants={headerVariants}>
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <div className="mx-auto max-w-[1400px] px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
             <h1 className="text-balance text-5xl font-semibold tracking-tight text-gray-900 sm:text-7xl">
               Your day, planned in seconds
@@ -48,8 +48,8 @@ const Hero = () => {
               <img
                 alt="Screenshot of allocate"
                 src="/product/calendar.jpg"
-                width={2432}
-                height={1442}
+                width={2560}
+                height={1400}
                 className="rounded-md shadow-2xl ring-1 ring-gray-900/10"
               />
             </div>
