@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import { toast } from "sonner";
 
@@ -13,15 +15,19 @@ import { userService } from "@/services/UserService";
 
 import { useAuth } from "@/AuthProvider";
 
-import type { IUserLogin } from "@/models/IUser";
+import { UserLoginSchema, type IUserLogin } from "@/models/IUser";
 
 const LoginPage = () => {
   const navigate = useNavigate();
   const { isAuthenticated, login } = useAuth();
 
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<IUserLogin>({
+    resolver: zodResolver(UserLoginSchema),
+  });
 
   useEffect(() => {
     document.title = "allocate — Login";
@@ -31,20 +37,7 @@ const LoginPage = () => {
     }
   }, [navigate, isAuthenticated]);
 
-  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    const userDetails: IUserLogin = {
-      email_address: email,
-      password: password,
-    };
-
-    await authenticateUser(userDetails);
-  };
-
   const authenticateUser = async (userDetails: IUserLogin) => {
-    setIsLoading(true);
-
     try {
       const response = await userService.authenticateUser(userDetails);
       login(response);
@@ -54,8 +47,6 @@ const LoginPage = () => {
       const errorMessage = error instanceof Error ? error.message : "An unknown error occurred.";
 
       toast.error(errorMessage);
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -70,16 +61,19 @@ const LoginPage = () => {
               Enter your details below to access your account.
             </h2>
           </div>
-          <form className="flex flex-col space-y-4" onSubmit={onSubmit}>
+          <form className="flex flex-col space-y-4" onSubmit={handleSubmit(authenticateUser)}>
             <div>
               <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
                 placeholder="name@example.com"
                 type="email"
-                onChange={e => setEmail(e.target.value)}
-                disabled={isLoading}
+                {...register("emailAddress")}
+                disabled={isSubmitting}
               />
+              {errors.emailAddress && (
+                <p className="text-red-500 text-xs mt-1">{errors.emailAddress.message}</p>
+              )}
             </div>
             <div>
               <Label htmlFor="password">Password</Label>
@@ -87,12 +81,15 @@ const LoginPage = () => {
                 id="password"
                 placeholder="•••••••••"
                 type="password"
-                onChange={e => setPassword(e.target.value)}
-                disabled={isLoading}
+                {...register("password")}
+                disabled={isSubmitting}
               />
+              {errors.password && (
+                <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>
+              )}
             </div>
-            <Button className="bg-violet-500 hover:bg-violet-700">
-              {isLoading && <Spinner />}
+            <Button className="bg-violet-500 hover:bg-violet-700" type="submit">
+              {isSubmitting && <Spinner />}
               Sign In
             </Button>
             <h2 className="text-gray-600 text-sm font-normal self-center">

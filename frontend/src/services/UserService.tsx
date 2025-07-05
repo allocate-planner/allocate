@@ -7,7 +7,7 @@ import { API_BASE_URL } from "@/utils/Constants";
 export const userService = {
   authenticateUser: async (userDetails: IUserLogin) => {
     const stringifiedData = qs.stringify({
-      username: userDetails.email_address,
+      username: userDetails.emailAddress,
       password: userDetails.password,
     });
 
@@ -41,9 +41,9 @@ export const userService = {
   registerUser: async (userDetails: IUserRegister) => {
     return await axios
       .post(`${API_BASE_URL}/users`, {
-        first_name: userDetails.first_name,
-        last_name: userDetails.last_name,
-        email_address: userDetails.email_address,
+        first_name: userDetails.firstName,
+        last_name: userDetails.lastName,
+        email_address: userDetails.emailAddress,
         password: userDetails.password,
       })
       .catch(error => {

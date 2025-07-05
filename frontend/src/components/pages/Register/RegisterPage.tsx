@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Label } from "@/components/common/Label";
 import { Input } from "@/components/common/Input";
@@ -9,7 +11,7 @@ import { Spinner } from "@/components/common/Spinner";
 
 import { userService } from "@/services/UserService";
 import { useAuth } from "@/AuthProvider";
-import type { IUserRegister } from "@/models/IUser";
+import { UserRegisterSchema, type IUserRegister } from "@/models/IUser";
 
 import { toast } from "sonner";
 
@@ -17,12 +19,13 @@ const RegisterPage = () => {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
 
-  const [firstName, setFirstName] = useState<string>("");
-  const [lastName, setLastName] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [confirmPassword, setConfirmPassword] = useState<string>("");
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<IUserRegister>({
+    resolver: zodResolver(UserRegisterSchema),
+  });
 
   useEffect(() => {
     document.title = "allocate — Register";
@@ -32,28 +35,7 @@ const RegisterPage = () => {
     }
   }, [navigate, isAuthenticated]);
 
-  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    if (password !== confirmPassword) {
-      toast.error("The passwords provided do not match.");
-      return;
-    }
-
-    const userDetails: IUserRegister = {
-      first_name: firstName,
-      last_name: lastName,
-      email_address: email,
-      password: password,
-      confirm_password: confirmPassword,
-    };
-
-    await registerUser(userDetails);
-  };
-
   const registerUser = async (userDetails: IUserRegister) => {
-    setIsLoading(true);
-
     try {
       await userService.registerUser(userDetails);
       toast.success("You have successfully created an account.");
@@ -62,8 +44,6 @@ const RegisterPage = () => {
       const errorMessage = error instanceof Error ? error.message : "An unknown error occurred.";
 
       toast.error(errorMessage);
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -78,24 +58,30 @@ const RegisterPage = () => {
               Enter your details below to create your account.
             </h2>
           </div>
-          <form className="flex flex-col space-y-4" onSubmit={onSubmit}>
+          <form className="flex flex-col space-y-4" onSubmit={handleSubmit(registerUser)}>
             <div>
               <Label htmlFor="firstname">First Name</Label>
               <Input
                 id="firstname"
                 placeholder="John"
-                onChange={e => setFirstName(e.target.value)}
-                disabled={isLoading}
+                {...register("firstName")}
+                disabled={isSubmitting}
               />
+              {errors.firstName && (
+                <p className="text-red-500 text-xs mt-1">{errors.firstName.message}</p>
+              )}
             </div>
             <div>
               <Label htmlFor="lastname">Last Name</Label>
               <Input
                 id="lastname"
                 placeholder="Doe"
-                onChange={e => setLastName(e.target.value)}
-                disabled={isLoading}
+                {...register("lastName")}
+                disabled={isSubmitting}
               />
+              {errors.lastName && (
+                <p className="text-red-500 text-xs mt-1">{errors.lastName.message}</p>
+              )}
             </div>
             <div>
               <Label htmlFor="email">Email</Label>
@@ -103,9 +89,12 @@ const RegisterPage = () => {
                 id="email"
                 placeholder="name@example.com"
                 type="email"
-                onChange={e => setEmail(e.target.value)}
-                disabled={isLoading}
+                {...register("emailAddress")}
+                disabled={isSubmitting}
               />
+              {errors.emailAddress && (
+                <p className="text-red-500 text-xs mt-1">{errors.emailAddress.message}</p>
+              )}
             </div>
             <div>
               <Label htmlFor="password">Password</Label>
@@ -113,9 +102,12 @@ const RegisterPage = () => {
                 id="password"
                 placeholder="•••••••••"
                 type="password"
-                onChange={e => setPassword(e.target.value)}
-                disabled={isLoading}
+                {...register("password")}
+                disabled={isSubmitting}
               />
+              {errors.password && (
+                <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>
+              )}
             </div>
             <div>
               <Label htmlFor="password">Confirm Password</Label>
@@ -123,12 +115,15 @@ const RegisterPage = () => {
                 id="confirm_password"
                 placeholder="•••••••••"
                 type="password"
-                onChange={e => setConfirmPassword(e.target.value)}
-                disabled={isLoading}
+                {...register("confirmPassword")}
+                disabled={isSubmitting}
               />
+              {errors.confirmPassword && (
+                <p className="text-red-500 text-xs mt-1">{errors.confirmPassword.message}</p>
+              )}
             </div>
-            <Button className="bg-violet-500 hover:bg-violet-700">
-              {isLoading && <Spinner />}
+            <Button className="bg-violet-500 hover:bg-violet-700" type="submit">
+              {isSubmitting && <Spinner />}
               Register
             </Button>
             <h2 className="text-gray-600 text-sm font-normal self-center">

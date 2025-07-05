@@ -1,21 +1,21 @@
 import { z } from "zod";
 
 export const UserLoginSchema = z.object({
-  email_address: z.string().email(),
+  emailAddress: z.string().email(),
   password: z.string().min(1),
 });
 
 export const UserRegisterSchema = z
   .object({
-    first_name: z.string().min(1),
-    last_name: z.string().min(1),
-    email_address: z.string().email(),
+    firstName: z.string().min(1),
+    lastName: z.string().min(1),
+    emailAddress: z.string().email(),
     password: z.string().min(8),
-    confirm_password: z.string().min(1),
+    confirmPassword: z.string().min(8),
   })
-  .refine(data => data.password === data.confirm_password, {
+  .refine(data => data.password === data.confirmPassword, {
     message: "Passwords do not match",
-    path: ["confirm_password"],
+    path: ["confirmPassword"],
   });
 
 export const UserDetailsSchema = z.object({
