@@ -5,7 +5,7 @@ import { CSS } from "@dnd-kit/utilities";
 
 import { formatTimeSlotToHMM, formatTimeSlotToHMMA } from "@/utils/TimeUtils";
 
-interface IProps {
+interface I {
   id: number;
   title: string;
   colour: string;
@@ -14,9 +14,9 @@ interface IProps {
   onClick?: () => void;
 }
 
-const Event = memo((props: IProps) => {
-  const startTimeParts = props.startTime.split(":").map(Number);
-  const endTimeParts = props.endTime.split(":").map(Number);
+const Event = memo(({ id, title, colour, startTime, endTime, onClick }: I) => {
+  const startTimeParts = startTime.split(":").map(Number);
+  const endTimeParts = endTime.split(":").map(Number);
 
   const startHour = startTimeParts[0]! * 2 + (startTimeParts[1] === 30 ? 1 : 0) + 1;
   const startTimeInMinutes = startTimeParts[0]! * 60 + startTimeParts[1]!;
@@ -25,7 +25,7 @@ const Event = memo((props: IProps) => {
   const duration = Math.ceil(durationInMinutes / 30);
 
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
-    id: props.id,
+    id: id,
   });
 
   const style = {
@@ -38,7 +38,7 @@ const Event = memo((props: IProps) => {
     <div
       ref={setNodeRef}
       style={{
-        backgroundColor: props.colour,
+        backgroundColor: colour,
         gridRow: `${startHour} / span ${duration}`,
         ...style,
       }}
@@ -47,11 +47,11 @@ const Event = memo((props: IProps) => {
       } text-sm items-start w-full h-full rounded-xl box-border px-4 py-1 hover:cursor-pointer ${
         isDragging ? "cursor-grabbing" : "cursor-grab"
       }`}
-      onClick={props.onClick}
+      onClick={onClick}
       {...listeners}
       {...attributes}
     >
-      <h2 className="font-bold text-sm truncate overflow-hidden w-full">{props.title}</h2>
+      <h2 className="font-bold text-sm truncate overflow-hidden w-full">{title}</h2>
       <h3 className="text-xs">
         {duration !== 1 ? (
           <>

@@ -2,8 +2,8 @@ import { useState } from "react";
 
 import { Sheet, SheetContent, SheetDescription, SheetHeader } from "@/components/common/Sheet";
 
-import { type MenuItem } from "@/components/pages/Calendar/components/Sidebar/Sidebar";
-import UserInfo from "@/components/pages/Calendar/components/Sidebar/UserInfo";
+import { type MenuItem } from "@/components/pages/Calendar/components/sidebar/Sidebar";
+import UserInfo from "@/components/pages/Calendar/components/sidebar/UserInfo";
 
 interface IProps {
   sidebarOpen: boolean;

@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 
 import { startOfWeek, parseISO, getDay, format, endOfWeek, subWeeks, addWeeks } from "date-fns";
 
-import Sidebar from "@/components/pages/Calendar/components/Sidebar/Sidebar";
-import Calendar from "@/components/pages/Calendar/components/Core/Calendar";
+import Sidebar from "@/components/pages/Calendar/components/sidebar/Sidebar";
+import Calendar from "@/components/pages/Calendar/components/core/Calendar";
 
 import { useAuth } from "@/AuthProvider";
 import { eventService } from "@/services/EventService";

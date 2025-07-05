@@ -36,14 +36,12 @@ interface IProps {
   onDelete: (eventId: number) => Promise<boolean>;
 }
 
-const EventDetailPopup = (props: IProps) => {
-  const [title, setTitle] = useState<string>(props.event.title);
-  const [description, setDescription] = useState<string>(props.event.description ?? "");
-  const [location, setLocation] = useState<string>(props.event.location ?? "");
-  const [startTime, setStartTime] = useState<string>(
-    convertToTimePeriodFromHHmm(props.event.start_time)
-  );
-  const [endTime, setEndTime] = useState<string>(convertToTimePeriodFromHHmm(props.event.end_time));
+const EventDetailPopup = ({ isOpen, event, onClose, onEdit, onDelete }: IProps) => {
+  const [title, setTitle] = useState<string>(event.title);
+  const [description, setDescription] = useState<string>(event.description ?? "");
+  const [location, setLocation] = useState<string>(event.location ?? "");
+  const [startTime, setStartTime] = useState<string>(convertToTimePeriodFromHHmm(event.start_time));
+  const [endTime, setEndTime] = useState<string>(convertToTimePeriodFromHHmm(event.end_time));
 
   const handleEventUpdate = () => {
     if (startTime === endTime) {
@@ -62,7 +60,7 @@ const EventDetailPopup = (props: IProps) => {
     }
 
     const newEvent = {
-      ...props.event,
+      ...event,
       title: title,
       description: description,
       location: location,
@@ -70,11 +68,11 @@ const EventDetailPopup = (props: IProps) => {
       end_time: convertToISO(endTime),
     };
 
-    props.onEdit(newEvent);
+    onEdit(newEvent);
   };
 
   return (
-    <Dialog open={props.isOpen} onOpenChange={props.onClose}>
+    <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader className="space-y-4">
           <DialogTitle>Edit Event</DialogTitle>
@@ -170,7 +168,7 @@ const EventDetailPopup = (props: IProps) => {
             className="bg-red-500 hover:bg-red-700"
             type="submit"
             onClick={() => {
-              props.onDelete(props.event.id);
+              onDelete(event.id);
             }}
           >
             Delete

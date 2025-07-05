@@ -8,13 +8,13 @@ import { useAuth } from "@/AuthProvider";
 
 import { audioService } from "@/services/AudioService";
 
-import SpeechComponent from "@/components/pages/Calendar/components/Core/SpeechComponent";
+import SpeechComponent from "@/components/pages/Calendar/components/other/SpeechComponent";
 
-import SettingsPopup from "@/components/pages/Calendar/components/Settings/SettingsPopup";
+import SettingsPopup from "@/components/pages/Calendar/components/settings/SettingsPopup";
 
-import HamburgerMenu from "@/components/pages/Calendar/components/Sidebar/HamburgerMenu";
-import MenuList from "@/components/pages/Calendar/components/Sidebar/MenuList";
-import UserInfo from "@/components/pages/Calendar/components/Sidebar/UserInfo";
+import HamburgerMenu from "@/components/pages/Calendar/components/sidebar/HamburgerMenu";
+import MenuList from "@/components/pages/Calendar/components/sidebar/MenuList";
+import UserInfo from "@/components/pages/Calendar/components/sidebar/UserInfo";
 
 interface IProps {
   retrieveEventData: (startDate: string, endDate: string) => void;

@@ -6,7 +6,7 @@ interface IProps {
   onProcess: (audio: Blob) => void;
 }
 
-const SpeechComponent = (props: IProps) => {
+const SpeechComponent = ({ onProcess }: IProps) => {
   const mimeType = "audio/webm";
 
   const [permission, setPermission] = useState<boolean>(false);
@@ -16,7 +16,7 @@ const SpeechComponent = (props: IProps) => {
   const audioChunksRef = useRef<Blob[]>([]);
 
   const handleAudioProcessing = (audioBlob: Blob) => {
-    props.onProcess(audioBlob);
+    onProcess(audioBlob);
   };
 
   const getMicrophonePermission = async () => {

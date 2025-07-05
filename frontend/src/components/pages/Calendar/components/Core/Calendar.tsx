@@ -6,8 +6,8 @@ import { addDays, startOfWeek, parseISO, isWithinInterval } from "date-fns";
 import { useAuth } from "@/AuthProvider";
 import type { ITransformedEvent, ISelectedEvent, IEvent } from "@/models/IEvent";
 
-import EventPopup from "@/components/pages/Calendar/components/Core/EventPopup";
-import EventDetailPopup from "@/components/pages/Calendar/components/Core/EventDetailPopup";
+import EventPopup from "@/components/pages/Calendar/components/events/EventPopup";
+import EventDetailPopup from "@/components/pages/Calendar/components/events/EventDetailPopup";
 
 import { formatDate, formatISOFromTimeSlot, transformTo24HourFormat } from "@/utils/TimeUtils";
 
@@ -16,9 +16,9 @@ import { useCalendarView } from "@/components/pages/Calendar/hooks/useCalendarVi
 import { useWeekNavigation } from "@/components/pages/Calendar/hooks/useWeekNavigation";
 import { useDrag } from "@/components/pages/Calendar/hooks/useDrag";
 
-import { CalendarHeader } from "@/components/pages/Calendar/components/Core/CalendarHeader";
-import { CalendarTimeColumn } from "@/components/pages/Calendar/components/Core//CalendarTimeColumn";
-import { CalendarGrid } from "@/components/pages/Calendar/components/Core//CalendarGrid";
+import { CalendarHeader } from "@/components/pages/Calendar/components/core/CalendarHeader";
+import { CalendarTimeColumn } from "@/components/pages/Calendar/components/core/CalendarTimeColumn";
+import { CalendarGrid } from "@/components/pages/Calendar/components/core/CalendarGrid";
 
 const INITIAL_DATE = new Date();
 

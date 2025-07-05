@@ -5,8 +5,8 @@ import { isSameDay } from "date-fns";
 import { times, transformTo24HourFormat } from "@/utils/TimeUtils";
 import type { ITransformedEvent } from "@/models/IEvent";
 
-import Event from "@/components/pages/Calendar/components/Core/Event";
-import EmptyTimeSlot from "@/components/pages/Calendar/components/Core/EmptyTimeSlot";
+import Event from "@/components/pages/Calendar/components/events/Event";
+import EventEmpty from "@/components/pages/Calendar/components/events/EventEmpty";
 
 import type { CalendarView } from "@/components/pages/Calendar/hooks/useCalendarView";
 
@@ -81,7 +81,7 @@ export const CalendarGrid = ({
               ));
             } else {
               return (
-                <EmptyTimeSlot
+                <EventEmpty
                   key={`${day}-${index}`}
                   id={`${day}-${index}`}
                   onClick={() => onEventClick(day, timeSlot)}

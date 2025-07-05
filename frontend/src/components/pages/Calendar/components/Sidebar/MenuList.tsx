@@ -1,4 +1,4 @@
-import type { MenuItem } from "@/components/pages/Calendar/components/Sidebar/Sidebar";
+import type { MenuItem } from "@/components/pages/Calendar/components/sidebar/Sidebar";
 
 interface IProps {
   menuItems: MenuItem[];
