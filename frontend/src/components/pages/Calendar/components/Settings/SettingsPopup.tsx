@@ -10,10 +10,10 @@ import {
 
 import { UserIcon, CalendarIcon, LinkIcon, ArrowUpTrayIcon } from "@heroicons/react/24/outline";
 
-import AccountTab from "@/components/pages/Calendar/components/Settings/Tabs/AccountTab";
-import ImportTab from "@/components/pages/Calendar/components/Settings/Tabs/ImportTab";
-import IntegrationsTab from "@/components/pages/Calendar/components/Settings/Tabs/IntegrationsTab";
-import CalendarTab from "@/components/pages/Calendar/components/Settings/Tabs/CalendarTab";
+import AccountTab from "@/components/pages/Calendar/components/settings/tabs/AccountTab";
+import ImportTab from "@/components/pages/Calendar/components/settings/tabs/ImportTab";
+import IntegrationsTab from "@/components/pages/Calendar/components/settings/tabs/IntegrationsTab";
+import CalendarTab from "@/components/pages/Calendar/components/settings/tabs/CalendarTab";
 
 interface IProps {
   isOpen: boolean;
