@@ -1,6 +1,6 @@
 import { ArrowLeftStartOnRectangleIcon } from "@heroicons/react/24/outline";
 
-interface UserInfoProps {
+interface IProps {
   firstName: string;
   lastName: string;
   emailAddress: string;
@@ -8,13 +8,7 @@ interface UserInfoProps {
   className?: string;
 }
 
-const UserInfo = ({
-  firstName,
-  lastName,
-  emailAddress,
-  onLogout,
-  className = "",
-}: UserInfoProps) => {
+const UserInfo = ({ firstName, lastName, emailAddress, onLogout, className = "" }: IProps) => {
   return (
     <div
       className={`border-t-[1px] border-gray-200 flex flex-row justify-between items-center p-6 ${className}`}

@@ -1,11 +1,11 @@
 import type { MenuItem } from "@/components/pages/Calendar/components/Sidebar/Sidebar";
 
-interface MenuListProps {
+interface IProps {
   menuItems: MenuItem[];
   className?: string;
 }
 
-const MenuList = ({ menuItems, className = "" }: MenuListProps) => {
+const MenuList = ({ menuItems, className = "" }: IProps) => {
   return (
     <div className={`mt-4 flex flex-col items-center space-y-2 ${className}`}>
       {menuItems.map((item: MenuItem, index: number) => (

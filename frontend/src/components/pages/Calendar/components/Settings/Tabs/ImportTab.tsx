@@ -1,10 +1,10 @@
 import { ArrowUpTrayIcon } from "@heroicons/react/24/outline";
 
-interface AccountTabProps {
+interface IProps {
   handleUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const ImportTab = ({ handleUpload }: AccountTabProps) => {
+const ImportTab = ({ handleUpload }: IProps) => {
   return (
     <section className="w-full flex flex-col space-y-8 p-8">
       <div className="space-y-8">

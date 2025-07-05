@@ -4,13 +4,13 @@ import { Label } from "@/components/common/Label";
 import { Input } from "@/components/common/Input";
 import { Button } from "@/components/common/Button";
 
-interface AccountTabProps {
+interface IProps {
   firstName: string;
   lastName: string;
   emailAddress: string;
 }
 
-const AccountTab = ({ firstName, lastName, emailAddress }: AccountTabProps) => {
+const AccountTab = ({ firstName, lastName, emailAddress }: IProps) => {
   return (
     <section className="w-full flex flex-col p-8 space-y-12">
       <div className="space-y-8">

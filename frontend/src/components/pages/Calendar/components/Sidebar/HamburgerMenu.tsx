@@ -5,7 +5,7 @@ import { Sheet, SheetContent, SheetDescription, SheetHeader } from "@/components
 import { type MenuItem } from "@/components/pages/Calendar/components/Sidebar/Sidebar";
 import UserInfo from "@/components/pages/Calendar/components/Sidebar/UserInfo";
 
-interface HamburgerMenuProps {
+interface IProps {
   sidebarOpen: boolean;
   setSidebarOpen: (open: boolean) => void; // ?
   menuItems: MenuItem[];
@@ -22,7 +22,7 @@ const HamburgerMenu = ({
   lastName,
   emailAddress,
   onLogout,
-}: HamburgerMenuProps) => {
+}: IProps) => {
   const [open, setOpen] = useState<boolean>(sidebarOpen);
 
   return (
