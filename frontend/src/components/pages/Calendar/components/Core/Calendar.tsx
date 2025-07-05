@@ -21,7 +21,7 @@ import {
 
 import { useAuth } from "@/AuthProvider";
 import { eventService } from "@/services/EventService";
-import type { ITransformedEvent, IEventCreate } from "@/models/IEvent";
+import type { ITransformedEvent, IEventCreate, ISelectedEvent } from "@/models/IEvent";
 
 import EventPopup from "@/components/pages/Calendar/components/Core/EventPopup";
 import EventDetailPopup from "@/components/pages/Calendar/components/Core/EventDetailPopup";
@@ -50,10 +50,10 @@ interface IProps {
   setSidebarOpen: (open: boolean) => void;
 }
 
-const Calendar = (props: IProps) => {
+const Calendar = ({ events, eventData, dateData, sidebarOpen, setSidebarOpen }: IProps) => {
   const [currentWeek, setCurrentWeek] = useAtom(currentWeekAtom);
 
-  const [selectedSlot, setSelectedSlot] = useState<IEventCreate | null>();
+  const [selectedSlot, setSelectedSlot] = useState<ISelectedEvent | null>();
   const [isEventPopupOpen, setIsEventPopupOpen] = useState<boolean>(false);
 
   const [selectedEvent, setSelectedEvent] = useState<ITransformedEvent | null>();
@@ -76,9 +76,9 @@ const Calendar = (props: IProps) => {
         await eventService.createEvent(event, accessToken);
         toast.success("Event was created");
 
-        const { startDate, endDate } = props.dateData(currentWeek);
+        const { startDate, endDate } = dateData(currentWeek);
 
-        props.eventData(startDate, endDate);
+        eventData(startDate, endDate);
       }
     } catch (error) {
       toast.error("Event was not created");
@@ -93,9 +93,9 @@ const Calendar = (props: IProps) => {
         await eventService.editEvent(event, accessToken);
         toast.success("Event was edited");
 
-        const { startDate, endDate } = props.dateData(currentWeek);
+        const { startDate, endDate } = dateData(currentWeek);
 
-        props.eventData(startDate, endDate);
+        eventData(startDate, endDate);
       }
     } catch (error) {
       toast.error("Event was not edited");
@@ -111,9 +111,9 @@ const Calendar = (props: IProps) => {
         await eventService.deleteEvent(event.id, accessToken);
         toast.success("Event was deleted");
 
-        const { startDate, endDate } = props.dateData(currentWeek);
+        const { startDate, endDate } = dateData(currentWeek);
 
-        props.eventData(startDate, endDate);
+        eventData(startDate, endDate);
       }
     } catch (error) {
       toast.error("Event was not deleted");
@@ -124,7 +124,7 @@ const Calendar = (props: IProps) => {
   };
 
   const getEventsForTimeSlot = (day: number, time: string) => {
-    return props.events.filter(
+    return events.filter(
       (event: ITransformedEvent) =>
         isSameDay(event.event_week_start, weekStart) &&
         event.day === day &&
@@ -136,7 +136,7 @@ const Calendar = (props: IProps) => {
     const timeSlot = transformTo24HourFormat(time).split(":").map(Number);
     const dateFromWeekAndDay = addDays(weekStart, day);
 
-    const newEvent: IEventCreate = {
+    const newEvent: ISelectedEvent = {
       date: formatDate(dateFromWeekAndDay),
       start_time: formatISOFromTimeSlot(timeSlot[0]!, timeSlot[1]!),
       end_time: formatISOFromTimeSlot(timeSlot[0]! + 1, timeSlot[1]!),
@@ -154,12 +154,12 @@ const Calendar = (props: IProps) => {
   const eventClickHandlers = useMemo(() => {
     const handlers = new Map();
 
-    props.events.forEach((event: ITransformedEvent) => {
+    events.forEach((event: ITransformedEvent) => {
       handlers.set(event.id, () => handleEventDetailsClick(event));
     });
 
     return handlers;
-  }, [props.events, handleEventDetailsClick]);
+  }, [events, handleEventDetailsClick]);
 
   const closeEventPopup = () => {
     setSelectedSlot(null);
@@ -197,10 +197,10 @@ const Calendar = (props: IProps) => {
   }, []);
 
   useEffect(() => {
-    const { startDate, endDate } = props.dateData(currentWeek);
+    const { startDate, endDate } = dateData(currentWeek);
 
     if (isCurrentWeekWithinRange(startDate, endDate)) {
-      props.eventData(startDate, endDate);
+      eventData(startDate, endDate);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -220,7 +220,7 @@ const Calendar = (props: IProps) => {
     const eventId = active.id;
     const dropDateSlot = over?.id as string;
 
-    const draggedEvent = props.events.find(e => e.id === eventId);
+    const draggedEvent = events.find(e => e.id === eventId);
     if (!draggedEvent) return;
 
     const newEvent: ITransformedEvent = {
@@ -270,7 +270,7 @@ const Calendar = (props: IProps) => {
               {calendarView === "single" ? (
                 <Bars3Icon
                   className="w-6 h-6 cursor-pointer"
-                  onClick={() => props.setSidebarOpen(!props.sidebarOpen)}
+                  onClick={() => setSidebarOpen(!sidebarOpen)}
                 />
               ) : null}
             </div>

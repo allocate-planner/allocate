@@ -1,25 +1,53 @@
-export type IEvent = {
-  id: number;
-  title: string;
-  description?: string;
-  location?: string;
+import { z } from "zod";
+
+import { compareDates } from "@/utils/TimeUtils";
+
+export const EventSchema = z.object({
+  id: z.number(),
+  title: z.string(),
+  description: z.string().optional(),
+  location: z.string().optional(),
+  date: z.string(),
+  colour: z.string(),
+  start_time: z.string(),
+  end_time: z.string(),
+});
+
+export const EventCreateSchema = z
+  .object({
+    title: z.string().min(1, "A title must be provided"),
+    description: z.string().optional(),
+    location: z.string().optional(),
+    colour: z.string().optional(),
+    date: z.string(),
+    start_time: z.string(),
+    end_time: z.string(),
+  })
+  .refine(data => data.start_time !== data.end_time, {
+    message: "Start time must be different than end time",
+    path: ["start_time"],
+  })
+  .refine(
+    data => {
+      return !compareDates(data.start_time, data.end_time);
+    },
+    {
+      message: "Start time must be before the end time",
+      path: ["start_time"],
+    }
+  );
+
+export const TransformedEventSchema = EventSchema.extend({
+  event_week_start: z.date(),
+  day: z.number(),
+});
+
+export type ISelectedEvent = {
   date: string;
-  colour: string;
   start_time: string;
   end_time: string;
-}
+};
 
-export type IEventCreate = {
-  title?: string;
-  description?: string;
-  location?: string;
-  colour?: string;
-  date: string;
-  start_time: string;
-  end_time: string;
-}
-
-export type ITransformedEvent = IEvent & {
-  event_week_start: Date;
-  day: number;
-}
+export type IEvent = z.infer<typeof EventSchema>;
+export type IEventCreate = z.infer<typeof EventCreateSchema>;
+export type ITransformedEvent = z.infer<typeof TransformedEventSchema>;
