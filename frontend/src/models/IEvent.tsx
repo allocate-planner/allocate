@@ -37,6 +37,28 @@ export const EventCreateSchema = z
     }
   );
 
+export const EventEditSchema = z
+  .object({
+    title: z.string().min(1, "A title must be provided"),
+    description: z.string().optional(),
+    location: z.string().optional(),
+    start_time: z.string(),
+    end_time: z.string(),
+  })
+  .refine(data => data.start_time !== data.end_time, {
+    message: "Start time must be different than end time",
+    path: ["start_time"],
+  })
+  .refine(
+    data => {
+      return !compareDates(data.start_time, data.end_time);
+    },
+    {
+      message: "Start time must be before the end time",
+      path: ["start_time"],
+    }
+  );
+
 export const TransformedEventSchema = EventSchema.extend({
   event_week_start: z.date(),
   day: z.number(),
@@ -50,4 +72,5 @@ export type ISelectedEvent = {
 
 export type IEvent = z.infer<typeof EventSchema>;
 export type IEventCreate = z.infer<typeof EventCreateSchema>;
+export type IEditEvent = z.infer<typeof EventEditSchema>;
 export type ITransformedEvent = z.infer<typeof TransformedEventSchema>;

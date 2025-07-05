@@ -37,8 +37,8 @@ const CalendarPage = () => {
     }
   };
 
-  const transformEvents = (eventData: { events: IEvent[] }): ITransformedEvent[] => {
-    return eventData.events.map((event: IEvent) => {
+  const transformEvents = (events: IEvent[]) => {
+    return events.map((event: IEvent) => {
       const eventWeekStart = startOfWeek(parseISO(event.date));
 
       const startTimeParts = event.start_time.split(":");
@@ -72,7 +72,6 @@ const CalendarPage = () => {
         retrieveEventData={retrieveEventData}
         dateData={calculatePaginationDates}
         sidebarOpen={sidebarOpen}
-        setSidebarOpen={setSidebarOpen}
       />
       <Calendar
         events={events}

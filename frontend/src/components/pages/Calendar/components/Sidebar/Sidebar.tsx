@@ -20,7 +20,6 @@ interface IProps {
   retrieveEventData: (startDate: string, endDate: string) => void;
   dateData: (currentWeek: Date) => { startDate: string; endDate: string };
   sidebarOpen: boolean;
-  setSidebarOpen: (open: boolean) => void;
 }
 
 type Icon = React.ComponentType<React.ComponentProps<"svg">>;
@@ -32,7 +31,7 @@ export type MenuItem = {
   customContent?: React.ReactNode;
 };
 
-const Sidebar = (props: IProps) => {
+const Sidebar = ({ retrieveEventData, dateData, sidebarOpen }: IProps) => {
   const navigate = useNavigate();
 
   const { firstName, lastName, emailAddress, accessToken, logout } = useAuth();
@@ -54,9 +53,9 @@ const Sidebar = (props: IProps) => {
         await audioService.processAudio(audio, accessToken);
         toast.success("Audio successfully processed");
 
-        const { startDate, endDate } = props.dateData(new Date());
+        const { startDate, endDate } = dateData(new Date());
 
-        props.retrieveEventData(startDate, endDate);
+        retrieveEventData(startDate, endDate);
       }
     } catch (error) {
       toast.error("Audio not processed");
@@ -84,11 +83,10 @@ const Sidebar = (props: IProps) => {
     },
   ];
 
-  if (props.sidebarOpen) {
+  if (sidebarOpen) {
     return (
       <HamburgerMenu
-        sidebarOpen={props.sidebarOpen}
-        setSidebarOpen={props.setSidebarOpen}
+        sidebarOpen={sidebarOpen}
         menuItems={menuItems}
         firstName={firstName}
         lastName={lastName}

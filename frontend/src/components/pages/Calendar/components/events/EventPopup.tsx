@@ -96,29 +96,33 @@ const EventPopup = ({ isOpen, event, onClose, onCreate }: IProps) => {
               <Label htmlFor="description" className="w-1/3">
                 Description
               </Label>
-              <Input
-                id="description"
-                placeholder="Discuss new Product Name"
-                className="w-2/3"
-                {...register("description")}
-              />
-              {errors.description && (
-                <p className="text-red-500 text-xs mt-1">{errors.description.message}</p>
-              )}
+              <div className="flex flex-col w-2/3">
+                <Input
+                  id="description"
+                  placeholder="Discuss new Product Name"
+                  className="w-full"
+                  {...register("description")}
+                />
+                {errors.description && (
+                  <p className="text-red-500 text-xs mt-1">{errors.description.message}</p>
+                )}
+              </div>
             </div>
             <div className="flex flex-row items-center justify-between space-x-4 w-full">
               <Label htmlFor="location" className="w-1/3">
                 Location
               </Label>
-              <Input
-                id="location"
-                placeholder="1600 Amphitheatre Parkway"
-                className="w-2/3"
-                {...register("location")}
-              />
-              {errors.location && (
-                <p className="text-red-500 text-xs mt-1">{errors.location.message}</p>
-              )}
+              <div className="flex flex-col w-2/3">
+                <Input
+                  id="location"
+                  placeholder="1600 Amphitheatre Parkway"
+                  className="w-full"
+                  {...register("location")}
+                />
+                {errors.location && (
+                  <p className="text-red-500 text-xs mt-1">{errors.location.message}</p>
+                )}
+              </div>
             </div>
             <div className="flex flex-row items-center justify-between space-x-4 w-full">
               <Label className="w-1/3">Time</Label>

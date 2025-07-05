@@ -8,7 +8,7 @@ import type { Nullable } from "@/models/IUtility";
 
 interface IProps {
   accessToken: Nullable<string>;
-  transformEvents: (eventData: { events: IEvent[] }) => ITransformedEvent[];
+  transformEvents: (events: IEvent[]) => ITransformedEvent[];
   setEvents: React.Dispatch<React.SetStateAction<ITransformedEvent[]>>;
   setIsEventDetailPopupOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setIsEventPopupOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -34,7 +34,7 @@ export const useCalendarEvents = ({
     try {
       const newEvent = await eventService.createEvent(event, accessToken);
 
-      const transformedEvents = transformEvents({ events: [newEvent] });
+      const transformedEvents = transformEvents([newEvent]);
       const transformedNewEvent = transformedEvents[0];
 
       if (!transformedNewEvent) {
@@ -65,7 +65,7 @@ export const useCalendarEvents = ({
     try {
       const updatedEvent = await eventService.editEvent(event, accessToken);
 
-      const transformedUpdateEvent = transformEvents({ events: [updatedEvent] });
+      const transformedUpdateEvent = transformEvents([updatedEvent]);
       const transformedEvent = transformedUpdateEvent[0];
 
       if (!transformedEvent) {

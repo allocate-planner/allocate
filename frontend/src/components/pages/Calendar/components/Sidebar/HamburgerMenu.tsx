@@ -7,7 +7,6 @@ import UserInfo from "@/components/pages/Calendar/components/sidebar/UserInfo";
 
 interface IProps {
   sidebarOpen: boolean;
-  setSidebarOpen: (open: boolean) => void; // ?
   menuItems: MenuItem[];
   firstName: string;
   lastName: string;

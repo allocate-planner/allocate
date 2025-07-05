@@ -4,7 +4,7 @@ import type { IEvent, IEventCreate } from "@/models/IEvent";
 import { API_BASE_URL } from "@/utils/Constants";
 
 export const eventService = {
-  createEvent: async (eventDetails: IEventCreate, accessToken: string) => {
+  createEvent: async (eventDetails: IEventCreate, accessToken: string): Promise<IEvent> => {
     return await axios
       .post(
         `${API_BASE_URL}/events`,
@@ -38,7 +38,7 @@ export const eventService = {
       });
   },
 
-  getEvents: async (startDate: string, endDate: string, accessToken: string) => {
+  getEvents: async (startDate: string, endDate: string, accessToken: string): Promise<IEvent[]> => {
     return await axios
       .get(`${API_BASE_URL}/events`, {
         params: { start_date: startDate, end_date: endDate },
@@ -46,7 +46,7 @@ export const eventService = {
           Authorization: `Bearer ${accessToken}`,
         },
       })
-      .then(response => response.data)
+      .then(response => response.data.events)
       .catch(error => {
         if (error.response && error.response.data && error.response.data.detail) {
           throw new Error(error.response.data.detail);
@@ -75,7 +75,7 @@ export const eventService = {
       });
   },
 
-  editEvent: async (eventDetails: IEvent, accessToken: string) => {
+  editEvent: async (eventDetails: IEvent, accessToken: string): Promise<IEvent> => {
     return await axios
       .put(
         `${API_BASE_URL}/events/${eventDetails.id}`,

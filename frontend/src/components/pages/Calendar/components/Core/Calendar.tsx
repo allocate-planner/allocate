@@ -25,7 +25,7 @@ const INITIAL_DATE = new Date();
 interface IProps {
   events: ITransformedEvent[];
   retrieveEventData: (startDate: string, endDate: string) => void;
-  transformEvents: (eventData: { events: IEvent[] }) => ITransformedEvent[];
+  transformEvents: (events: IEvent[]) => ITransformedEvent[];
   setEvents: React.Dispatch<React.SetStateAction<ITransformedEvent[]>>;
   dateData: (currentWeek: Date) => { startDate: string; endDate: string };
   sidebarOpen: boolean;
