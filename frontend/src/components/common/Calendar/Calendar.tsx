@@ -38,7 +38,6 @@ import {
   transformTo24HourFormat,
 } from "@/utils/TimeUtils";
 import EmptyTimeSlot from "./EmptyTimeSlot";
-import { SidebarOpen } from "lucide-react";
 
 const currentWeekAtom = atom(new Date());
 
@@ -61,8 +60,7 @@ const Calendar = (props: IProps) => {
 
   const [calendarView, setCalendarView] = useState<"single" | "triple" | "full">("full");
 
-  const { getAccessToken } = useAuth();
-  const accessToken = getAccessToken();
+  const { accessToken } = useAuth();
 
   const weekStart = startOfWeek(currentWeek);
   const weekEnd = endOfWeek(currentWeek);

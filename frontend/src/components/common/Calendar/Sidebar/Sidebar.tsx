@@ -1,16 +1,15 @@
-import { useAuth } from "@/AuthProvider";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 import { CalendarDaysIcon, Cog6ToothIcon, MicrophoneIcon } from "@heroicons/react/24/outline";
 
-import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
+import { useAuth } from "@/AuthProvider";
 
 import SpeechComponent from "@/components/common/Calendar/SpeechComponent";
 import SettingsPopup from "@/components/common/Settings/SettingsPopup";
 
 import { audioService } from "@/services/AudioService";
-import { userService } from "@/services/UserService";
-import { useState } from "react";
 
 import HamburgerMenu from "@/components/common/Calendar/Sidebar/HamburgerMenu";
 import MenuList from "@/components/common/Calendar/Sidebar/MenuList";
@@ -35,16 +34,13 @@ export type MenuItem = {
 const Sidebar = (props: IProps) => {
   const navigate = useNavigate();
 
-  const { firstName, lastName, emailAddress, getAccessToken, updateAuthentication } = useAuth();
-  const accessToken = getAccessToken();
+  const { firstName, lastName, emailAddress, accessToken, logout } = useAuth();
   const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
 
-  const logout = async () => {
+  const logoutUser = async () => {
     try {
-      await userService.logout();
+      logout();
       toast.success("You have successfully been logged out!");
-
-      updateAuthentication(false);
       navigate("/");
     } catch (error) {
       toast.error("Something went wrong when logging out.");
@@ -96,7 +92,7 @@ const Sidebar = (props: IProps) => {
         firstName={firstName}
         lastName={lastName}
         emailAddress={emailAddress}
-        onLogout={logout}
+        onLogout={logoutUser}
       />
     );
   }
@@ -113,7 +109,7 @@ const Sidebar = (props: IProps) => {
         firstName={firstName}
         lastName={lastName}
         emailAddress={emailAddress}
-        onLogout={logout}
+        onLogout={logoutUser}
       />
 
       {settingsOpen && (

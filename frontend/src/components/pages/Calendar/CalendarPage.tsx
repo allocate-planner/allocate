@@ -15,8 +15,7 @@ import { startOfWeek, parseISO, getDay, format, endOfWeek, subWeeks, addWeeks } 
 const CalendarPage = () => {
   const navigate = useNavigate();
 
-  const { getAccessToken, isAuthenticated } = useAuth();
-  const accessToken = getAccessToken();
+  const { accessToken, isAuthenticated } = useAuth();
 
   const [events, setEvents] = useState<ITransformedEvent[]>([]);
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);

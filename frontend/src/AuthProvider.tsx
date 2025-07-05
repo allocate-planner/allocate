@@ -1,6 +1,10 @@
 import { createContext, useContext, useState } from "react";
 
-import type { IAuthContext, IAuthProvider } from "./models/IAuth";
+import type { IAuthContext, IAuthProvider } from "@/models/IAuth";
+import { UserDetailsSchema, type IStoredUser } from "@/models/IUser";
+import type { Nullable } from "@/models/IUtility";
+
+const LOCAL_STORAGE_KEY = "user" as const;
 
 const defaultAuthContext: IAuthContext = {
   id: 0,
@@ -8,60 +12,58 @@ const defaultAuthContext: IAuthContext = {
   firstName: "",
   lastName: "",
   emailAddress: "",
-  updateAuthentication: () => {},
-  getAccessToken: () => null,
+  accessToken: null,
+  login: () => {},
+  logout: () => {},
+};
+
+const setStoredUserData = (userData: IStoredUser): void => {
+  localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(userData));
+};
+
+const getStoredUserData = (): Nullable<IStoredUser> => {
+  try {
+    const data = localStorage.getItem(LOCAL_STORAGE_KEY);
+    if (!data) return null;
+
+    const result = UserDetailsSchema.safeParse(JSON.parse(data));
+    return result.success ? result.data : null;
+  } catch {
+    return null;
+  }
+};
+
+const removeStoredUserData = (): void => {
+  localStorage.removeItem(LOCAL_STORAGE_KEY);
 };
 
 export const AuthContext = createContext<IAuthContext>(defaultAuthContext);
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }: IAuthProvider) => {
-  const retrieveLocalData = () => {
-    const userDataString = localStorage.getItem("user");
-    return userDataString ? JSON.parse(userDataString) : null;
+  const [user, setUser] = useState<Nullable<IStoredUser>>(() => getStoredUserData());
+
+  const login = (userData: IStoredUser): void => {
+    const validatedUser = UserDetailsSchema.parse(userData);
+    setStoredUserData(validatedUser);
+    setUser(validatedUser);
   };
 
-  const [localData, setLocalData] = useState(retrieveLocalData());
-
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(!!localData);
-  const [firstName, setFirstName] = useState(localData ? localData.first_name : "");
-  const [lastName, setLastName] = useState(localData ? localData.last_name : "");
-  const [emailAddress, setEmailAddress] = useState(localData ? localData.email_address : "");
-  const [id, setId] = useState(localData ? localData.id : 0);
-
-  const updateAuthentication = (status: boolean) => {
-    setIsAuthenticated(status);
-
-    const userData = localStorage.getItem("user");
-
-    if (userData) {
-      const parsedUserData = JSON.parse(userData);
-      setLocalData(parsedUserData);
-
-      setFirstName(parsedUserData.first_name || "");
-      setLastName(parsedUserData.last_name || "");
-      setEmailAddress(parsedUserData.email_address || "");
-      setId(parsedUserData.id || 0);
-    }
+  const logout = (): void => {
+    removeStoredUserData();
+    setUser(null);
   };
 
-  const getAccessToken = () => {
-    if (localData && isAuthenticated) return localData.access_token;
+  const contextValue: IAuthContext = {
+    id: user?.id || 0,
+    isAuthenticated: !!user,
+    firstName: user?.first_name || "",
+    lastName: user?.last_name || "",
+    emailAddress: user?.email_address || "",
+    accessToken: user?.access_token || null,
+    login,
+    logout,
   };
 
-  return (
-    <AuthContext.Provider
-      value={{
-        id,
-        firstName,
-        lastName,
-        emailAddress,
-        isAuthenticated,
-        updateAuthentication,
-        getAccessToken,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;
 };

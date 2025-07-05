@@ -12,20 +12,21 @@ const Routes = () => {
       path: "/",
       errorElement: <ErrorPage />,
       element: <HomePage />,
-      children: [
-        {
-          path: "/login",
-          element: <LoginPage />,
-        },
-        {
-          path: "/register",
-          element: <RegisterPage />,
-        },
-        {
-          path: "/calendar",
-          element: <CalendarPage />,
-        },
-      ],
+    },
+    {
+      path: "/login",
+      errorElement: <ErrorPage />,
+      element: <LoginPage />,
+    },
+    {
+      path: "/register",
+      errorElement: <ErrorPage />,
+      element: <RegisterPage />,
+    },
+    {
+      path: "/calendar",
+      errorElement: <ErrorPage />,
+      element: <CalendarPage />,
     },
   ]);
 

@@ -21,7 +21,7 @@ export const userService = {
       .post(`${API_BASE_URL}/users/login`, stringifiedData, headers)
       .then(response => {
         if (response.data) {
-          localStorage.setItem("user_session", JSON.stringify(response.data));
+          return response.data;
         }
       })
       .catch(error => {
@@ -53,9 +53,5 @@ export const userService = {
           throw new Error("An unknown error occurred while creating an account.");
         }
       });
-  },
-
-  logout: async () => {
-    localStorage.removeItem("user");
   },
 };

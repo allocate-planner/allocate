@@ -2,20 +2,22 @@ import React, { useEffect, useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 
-import { Label } from "../../common/Label";
-import { Input } from "../../common/Input";
-import { Button } from "../../common/Button";
-import { Spinner } from "../../common/Spinner";
+import { toast } from "sonner";
+
+import { Label } from "@/components/common/Label";
+import { Input } from "@/components/common/Input";
+import { Button } from "@/components/common/Button";
+import { Spinner } from "@/components/common/Spinner";
 
 import { userService } from "@/services/UserService";
-import { useAuth } from "@/AuthProvider";
-import type { IUserLogin } from "@/models/IUser";
 
-import { toast } from "sonner";
+import { useAuth } from "@/AuthProvider";
+
+import type { IUserLogin } from "@/models/IUser";
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const { isAuthenticated, updateAuthentication } = useAuth();
+  const { isAuthenticated, login } = useAuth();
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -44,8 +46,8 @@ const LoginPage = () => {
     setIsLoading(true);
 
     try {
-      await userService.authenticateUser(userDetails);
-      updateAuthentication(true);
+      const response = await userService.authenticateUser(userDetails);
+      login(response);
       toast.success("You have successfully been authenticated!");
       navigate("/calendar");
     } catch (error) {
