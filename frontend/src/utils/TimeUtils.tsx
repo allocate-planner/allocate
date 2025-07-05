@@ -1,5 +1,7 @@
 import { parse, format, parseISO, formatISO, set, isAfter } from "date-fns";
 
+const TIMEZONE_OFFSET = "+01:00" as const;
+
 export const calendarHours: number[] = Array.from({ length: 24 }, (_, i) => i);
 
 export const times = Array.from({ length: 48 }, (_, i) =>
@@ -12,7 +14,7 @@ export const times = Array.from({ length: 48 }, (_, i) =>
 // Input:  "03:00am"
 // Output: "03:00:00+01:00"
 export const convertToISO = (time: string): string => {
-  return format(parse(time, "hh:mma", new Date()), "HH:mm:ss" + "+01:00");
+  return format(parse(time, "hh:mma", new Date()), "HH:mm:ss" + TIMEZONE_OFFSET);
 };
 
 // Input:  "01:30"

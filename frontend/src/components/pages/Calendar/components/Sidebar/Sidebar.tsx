@@ -6,14 +6,15 @@ import { CalendarDaysIcon, Cog6ToothIcon, MicrophoneIcon } from "@heroicons/reac
 
 import { useAuth } from "@/AuthProvider";
 
-import SpeechComponent from "@/components/common/Calendar/SpeechComponent";
-import SettingsPopup from "@/components/common/Settings/SettingsPopup";
-
 import { audioService } from "@/services/AudioService";
 
-import HamburgerMenu from "@/components/common/Calendar/Sidebar/HamburgerMenu";
-import MenuList from "@/components/common/Calendar/Sidebar/MenuList";
-import UserInfo from "@/components/common/Calendar/Sidebar/UserInfo";
+import SpeechComponent from "@/components/pages/Calendar/components/Core/SpeechComponent";
+
+import SettingsPopup from "@/components/pages/Calendar/components/Settings/SettingsPopup";
+
+import HamburgerMenu from "@/components/pages/Calendar/components/Sidebar/HamburgerMenu";
+import MenuList from "@/components/pages/Calendar/components/Sidebar/MenuList";
+import UserInfo from "@/components/pages/Calendar/components/Sidebar/UserInfo";
 
 interface IProps {
   eventData: (startDate: string, endDate: string) => void;

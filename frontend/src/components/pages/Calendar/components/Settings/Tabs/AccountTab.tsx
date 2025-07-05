@@ -1,7 +1,8 @@
 import { UserIcon } from "@heroicons/react/24/outline";
-import { Label } from "../../Label";
-import { Input } from "../../Input";
-import { Button } from "../../Button";
+
+import { Label } from "@/components/common/Label";
+import { Input } from "@/components/common/Input";
+import { Button } from "@/components/common/Button";
 
 interface AccountTabProps {
   firstName: string;

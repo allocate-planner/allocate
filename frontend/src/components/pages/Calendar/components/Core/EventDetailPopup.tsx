@@ -1,7 +1,8 @@
 import { useState } from "react";
+import { toast } from "sonner";
 
 import type { ITransformedEvent } from "@/models/IEvent";
-import { Button } from "../Button";
+import { Button } from "@/components/common/Button";
 
 import {
   Dialog,
@@ -10,7 +11,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "../Dialog";
+} from "@/components/common/Dialog";
 
 import {
   Select,
@@ -20,11 +21,10 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "../Select";
+} from "@/components/common/Select";
 
-import { Input } from "../Input";
-import { Label } from "../Label";
-import { toast } from "sonner";
+import { Input } from "@/components/common/Input";
+import { Label } from "@/components/common/Label";
 
 import { compareDates, convertToISO, convertToTimePeriodFromHHmm, times } from "@/utils/TimeUtils";
 

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import type { IEvent, IEventCreate } from "../models/IEvent";
+import type { IEvent, IEventCreate } from "@/models/IEvent";
 import { API_BASE_URL } from "@/utils/Constants";
 
 export const eventService = {

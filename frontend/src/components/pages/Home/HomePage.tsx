@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 
-import Header from "@/components/common/Home/Header";
-import Hero from "@/components/common/Home/Hero";
-import Features from "@/components/common/Home/Features";
-import CTA from "@/components/common/Home/CTA";
-import Footer from "@/components/common/Home/Footer";
+import Header from "@/components/pages/Home/components/Header";
+import Hero from "@/components/pages/Home/components/Hero";
+import Features from "@/components/pages/Home/components/Features";
+import CTA from "@/components/pages/Home/components/CTA";
+import Footer from "@/components/pages/Home/components/Footer";
 
 const HomePage = () => {
   useEffect(() => {

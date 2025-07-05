@@ -1,12 +1,9 @@
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-} from "@/components/common/Calendar/Sheet";
 import { useState } from "react";
-import { type MenuItem } from "./Sidebar";
-import UserInfo from "./UserInfo";
+
+import { Sheet, SheetContent, SheetDescription, SheetHeader } from "@/components/common/Sheet";
+
+import { type MenuItem } from "@/components/pages/Calendar/components/Sidebar/Sidebar";
+import UserInfo from "@/components/pages/Calendar/components/Sidebar/UserInfo";
 
 interface HamburgerMenuProps {
   sidebarOpen: boolean;

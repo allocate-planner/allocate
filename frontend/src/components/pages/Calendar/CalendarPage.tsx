@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 
-import Sidebar from "@/components/common/Calendar/Sidebar/Sidebar";
-import Calendar from "@/components/common/Calendar/Calendar";
-
 import { useNavigate } from "react-router-dom";
+
+import { startOfWeek, parseISO, getDay, format, endOfWeek, subWeeks, addWeeks } from "date-fns";
+
+import Sidebar from "@/components/pages/Calendar/components/Sidebar/Sidebar";
+import Calendar from "@/components/pages/Calendar/components/Core/Calendar";
 
 import { useAuth } from "@/AuthProvider";
 import { eventService } from "@/services/EventService";
 
 import type { IEvent, ITransformedEvent } from "@/models/IEvent";
-
-import { startOfWeek, parseISO, getDay, format, endOfWeek, subWeeks, addWeeks } from "date-fns";
 
 const CalendarPage = () => {
   const navigate = useNavigate();

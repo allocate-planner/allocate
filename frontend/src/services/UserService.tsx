@@ -1,7 +1,7 @@
 import axios from "axios";
 import qs from "qs";
 
-import type { IUserLogin, IUserRegister } from "../models/IUser";
+import type { IUserLogin, IUserRegister } from "@/models/IUser";
 import { API_BASE_URL } from "@/utils/Constants";
 
 export const userService = {

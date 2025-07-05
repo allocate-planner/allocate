@@ -1,16 +1,19 @@
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "../Dialog";
+import { useState } from "react";
 
-import { Button } from "../Button";
-
-import { Input } from "../Input";
-import { Label } from "../Label";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/common/Dialog";
 
 import { UserIcon, CalendarIcon, LinkIcon, ArrowUpTrayIcon } from "@heroicons/react/24/outline";
-import { useState } from "react";
-import AccountTab from "./Tabs/AccountTab";
-import ImportTab from "./Tabs/ImportTab";
-import IntegrationsTab from "./Tabs/IntegrationsTab";
-import CalendarTab from "./Tabs/CalendarTab";
+
+import AccountTab from "@/components/pages/Calendar/components/Settings/Tabs/AccountTab";
+import ImportTab from "@/components/pages/Calendar/components/Settings/Tabs/ImportTab";
+import IntegrationsTab from "@/components/pages/Calendar/components/Settings/Tabs/IntegrationsTab";
+import CalendarTab from "@/components/pages/Calendar/components/Settings/Tabs/CalendarTab";
 
 interface IProps {
   isOpen: boolean;

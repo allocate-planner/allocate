@@ -3,9 +3,11 @@ import { DndContext, useSensors, useSensor, MouseSensor, type DragEndEvent } fro
 
 import { atom, useAtom } from "jotai";
 
+import { toast } from "sonner";
+
 import { ArrowLeftIcon, ArrowRightIcon, Bars3Icon } from "@heroicons/react/24/outline";
 
-import { Button } from "../Button";
+import { Button } from "@/components/common/Button";
 
 import {
   format,
@@ -21,11 +23,11 @@ import { useAuth } from "@/AuthProvider";
 import { eventService } from "@/services/EventService";
 import type { ITransformedEvent, IEventCreate } from "@/models/IEvent";
 
-import EventPopup from "./EventPopup";
-import EventDetailPopup from "./EventDetailPopup";
+import EventPopup from "@/components/pages/Calendar/components/Core/EventPopup";
+import EventDetailPopup from "@/components/pages/Calendar/components/Core/EventDetailPopup";
+import Event from "@/components/pages/Calendar/components/Core/Event";
+import EmptyTimeSlot from "@/components/pages/Calendar/components/Core/EmptyTimeSlot";
 
-import Event from "./Event";
-import { toast } from "sonner";
 import {
   calculateNewDateFromDaySlot,
   calculateNewEndSlot,
@@ -37,7 +39,6 @@ import {
   times,
   transformTo24HourFormat,
 } from "@/utils/TimeUtils";
-import EmptyTimeSlot from "./EmptyTimeSlot";
 
 const currentWeekAtom = atom(new Date());
 

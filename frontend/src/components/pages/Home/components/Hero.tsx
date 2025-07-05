@@ -1,5 +1,6 @@
 import { motion } from "motion/react";
-import { containerVariants, headerVariants } from "./MotionVariants";
+
+import { containerVariants, headerVariants } from "@/components/pages/Home/components/MotionVariants";
 
 const Hero = () => {
   return (
