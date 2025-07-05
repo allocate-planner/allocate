@@ -17,7 +17,7 @@ import MenuList from "@/components/pages/Calendar/components/Sidebar/MenuList";
 import UserInfo from "@/components/pages/Calendar/components/Sidebar/UserInfo";
 
 interface IProps {
-  eventData: (startDate: string, endDate: string) => void;
+  retrieveEventData: (startDate: string, endDate: string) => void;
   dateData: (currentWeek: Date) => { startDate: string; endDate: string };
   sidebarOpen: boolean;
   setSidebarOpen: (open: boolean) => void;
@@ -56,7 +56,7 @@ const Sidebar = (props: IProps) => {
 
         const { startDate, endDate } = props.dateData(new Date());
 
-        props.eventData(startDate, endDate);
+        props.retrieveEventData(startDate, endDate);
       }
     } catch (error) {
       toast.error("Audio not processed");

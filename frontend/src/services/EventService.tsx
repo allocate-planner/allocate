@@ -28,6 +28,7 @@ export const eventService = {
           },
         }
       )
+      .then(response => response.data)
       .catch(error => {
         if (error.response && error.response.data && error.response.data.detail) {
           throw new Error(error.response.data.detail);
@@ -99,6 +100,7 @@ export const eventService = {
           },
         }
       )
+      .then(response => response.data)
       .catch(error => {
         if (error.response && error.response.data && error.response.data.detail) {
           throw new Error(error.response.data.detail);

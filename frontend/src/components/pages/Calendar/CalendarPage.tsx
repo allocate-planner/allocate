@@ -30,15 +30,15 @@ const CalendarPage = () => {
     };
   };
 
-  const eventData = async (startDate: string, endDate: string) => {
+  const retrieveEventData = async (startDate: string, endDate: string) => {
     if (accessToken) {
       const events = await eventService.getEvents(startDate, endDate, accessToken);
       setEvents(transformEvents(events));
     }
   };
 
-  const transformEvents = (eventsData: { events: IEvent[] }): ITransformedEvent[] => {
-    return eventsData.events.map((event: IEvent) => {
+  const transformEvents = (eventData: { events: IEvent[] }): ITransformedEvent[] => {
+    return eventData.events.map((event: IEvent) => {
       const eventWeekStart = startOfWeek(parseISO(event.date));
 
       const startTimeParts = event.start_time.split(":");
@@ -69,14 +69,16 @@ const CalendarPage = () => {
   return (
     <div className="flex flex-row h-screen">
       <Sidebar
-        eventData={eventData}
+        retrieveEventData={retrieveEventData}
         dateData={calculatePaginationDates}
         sidebarOpen={sidebarOpen}
         setSidebarOpen={setSidebarOpen}
       />
       <Calendar
         events={events}
-        eventData={eventData}
+        retrieveEventData={retrieveEventData}
+        transformEvents={transformEvents}
+        setEvents={setEvents}
         dateData={calculatePaginationDates}
         sidebarOpen={sidebarOpen}
         setSidebarOpen={setSidebarOpen}

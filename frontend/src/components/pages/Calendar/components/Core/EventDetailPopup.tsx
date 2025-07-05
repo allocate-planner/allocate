@@ -32,8 +32,8 @@ interface IProps {
   isOpen: boolean;
   event: ITransformedEvent;
   onClose: () => void;
-  onEdit: (event: ITransformedEvent) => void;
-  onDelete: (event: ITransformedEvent) => void;
+  onEdit: (event: ITransformedEvent) => Promise<boolean>;
+  onDelete: (eventId: number) => Promise<boolean>;
 }
 
 const EventDetailPopup = (props: IProps) => {
@@ -170,7 +170,7 @@ const EventDetailPopup = (props: IProps) => {
             className="bg-red-500 hover:bg-red-700"
             type="submit"
             onClick={() => {
-              props.onDelete(props.event);
+              props.onDelete(props.event.id);
             }}
           >
             Delete
