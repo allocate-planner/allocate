@@ -33,4 +33,6 @@ class EditEventUseCase:
             msg = "Event not found"
             raise EventNotFoundError(msg)
 
-        return self.event_repository.edit(event, request)
+        self.event_repository.edit(event, request)
+
+        return EventSchema.model_validate(event)

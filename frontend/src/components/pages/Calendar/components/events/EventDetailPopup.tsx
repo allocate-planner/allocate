@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -41,6 +43,7 @@ const EventDetailPopup = ({ isOpen, event, onClose, onEdit, onDelete }: IProps) 
     register,
     handleSubmit,
     control,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<IEditEvent>({
     resolver: zodResolver(EventEditSchema),
@@ -65,6 +68,26 @@ const EventDetailPopup = ({ isOpen, event, onClose, onEdit, onDelete }: IProps) 
 
     onEdit(newEvent);
   };
+
+  useEffect(() => {
+    if (isOpen) {
+      reset({
+        title: event.title,
+        description: event.description ?? "",
+        location: event.location ?? "",
+        start_time: convertToTimePeriodFromHHmm(event.start_time),
+        end_time: convertToTimePeriodFromHHmm(event.end_time),
+      });
+    }
+  }, [
+    isOpen,
+    event.title,
+    event.description,
+    event.location,
+    event.start_time,
+    event.end_time,
+    reset,
+  ]);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
