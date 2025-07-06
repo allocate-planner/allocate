@@ -1,7 +1,6 @@
-from backend.api.system.schemas.user import User as UserSchema
-from backend.api.system.schemas.user import UserDetails
-
 from api.system.models.models import User
+from api.system.schemas.user import User as UserSchema
+from api.system.schemas.user import UserDetails
 from api.users.errors.user_already_exists_error import UserAlreadyExistsError
 from api.users.hashers.bcrypt_hasher import BCryptHasher
 from api.users.repositories.user_repository import UserRepository

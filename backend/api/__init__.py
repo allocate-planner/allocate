@@ -5,6 +5,7 @@ from api.audio.controllers.audio_controller import audio
 from api.config import DevelopmentConfig
 from api.database import engine
 from api.events.controllers.events_controller import events
+from api.integrations.controllers.integration_controller import integrations
 from api.system.models.models import Base
 from api.users.controllers.users_controller import users
 
@@ -26,6 +27,7 @@ def create_app() -> FastAPI:
     app.include_router(audio, tags=["audio"])
     app.include_router(users, tags=["users"])
     app.include_router(events, tags=["events"])
+    app.include_router(integrations, tags=["integrations"])
 
     app.state.config = config
 

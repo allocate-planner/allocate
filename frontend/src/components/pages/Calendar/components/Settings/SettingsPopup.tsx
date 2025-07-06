@@ -45,7 +45,7 @@ const SettingsPopup = (props: IProps) => {
           />
         );
       case "import":
-        return <ImportTab handleUpload={handleUpload} />;
+        return <ImportTab handleUpload={handleUpload} />; // co-locate state
       case "integrations":
         return <IntegrationsTab />;
       case "calendar":

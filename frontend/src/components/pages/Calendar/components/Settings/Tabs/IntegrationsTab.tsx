@@ -1,3 +1,7 @@
+import { useAuth } from "@/AuthProvider";
+import type { SupportedProviders } from "@/models/IProvider";
+import { integrationService } from "@/services/IntegrationService";
+
 import { LinkIcon } from "@heroicons/react/24/outline";
 
 type IntegrationItem = {
@@ -40,6 +44,22 @@ const integrations: IntegrationItem[] = [
 ];
 
 const IntegrationsTab = () => {
+  const { accessToken } = useAuth();
+
+  const handleConnect = async (provider: string) => {
+    if (accessToken) {
+      try {
+        const response = await integrationService.connectIntegration(
+          provider.toLowerCase() as SupportedProviders,
+          accessToken
+        );
+        window.location.href = response.authorization_url;
+      } catch (error) {
+        /* empty */
+      }
+    }
+  };
+
   return (
     <section className="w-full flex flex-col p-8 space-y-12">
       <div className="space-y-8">
@@ -61,7 +81,10 @@ const IntegrationsTab = () => {
             key={index}
             className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 relative"
           >
-            <button className="absolute top-4 right-4 py-1.5 px-3 rounded-lg text-sm font-medium bg-white text-gray-700 border">
+            <button
+              onClick={() => handleConnect(integration.name)}
+              className="absolute top-4 right-4 py-1.5 px-3 rounded-lg text-sm font-medium bg-white text-gray-700 border"
+            >
               Connect
             </button>
             <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center mb-3">

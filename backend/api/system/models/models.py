@@ -67,6 +67,6 @@ class Integration(Base):
     created_at = Column(DateTime, default=func.now())
     updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
 
-    user_id = Column(String(255), nullable=False)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
 
     user = relationship("User", back_populates="integrations")
