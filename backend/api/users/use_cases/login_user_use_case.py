@@ -4,7 +4,7 @@ import jwt
 from fastapi.security import OAuth2PasswordRequestForm
 
 from api.config import Config
-from api.system.schemas.schemas import UserWithToken
+from api.system.schemas.user import UserWithToken
 from api.users.errors.invalid_credentials_error import InvalidCredentialsError
 from api.users.errors.user_not_found_error import UserNotFoundError
 from api.users.hashers.bcrypt_hasher import BCryptHasher
@@ -54,7 +54,7 @@ class LoginUserUseCase:
 
         return jwt.encode(
             expiry_and_subject,
-            self.config.JWT_SECRET_KEY,
+            self.config.JWT_SECRET_KEY,  # type: ignore  # noqa: PGH003
             algorithm=self.config.JWT_ALGORITHM,
         )
 
@@ -67,6 +67,6 @@ class LoginUserUseCase:
 
         return jwt.encode(
             expiry_and_subject,
-            self.config.JWT_REFRESH_SECRET_KEY,
+            self.config.JWT_REFRESH_SECRET_KEY,  # type: ignore  # noqa: PGH003
             self.config.JWT_ALGORITHM,
         )

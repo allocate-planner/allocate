@@ -3,7 +3,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 
-from api.system.schemas import schemas
+from api.system.schemas.user import User, UserDetails, UserWithToken
 from api.users.dependencies import (
     get_email_address_validator,
     get_password_validator,
@@ -20,9 +20,9 @@ from api.users.validators import EmailAddressValidator, PasswordValidator
 users = APIRouter()
 
 
-@users.post("/api/v1/users", response_model=schemas.User)
+@users.post("/api/v1/users", response_model=User)
 def register_user(
-    request: schemas.UserDetails,
+    request: UserDetails,
     register_user_use_case: Annotated[
         RegisterUserUseCase,
         Depends(register_user_use_case),
@@ -32,7 +32,7 @@ def register_user(
         Depends(get_email_address_validator),
     ],
     password_validator: Annotated[PasswordValidator, Depends(get_password_validator)],
-) -> schemas.User:
+) -> User:
     validation_email_errors = email_address_validator.validate_user_email_address(
         request.email_address,
     )
@@ -60,11 +60,11 @@ def register_user(
         raise HTTPException(status_code=500, detail=str(e)) from e
 
 
-@users.post("/api/v1/users/login", response_model=schemas.UserWithToken)
+@users.post("/api/v1/users/login", response_model=UserWithToken)
 def authenticate_user(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
     login_user_use_case: Annotated[LoginUserUseCase, Depends(login_user_use_case)],
-) -> schemas.UserWithToken:
+) -> UserWithToken:
     try:
         return login_user_use_case.execute(form_data)
     except UserNotFoundError as e:

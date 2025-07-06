@@ -9,6 +9,7 @@ from sqlalchemy.orm import Session
 from api.config import Config
 from api.database import get_db
 from api.events.repositories.event_repository import EventRepository
+from api.integrations.repositories.integration_repository import IntegrationRepository
 from api.users.repositories.user_repository import UserRepository
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/users/login", scheme_name="JWT")
@@ -20,6 +21,12 @@ def get_user_repository(db: Annotated[Session, Depends(get_db)]) -> UserReposito
 
 def get_event_repository(db: Annotated[Session, Depends(get_db)]) -> EventRepository:
     return EventRepository(db)
+
+
+def get_integration_repository(
+    db: Annotated[Session, Depends(get_db)],
+) -> IntegrationRepository:
+    return IntegrationRepository(db)
 
 
 def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]) -> str | None:

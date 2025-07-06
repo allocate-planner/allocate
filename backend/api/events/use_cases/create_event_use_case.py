@@ -3,8 +3,8 @@ from typing import Any
 
 from api.events.repositories.event_repository import EventRepository
 from api.system.models.models import Event
-from api.system.schemas.schemas import Event as EventSchema
-from api.system.schemas.schemas import EventBase
+from api.system.schemas.event import Event as EventSchema
+from api.system.schemas.event import EventBase
 from api.users.errors.user_not_found_error import UserNotFoundError
 from api.users.repositories.user_repository import UserRepository
 

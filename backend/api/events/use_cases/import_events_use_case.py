@@ -5,7 +5,7 @@ from icalendar import Calendar
 
 from api.events.repositories.event_repository import EventRepository
 from api.events.use_cases.create_event_use_case import CreateEventUseCase
-from api.system.schemas.schemas import EventBase
+from api.system.schemas.event import EventBase
 from api.users.errors.user_not_found_error import UserNotFoundError
 from api.users.repositories.user_repository import UserRepository
 

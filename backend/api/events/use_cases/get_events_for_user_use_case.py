@@ -1,6 +1,6 @@
 from api.events.errors.events_not_found_error import EventsNotFoundError
 from api.events.repositories.event_repository import EventRepository
-from api.system.schemas.schemas import Event, EventList, GetEvent
+from api.system.schemas.event import Event, EventList, GetEvent
 from api.users.errors.user_not_found_error import UserNotFoundError
 from api.users.repositories.user_repository import UserRepository
 

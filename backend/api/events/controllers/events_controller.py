@@ -17,15 +17,15 @@ from api.events.use_cases.delete_event_use_case import DeleteEventUseCase
 from api.events.use_cases.edit_event_use_case import EditEventUseCase
 from api.events.use_cases.get_events_for_user_use_case import GetEventsForUserUseCase
 from api.events.use_cases.import_events_use_case import ImportEventsUseCase
-from api.system.schemas import schemas
+from api.system.schemas import event
 from api.users.errors.user_not_found_error import UserNotFoundError
 
 events = APIRouter()
 
 
-@events.post("/api/v1/events", response_model=schemas.Event)
+@events.post("/api/v1/events", response_model=event.Event)
 def create_event(
-    request: schemas.EventBase,
+    request: event.EventBase,
     create_event_use_case: Annotated[
         CreateEventUseCase,
         Depends(create_event_use_case),
@@ -40,9 +40,9 @@ def create_event(
         raise HTTPException(status_code=500, detail=str(e)) from e
 
 
-@events.get("/api/v1/events", response_model=schemas.EventList)
+@events.get("/api/v1/events", response_model=event.EventList)
 def get_events(
-    request: Annotated[schemas.GetEvent, Depends()],
+    request: Annotated[event.GetEvent, Depends()],
     get_events_for_user_use_case: Annotated[
         GetEventsForUserUseCase,
         Depends(get_events_for_user_use_case),
@@ -80,10 +80,10 @@ def delete_event(
         raise HTTPException(status_code=500, detail=str(e)) from e
 
 
-@events.put("/api/v1/events/{event_id}", response_model=schemas.Event)
+@events.put("/api/v1/events/{event_id}", response_model=event.Event)
 def edit_event(
     event_id: int,
-    request: schemas.EventBase,
+    request: event.EventBase,
     edit_event_use_case: Annotated[EditEventUseCase, Depends(edit_event_use_case)],
     current_user: Annotated[str, Depends(get_current_user)],
 ):
@@ -97,7 +97,7 @@ def edit_event(
         raise HTTPException(status_code=500, detail=str(e)) from e
 
 
-@events.post("/api/v1/events/import", response_model=list[schemas.EventBase])
+@events.post("/api/v1/events/import", response_model=list[event.EventBase])
 def import_events(
     file: Annotated[UploadFile, File()],
     import_events_use_case: Annotated[

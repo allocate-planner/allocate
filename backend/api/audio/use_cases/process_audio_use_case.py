@@ -7,7 +7,7 @@ from fastapi import UploadFile
 from api.audio.errors.audio_processing_error import AudioProcessingError
 from api.events.use_cases.create_event_use_case import CreateEventUseCase
 from api.openai.openapi_wrapper import OpenAIWrapper
-from api.system.schemas.schemas import EventBase
+from api.system.schemas.event import EventBase
 from api.users.errors.user_not_found_error import UserNotFoundError
 from api.users.repositories.user_repository import UserRepository
 
@@ -37,11 +37,15 @@ class ProcessAudioUseCase:
             buffer = self._parse_file_into_buffer(file)
             transcribed_audio = self.openai_wrapper.transcribe_audio(buffer)
 
+            print(transcribed_audio)
+
             llm_response = self.openai_wrapper.prompt_chat(
                 str(user.first_name),
                 datetime.now().strftime("%H:%M"),  # noqa: DTZ005
                 transcribed_audio,
             )
+
+            print(llm_response)
 
             return ProcessAudioUseCase._transform_llm_output_to_pydantic_objects(
                 llm_response,
@@ -66,7 +70,7 @@ class ProcessAudioUseCase:
         create_event_use_case: CreateEventUseCase,
         current_user: str,
     ) -> list[EventBase]:
-        events: list = []
+        events = []
         current_date = date.today()  # noqa: DTZ011
 
         for event in response.split("\n"):

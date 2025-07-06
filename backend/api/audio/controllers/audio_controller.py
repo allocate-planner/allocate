@@ -8,12 +8,12 @@ from api.audio.use_cases.process_audio_use_case import ProcessAudioUseCase
 from api.dependencies import get_current_user
 from api.events.dependencies import create_event_use_case
 from api.events.use_cases.create_event_use_case import CreateEventUseCase
-from api.system.schemas import schemas
+from api.system.schemas.event import EventBase
 
 audio = APIRouter()
 
 
-@audio.post("/api/v1/audio", response_model=list[schemas.EventBase])
+@audio.post("/api/v1/audio", response_model=list[EventBase])
 def process_audio(
     file: Annotated[UploadFile, File()],
     process_audio_use_case: Annotated[

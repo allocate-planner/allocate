@@ -3,7 +3,7 @@ from datetime import date
 from sqlalchemy.orm import Session
 
 from api.system.models.models import Event
-from api.system.schemas.schemas import EventBase
+from api.system.schemas.event import EventBase
 
 
 class EventRepository:
