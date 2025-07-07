@@ -21,6 +21,17 @@ class OAuthCallbackData(FrozenBaseModel):
     ]
 
 
+class OAuthConnect(FrozenBaseModel):
+    authorization_url: Annotated[
+        str,
+        StringConstraints(strip_whitespace=True, max_length=256),
+    ]
+    provider: Annotated[
+        str,
+        StringConstraints(strip_whitespace=True, max_length=256),
+    ]
+
+
 class IntegrationBase(FrozenBaseModel):
     bot_id: Annotated[
         str | None,

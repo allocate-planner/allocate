@@ -12,3 +12,9 @@ class IntegrationRepository:
         self.db.commit()
 
         self.db.refresh(integration)
+
+    def retrieve_integrations_for_user(
+        self,
+        user_id: int,
+    ) -> list[Integration]:
+        return self.db.query(Integration).filter(Integration.user_id == user_id).all()
