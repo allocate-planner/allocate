@@ -9,9 +9,11 @@ from api.system.schemas.base import FrozenBaseModel
 
 class ProviderEnum(str, Enum):
     NOTION = "notion"
-    SLACK = "slack"
-    GOOGLE = "google"
+    GMAIL = "gmail"
+    LINEAR = "linear"
     GITHUB = "github"
+    FIGMA = "figma"
+    SLACK = "slack"
 
 
 class OAuthCallbackData(FrozenBaseModel):

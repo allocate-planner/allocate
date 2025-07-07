@@ -70,7 +70,7 @@ async def handle_redirect_for_integration(
         raise HTTPException(status_code=500, detail=str(e)) from e
 
 
-@integrations.post("/api/v1/integrations", response_model=dict[str, bool])
+@integrations.get("/api/v1/integrations", response_model=dict[str, bool])
 def retrieve_integrations(
     retrieve_integrations: Annotated[
         RetrieveIntegrationsUseCase,

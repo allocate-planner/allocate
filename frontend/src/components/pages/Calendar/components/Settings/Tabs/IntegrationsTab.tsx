@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 import { useAuth } from "@/AuthProvider";
 import type { SupportedProviders } from "@/models/IProvider";
 import { integrationService } from "@/services/IntegrationService";
@@ -8,9 +10,10 @@ type IntegrationItem = {
   name: string;
   description: string;
   iconPath: string;
+  connected?: boolean;
 };
 
-const integrations: IntegrationItem[] = [
+const baseIntegrations: IntegrationItem[] = [
   {
     name: "Notion",
     description: "Access your pages, databases, and workspace content.",
@@ -59,6 +62,27 @@ const IntegrationsTab = () => {
     }
   };
 
+  const [integrationStates, setIntegrationStates] = useState<IntegrationItem[]>(baseIntegrations);
+
+  useEffect(() => {
+    const retrieveIntegrations = async () => {
+      if (accessToken) {
+        const integrations = await integrationService.retrieveIntegrations(accessToken);
+        const updatedIntegrations = baseIntegrations.map(integration => {
+          const key = integration.name.toLowerCase();
+          return {
+            ...integration,
+            connected: integrations[key] === true,
+          };
+        });
+        setIntegrationStates(updatedIntegrations);
+      }
+    };
+
+    retrieveIntegrations();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <section className="w-full flex flex-col p-8 space-y-12">
       <div className="space-y-8">
@@ -75,7 +99,7 @@ const IntegrationsTab = () => {
         </div>
       </div>
       <div className="grid grid-cols-2 gap-4">
-        {integrations.map((integration: IntegrationItem, index: number) => {
+        {integrationStates.map((integration: IntegrationItem, index: number) => {
           return integration.name === "Notion" ? (
             <div
               key={index}
@@ -83,9 +107,9 @@ const IntegrationsTab = () => {
             >
               <button
                 onClick={() => handleConnect(integration.name)}
-                className="absolute top-4 right-4 py-1.5 px-3 rounded-lg text-sm font-medium bg-white text-gray-700 border"
+                className={`absolute top-4 right-4 py-1.5 px-3 rounded-lg text-sm font-medium border ${integration.connected ? "bg-green-50 text-green-600" : "bg-white text-gray-700"}`}
               >
-                Connect
+                {integration.connected ? "Connected" : "Connect"}
               </button>
               <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center mb-3">
                 <img
