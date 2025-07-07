@@ -75,28 +75,48 @@ const IntegrationsTab = () => {
         </div>
       </div>
       <div className="grid grid-cols-2 gap-4">
-        {integrations.map((integration: IntegrationItem, index: number) => (
-          <div
-            key={index}
-            className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 relative"
-          >
-            <button
-              onClick={() => handleConnect(integration.name)}
-              className="absolute top-4 right-4 py-1.5 px-3 rounded-lg text-sm font-medium bg-white text-gray-700 border"
+        {integrations.map((integration: IntegrationItem, index: number) => {
+          return integration.name === "Notion" ? (
+            <div
+              key={index}
+              className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 relative"
             >
-              Connect
-            </button>
-            <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center mb-3">
-              <img
-                src={integration.iconPath}
-                alt={`${integration.name} icon`}
-                className="w-8 h-8"
-              />
+              <button
+                onClick={() => handleConnect(integration.name)}
+                className="absolute top-4 right-4 py-1.5 px-3 rounded-lg text-sm font-medium bg-white text-gray-700 border"
+              >
+                Connect
+              </button>
+              <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center mb-3">
+                <img
+                  src={integration.iconPath}
+                  alt={`${integration.name} icon`}
+                  className="w-8 h-8"
+                />
+              </div>
+              <h3 className="text-lg font-medium text-gray-900 mb-2 pr-20">{integration.name}</h3>
+              <p className="text-sm text-gray-600 pr-4">{integration.description}</p>
             </div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2 pr-20">{integration.name}</h3>
-            <p className="text-sm text-gray-600 pr-4">{integration.description}</p>
-          </div>
-        ))}
+          ) : (
+            <div
+              key={index}
+              className="bg-gray-100 rounded-2xl p-4 shadow-sm border border-gray-100 relative"
+            >
+              <button className="absolute top-4 right-4 py-1.5 px-3 rounded-lg text-sm font-medium bg-gray-50 text-gray-700 border hover:cursor-not-allowed">
+                Connect
+              </button>
+              <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center mb-3">
+                <img
+                  src={integration.iconPath}
+                  alt={`${integration.name} icon`}
+                  className="w-8 h-8"
+                />
+              </div>
+              <h3 className="text-lg font-medium text-gray-900 mb-2 pr-20">{integration.name}</h3>
+              <p className="text-sm text-gray-600 pr-4">{integration.description}</p>
+            </div>
+          );
+        })}
       </div>
     </section>
   );
