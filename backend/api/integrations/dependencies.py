@@ -11,6 +11,7 @@ from api.dependencies import (
 from api.integrations.use_cases.connect_integration_use_case import (
     ConnectIntegrationUseCase,
 )
+from api.integrations.use_cases.handle_redirect_use_case import HandleRedirectUseCase
 
 
 def connect_integration_use_case(
@@ -21,3 +22,13 @@ def connect_integration_use_case(
     user_repository: Annotated[UserRepository, Depends(get_user_repository)],
 ) -> ConnectIntegrationUseCase:
     return ConnectIntegrationUseCase(integration_repository, user_repository)
+
+
+def handle_redirect_use_case(
+    integration_repository: Annotated[
+        IntegrationRepository,
+        Depends(get_integration_repository),
+    ],
+    user_repository: Annotated[UserRepository, Depends(get_user_repository)],
+) -> HandleRedirectUseCase:
+    return HandleRedirectUseCase(integration_repository, user_repository)

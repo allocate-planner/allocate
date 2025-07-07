@@ -53,16 +53,17 @@ class Integration(Base):
     __tablename__ = "integrations"
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    bot_id = Column(String(256), nullable=True)
 
     provider = Column(String(50), nullable=False)
-    access_token = Column(String(255), nullable=False)
-    refresh_token = Column(String(255), nullable=True)
+    access_token = Column(String(256), nullable=False)
+    refresh_token = Column(String(256), nullable=True)
     expires_at = Column(DateTime, nullable=True)
-    scope = Column(String(255), nullable=True)
+    scope = Column(String(256), nullable=True)
     is_active = Column(Boolean, default=True)
 
-    workspace_name = Column(String(255), nullable=True)
-    workspace_id = Column(String(255), nullable=True)
+    workspace_name = Column(String(256), nullable=True)
+    workspace_id = Column(String(256), nullable=True)
 
     created_at = Column(DateTime, default=func.now())
     updated_at = Column(DateTime, default=func.now(), onupdate=func.now())

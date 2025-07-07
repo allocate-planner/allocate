@@ -15,6 +15,7 @@ import { useCalendarEvents } from "@/components/pages/Calendar/hooks/useCalendar
 import { useCalendarView } from "@/components/pages/Calendar/hooks/useCalendarView";
 import { useWeekNavigation } from "@/components/pages/Calendar/hooks/useWeekNavigation";
 import { useDrag } from "@/components/pages/Calendar/hooks/useDrag";
+import { useOAuthCallback } from "@/components/pages/Calendar/hooks/useOAuthCallback";
 
 import { CalendarHeader } from "@/components/pages/Calendar/components/core/CalendarHeader";
 import { CalendarTimeColumn } from "@/components/pages/Calendar/components/core/CalendarTimeColumn";
@@ -41,6 +42,8 @@ const Calendar = ({
   sidebarOpen,
   setSidebarOpen,
 }: IProps) => {
+  useOAuthCallback();
+
   const [selectedSlot, setSelectedSlot] = useState<ISelectedEvent | null>();
   const [isEventPopupOpen, setIsEventPopupOpen] = useState<boolean>(false);
 

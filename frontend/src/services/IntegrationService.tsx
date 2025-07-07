@@ -23,7 +23,34 @@ export const integrationService = {
         if (error.response && error.response.data && error.response.data.detail) {
           throw new Error(error.response.data.detail);
         } else {
-          throw new Error("An unknown error occurred while creating the event.");
+          throw new Error("An unknown error occurred while connecting the integration.");
+        }
+      });
+  },
+
+  handleRedirect: async (
+    provider: SupportedProviders,
+    code: string,
+    accessToken: string
+  ): Promise<any> => {
+    return await axios
+      .post(
+        `${API_BASE_URL}/integrations/${String(provider)}/redirect`,
+        {
+          code: code,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      )
+      .then(response => response.data)
+      .catch(error => {
+        if (error.response && error.response.data && error.response.data.detail) {
+          throw new Error(error.response.data.detail);
+        } else {
+          throw new Error("An unknown error occurred while handling the integration redirect.");
         }
       });
   },

@@ -37,15 +37,11 @@ class ProcessAudioUseCase:
             buffer = self._parse_file_into_buffer(file)
             transcribed_audio = self.openai_wrapper.transcribe_audio(buffer)
 
-            print(transcribed_audio)
-
             llm_response = self.openai_wrapper.prompt_chat(
                 str(user.first_name),
                 datetime.now().strftime("%H:%M"),  # noqa: DTZ005
                 transcribed_audio,
             )
-
-            print(llm_response)
 
             return ProcessAudioUseCase._transform_llm_output_to_pydantic_objects(
                 llm_response,

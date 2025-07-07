@@ -49,10 +49,9 @@ const IntegrationsTab = () => {
   const handleConnect = async (provider: string) => {
     if (accessToken) {
       try {
-        const response = await integrationService.connectIntegration(
-          provider.toLowerCase() as SupportedProviders,
-          accessToken
-        );
+        const oauth_provider = provider.toLowerCase() as SupportedProviders;
+        const response = await integrationService.connectIntegration(oauth_provider, accessToken);
+        sessionStorage.setItem("oauth-provider", oauth_provider);
         window.location.href = response.authorization_url;
       } catch (error) {
         /* empty */
