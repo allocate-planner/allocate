@@ -6,10 +6,10 @@ from fastapi import UploadFile
 
 from api.audio.errors.audio_processing_error import AudioProcessingError
 from api.events.use_cases.create_event_use_case import CreateEventUseCase
-from api.openai.openapi_wrapper import OpenAIWrapper
 from api.system.schemas.event import EventBase
 from api.users.errors.user_not_found_error import UserNotFoundError
 from api.users.repositories.user_repository import UserRepository
+from api.utils.openapi_wrapper import OpenAIWrapper
 
 
 class ProcessAudioUseCase:

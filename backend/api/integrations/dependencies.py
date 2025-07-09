@@ -15,6 +15,7 @@ from api.integrations.use_cases.handle_redirect_use_case import HandleRedirectUs
 from api.integrations.use_cases.retrieve_integrations_use_case import (
     RetrieveIntegrationsUseCase,
 )
+from api.integrations.use_cases.search_notion_use_case import SearchNotionUseCase
 
 
 def connect_integration_use_case(
@@ -45,3 +46,13 @@ def retrieve_integrations_use_case(
     user_repository: Annotated[UserRepository, Depends(get_user_repository)],
 ) -> RetrieveIntegrationsUseCase:
     return RetrieveIntegrationsUseCase(integration_repository, user_repository)
+
+
+def search_notion_use_case(
+    integration_repository: Annotated[
+        IntegrationRepository,
+        Depends(get_integration_repository),
+    ],
+    user_repository: Annotated[UserRepository, Depends(get_user_repository)],
+) -> SearchNotionUseCase:
+    return SearchNotionUseCase(integration_repository, user_repository)

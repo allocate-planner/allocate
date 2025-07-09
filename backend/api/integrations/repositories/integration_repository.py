@@ -18,3 +18,17 @@ class IntegrationRepository:
         user_id: int,
     ) -> list[Integration]:
         return self.db.query(Integration).filter(Integration.user_id == user_id).all()
+
+    def retrieve_access_token_for_provider_for_user(
+        self,
+        user_id: int,
+        provider: str,
+    ) -> Integration:
+        return (
+            self.db.query(Integration)
+            .filter(
+                Integration.user_id == user_id,
+                Integration.provider == provider,
+            )
+            .first()
+        )
