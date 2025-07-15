@@ -55,7 +55,7 @@ export const CalendarHeader = ({
             className="w-6 h-6 cursor-pointer hover:scale-125 transform transition duration-300"
             onClick={() => moveWeek(-1)}
           />
-          <h2 className="text-lg font-semibold">
+          <h2 className="text-lg font-normal">
             {format(weekStart, "d MMMM")} — {format(weekEnd, "d MMMM yyyy")}
           </h2>
           <ArrowRightIcon
@@ -71,7 +71,7 @@ export const CalendarHeader = ({
         </div>
       </div>
       <div className="border-r border-b flex flex-col justify-center items-center p-4 ">
-        <h3 className="font-light text-lg">Time</h3>
+        <h3 className="font-light text-sm">GMT +1</h3>
       </div>
       {weekDays.map((day: Date) => (
         <div
@@ -79,11 +79,12 @@ export const CalendarHeader = ({
           className={`
             border-r border-b
             ${isSameDay(day, new Date()) ? "border-b-violet-400" : "border-gray-200"} 
-            flex flex-col justify-center items-center p-4
+            flex justify-center items-center p-4
           `}
         >
-          <h3 className="font-bold text-lg">{format(day, "EEEE")}</h3>
-          <p className="text-sm">{format(day, "d MMMM")}</p>
+          <span className={`${isSameDay(day, new Date()) ? "font-bold" : ""}`}>
+            {format(day, "EEE d")}
+          </span>
         </div>
       ))}
     </div>
