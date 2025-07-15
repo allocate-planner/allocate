@@ -5,7 +5,7 @@ import { CSS } from "@dnd-kit/utilities";
 
 import { formatTimeSlotToHMM, formatTimeSlotToHMMA } from "@/utils/TimeUtils";
 
-interface I {
+interface IProps {
   id: number;
   title: string;
   colour: string;
@@ -14,7 +14,7 @@ interface I {
   onClick?: () => void;
 }
 
-const Event = memo(({ id, title, colour, startTime, endTime, onClick }: I) => {
+const Event = memo(({ id, title, colour, startTime, endTime, onClick }: IProps) => {
   const startTimeParts = startTime.split(":").map(Number);
   const endTimeParts = endTime.split(":").map(Number);
 
@@ -23,6 +23,8 @@ const Event = memo(({ id, title, colour, startTime, endTime, onClick }: I) => {
   const endTimeInMinutes = endTimeParts[0]! * 60 + endTimeParts[1]!;
   const durationInMinutes = endTimeInMinutes - startTimeInMinutes;
   const duration = Math.ceil(durationInMinutes / 30);
+
+  console.log(duration);
 
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
     id: id,
@@ -42,9 +44,9 @@ const Event = memo(({ id, title, colour, startTime, endTime, onClick }: I) => {
         gridRow: `${startHour} / span ${duration}`,
         ...style,
       }}
-      className={`flex ${
+      className={`absolute z-10 flex ${
         duration === 1 ? "flex-row items-center space-x-2" : "flex-col"
-      } text-sm items-start w-full h-full rounded-xl box-border px-4 py-1 hover:cursor-pointer ${
+      } text-sm items-start w-full h-full rounded-sm box-border px-4 py-1 hover:cursor-pointer ${
         isDragging ? "cursor-grabbing" : "cursor-grab"
       }`}
       onClick={onClick}

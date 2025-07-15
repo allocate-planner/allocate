@@ -20,6 +20,7 @@ import { useOAuthCallback } from "@/components/pages/Calendar/hooks/useOAuthCall
 import { CalendarHeader } from "@/components/pages/Calendar/components/core/CalendarHeader";
 import { CalendarTimeColumn } from "@/components/pages/Calendar/components/core/CalendarTimeColumn";
 import { CalendarGrid } from "@/components/pages/Calendar/components/core/CalendarGrid";
+import TimeIndicator from "@/components/pages/Calendar/components/other/TimeIndicator";
 
 const INITIAL_DATE = new Date();
 
@@ -144,7 +145,7 @@ const Calendar = ({
         />
 
         <div
-          className={`${gridCols} grid row-span-48 h-full w-full overflow-y-scroll no-scrollbar divide-gray-200 divide-x`}
+          className={`${gridCols} grid row-span-48 h-full w-full overflow-y-scroll no-scrollbar divide-gray-200 divide-x relative`}
         >
           <CalendarTimeColumn />
           <CalendarGrid
@@ -155,6 +156,7 @@ const Calendar = ({
             onEventDetailsClick={handleEventDetailsClick}
             weekStart={weekStart}
           />
+          <TimeIndicator />
           {selectedSlot && (
             <EventPopup
               isOpen={isEventPopupOpen}

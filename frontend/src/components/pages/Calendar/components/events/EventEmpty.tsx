@@ -11,7 +11,7 @@ const EventEmpty = ({ id, onClick }: IProps) => {
   return (
     <div
       ref={setNodeRef}
-      className={`flex flex-col text-sm items-start w-full h-[28px] box-border px-4 py-1 row-span-1 ${
+      className={`relative flex flex-col text-sm items-start w-full h-[28px] box-border px-4 py-1 row-span-1 ${
         isOver ? "bg-violet-100" : ""
       }`}
       onClick={onClick}

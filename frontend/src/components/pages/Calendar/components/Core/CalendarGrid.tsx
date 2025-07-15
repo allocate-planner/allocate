@@ -2,13 +2,14 @@ import { useMemo } from "react";
 
 import { isSameDay } from "date-fns";
 
-import { times, transformTo24HourFormat } from "@/utils/TimeUtils";
+import { calendarHours, times, transformTo24HourFormat } from "@/utils/TimeUtils";
 import type { ITransformedEvent } from "@/models/IEvent";
 
 import Event from "@/components/pages/Calendar/components/events/Event";
 import EventEmpty from "@/components/pages/Calendar/components/events/EventEmpty";
 
 import type { CalendarView } from "@/components/pages/Calendar/hooks/useCalendarView";
+import React from "react";
 
 interface IProps {
   daysOfWeek: number[];
@@ -55,39 +56,55 @@ export const CalendarGrid = ({
     return handlers;
   }, [events, onEventDetailsClick]);
 
-  return (
+  return (  
     <div
       className={`${getColSpan()} w-full h-full row-span-48 grid-rows-subgrid grid-cols-subgrid grid divide-gray-200 divide-x`}
     >
       {daysOfWeek.map((day: number) => (
         <div
           key={day}
-          className="w-full h-full min-w-0 col-span-1 row-span-48 grid grid-rows-subgrid grid-cols-subgrid box-border divide-gray-200 divide-y"
+          className="w-full h-full min-w-0 col-span-1 row-span-48 grid grid-rows-subgrid grid-cols-subgrid box-border divide-gray-200 divide-y relative"
         >
-          {times.map((timeSlot: string, index: number) => {
-            const events = getEventsForTimeSlot(day, timeSlot);
+          {calendarHours.map((_: number, index: number) => {
+            const timeSlotForTop = times[index * 2]!;
+            const timeSlotForBottom = times[index * 2 + 1]!;
 
-            if (events.length > 0) {
-              return events.map(event => (
-                <Event
-                  id={event.id}
-                  title={event.title}
-                  colour={event.colour}
-                  startTime={event.start_time}
-                  endTime={event.end_time}
-                  onClick={eventClickHandlers.get(event.id)}
-                  key={`${day}-${index}`}
-                />
-              ));
-            } else {
-              return (
-                <EventEmpty
-                  key={`${day}-${index}`}
-                  id={`${day}-${index}`}
-                  onClick={() => onEventClick(day, timeSlot)}
-                />
-              );
-            }
+            return (
+              <React.Fragment key={`${day}-${index}`}>
+                <div className="flex flex-col relative row-span-2">
+                  <EventEmpty
+                    id={`${day}-${index * 2}`}
+                    onClick={() => onEventClick(day, timeSlotForTop)}
+                  />
+                  <EventEmpty
+                    id={`${day}-${index * 2 + 1}`}
+                    onClick={() => onEventClick(day, timeSlotForBottom)}
+                  />
+                </div>
+                {getEventsForTimeSlot(day, timeSlotForTop).map(event => (
+                  <Event
+                    key={event.id}
+                    id={event.id}
+                    title={event.title}
+                    colour={event.colour}
+                    startTime={event.start_time}
+                    endTime={event.end_time}
+                    onClick={eventClickHandlers.get(event.id)}
+                  />
+                ))}
+                {getEventsForTimeSlot(day, timeSlotForBottom).map(event => (
+                  <Event
+                    key={event.id}
+                    id={event.id}
+                    title={event.title}
+                    colour={event.colour}
+                    startTime={event.start_time}
+                    endTime={event.end_time}
+                    onClick={eventClickHandlers.get(event.id)}
+                  />
+                ))}
+              </React.Fragment>
+            );
           })}
         </div>
       ))}
