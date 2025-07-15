@@ -30,6 +30,7 @@ import { Input } from "@/components/common/Input";
 import { Label } from "@/components/common/Label";
 
 import { convertToISO, convertToTimePeriodFromISO, times } from "@/utils/TimeUtils";
+import { Textarea } from "@/components/common/Textarea";
 
 interface IProps {
   isOpen: boolean;
@@ -83,7 +84,7 @@ const EventPopup = ({ isOpen, event, onClose, onCreate }: IProps) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[475px]">
         <DialogHeader className="space-y-4">
           <DialogTitle>Add to Calendar</DialogTitle>
           <DialogDescription>
@@ -113,7 +114,7 @@ const EventPopup = ({ isOpen, event, onClose, onCreate }: IProps) => {
                 Description
               </Label>
               <div className="flex flex-col w-2/3">
-                <Input
+                <Textarea
                   id="description"
                   placeholder="Discuss new Product Name"
                   className="w-full"

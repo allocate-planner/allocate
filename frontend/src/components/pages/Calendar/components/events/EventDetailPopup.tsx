@@ -27,6 +27,7 @@ import {
 
 import { Input } from "@/components/common/Input";
 import { Label } from "@/components/common/Label";
+import { Textarea } from "@/components/common/Textarea";
 
 import { convertToISO, convertToTimePeriodFromHHmm, times } from "@/utils/TimeUtils";
 
@@ -91,7 +92,7 @@ const EventDetailPopup = ({ isOpen, event, onClose, onEdit, onDelete }: IProps) 
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[475px]">
         <DialogHeader className="space-y-4">
           <DialogTitle>Edit Event</DialogTitle>
           <DialogDescription>
@@ -122,7 +123,7 @@ const EventDetailPopup = ({ isOpen, event, onClose, onEdit, onDelete }: IProps) 
                 Description
               </Label>
               <div className="flex flex-col w-2/3">
-                <Input
+                <Textarea
                   id="description"
                   placeholder="Discuss new Product Name"
                   className="w-full"
