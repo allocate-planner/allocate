@@ -14,12 +14,12 @@ const TimeIndicator = () => {
 
   const topPosition = () => {
     const minutes = currentTime.getHours() * 60 + currentTime.getMinutes();
-    const totalMinutes = 24 * 60;
-    return (minutes / totalMinutes) * 100;
+    const pixelsPerMinute = 56 / 60;
+    return minutes * pixelsPerMinute;
   };
 
   return (
-    <div className="absolute w-full" style={{ top: `${topPosition()}%` }}>
+    <div className="absolute w-full" style={{ top: `${topPosition()}px` }}>
       <div className="flex items-center">
         <div className="bg-red-300 text-white whitespace-nowrap text-xs px-1.5 py-0.5 rounded-sm ml-auto">
           {format(currentTime, "h:mm a")}

@@ -24,8 +24,6 @@ const Event = memo(({ id, title, colour, startTime, endTime, onClick }: IProps) 
   const durationInMinutes = endTimeInMinutes - startTimeInMinutes;
   const duration = Math.ceil(durationInMinutes / 30);
 
-  console.log(duration);
-
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
     id: id,
   });
