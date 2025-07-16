@@ -31,6 +31,9 @@ class EventBase(FrozenBaseModel):
         ),
     ] = None
 
+    rrule: str | None = None
+    exdate: str | None = None
+
 
 class Event(EventBase):
     id: int

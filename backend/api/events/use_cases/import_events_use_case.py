@@ -1,5 +1,7 @@
+from datetime import datetime
 from typing import Any
 
+from dateutil.rrule import rrulestr
 from fastapi import UploadFile
 from icalendar import Calendar
 
@@ -61,28 +63,54 @@ class ImportEventsUseCase:
             if not all([summary, dt_start, dt_end]):
                 continue
 
-            if dt_start.dt.date() != dt_end.dt.date():
+            event_start_date = (
+                dt_start.dt.date() if isinstance(dt_start.dt, datetime) else dt_start.dt
+            )
+            event_end_date = (
+                dt_end.dt.date() if isinstance(dt_end.dt, datetime) else dt_end.dt
+            )
+
+            if event_start_date != event_end_date:
                 continue
 
-            title = str(summary)[:256]
-            date = dt_start.dt.strftime("%Y-%m-%d")
-            start_time = dt_start.dt.strftime("%H:%M")
-            end_time = dt_end.dt.strftime("%H:%M")
+            event_start_time: datetime = dt_start.dt
+            event_end_time: datetime = dt_end.dt
+
+            title = str(summary)[:256] if summary else "(no title)"
 
             description = str(description)[:1024] if description else None
             location = str(location)[:256] if location else None
+
+            rrule_prop = event.get("RRULE")
+            exdate_prop = event.get("EXDATE")
+
+            rrule_text = ImportEventsUseCase.ical_text(rrule_prop, ";")
+            exdate_text = ImportEventsUseCase.ical_text(exdate_prop, ",")
+
+            if rrule_text:
+                rrulestr(rrule_text)
 
             event = EventBase(  # noqa: PLW2901
                 title=title,
                 description=description,
                 location=location,
-                date=date,
-                start_time=start_time,
-                end_time=end_time,
+                date=event_start_time.date(),
+                start_time=event_start_time.time(),
+                end_time=event_end_time.time(),
                 colour=CreateEventUseCase.random_background_colour(),
+                rrule=rrule_text,
+                exdate=exdate_text,
             )
 
             events.append(event)
             create_event_use_case.execute(event, current_user)
 
         return events
+
+    @staticmethod
+    def ical_text(value: Any, join_sep: str = ",") -> str | None:  # noqa: ANN401
+        if value is None:
+            return None
+        if isinstance(value, list):
+            return join_sep.join(v.to_ical().decode() for v in value)
+        return value.to_ical().decode()

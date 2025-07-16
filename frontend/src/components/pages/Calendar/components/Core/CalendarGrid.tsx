@@ -1,7 +1,5 @@
 import { useMemo } from "react";
 
-import { isSameDay } from "date-fns";
-
 import { calendarHours, times, transformTo24HourFormat } from "@/utils/TimeUtils";
 import type { ITransformedEvent } from "@/models/IEvent";
 
@@ -17,16 +15,14 @@ interface IProps {
   events: ITransformedEvent[];
   onEventClick: (day: number, timeSlot: string) => void;
   onEventDetailsClick: (event: ITransformedEvent) => void;
-  weekStart: Date;
 }
 
-export const CalendarGrid = ({
+const CalendarGridComponent = ({
   daysOfWeek,
   calendarView,
   events,
   onEventClick,
   onEventDetailsClick,
-  weekStart,
 }: IProps) => {
   const getColSpan = () => {
     switch (calendarView) {
@@ -39,13 +35,18 @@ export const CalendarGrid = ({
     }
   };
 
+  const eventLookup = useMemo(() => {
+    const map = new Map<string, ITransformedEvent[]>();
+    events.forEach((event: ITransformedEvent) => {
+      const key = `${event.day}-${event.start_time}`;
+      if (!map.has(key)) map.set(key, []);
+      map.get(key)!.push(event);
+    });
+    return map;
+  }, [events]);
+
   const getEventsForTimeSlot = (day: number, time: string) => {
-    return events.filter(
-      (event: ITransformedEvent) =>
-        isSameDay(event.event_week_start, weekStart) &&
-        event.day === day &&
-        event.start_time == transformTo24HourFormat(time)
-    );
+    return eventLookup.get(`${day}-${transformTo24HourFormat(time)}`) ?? [];
   };
 
   const eventClickHandlers = useMemo(() => {
@@ -56,7 +57,7 @@ export const CalendarGrid = ({
     return handlers;
   }, [events, onEventDetailsClick]);
 
-  return (  
+  return (
     <div
       className={`${getColSpan()} w-full h-full row-span-48 grid-rows-subgrid grid-cols-subgrid grid divide-gray-200 divide-x`}
     >
@@ -111,3 +112,5 @@ export const CalendarGrid = ({
     </div>
   );
 };
+
+export const CalendarGrid = React.memo(CalendarGridComponent);

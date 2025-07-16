@@ -5,11 +5,9 @@ import { toast } from "sonner";
 import { CalendarDaysIcon, Cog6ToothIcon, MicrophoneIcon } from "@heroicons/react/24/outline";
 
 import { useAuth } from "@/AuthProvider";
-
 import { audioService } from "@/services/AudioService";
 
 import SpeechComponent from "@/components/pages/Calendar/components/other/SpeechComponent";
-
 import SettingsPopup from "@/components/pages/Calendar/components/settings/SettingsPopup";
 
 import HamburgerMenu from "@/components/pages/Calendar/components/sidebar/HamburgerMenu";
@@ -17,8 +15,6 @@ import MenuList from "@/components/pages/Calendar/components/sidebar/MenuList";
 import UserInfo from "@/components/pages/Calendar/components/sidebar/UserInfo";
 
 interface IProps {
-  retrieveEventData: (startDate: string, endDate: string) => void;
-  dateData: (currentWeek: Date) => { startDate: string; endDate: string };
   sidebarOpen: boolean;
 }
 
@@ -31,7 +27,7 @@ export type MenuItem = {
   customContent?: React.ReactNode;
 };
 
-const Sidebar = ({ retrieveEventData, dateData, sidebarOpen }: IProps) => {
+const Sidebar = ({ sidebarOpen }: IProps) => {
   const navigate = useNavigate();
 
   const { firstName, lastName, emailAddress, accessToken, logout } = useAuth();
@@ -42,7 +38,7 @@ const Sidebar = ({ retrieveEventData, dateData, sidebarOpen }: IProps) => {
       logout();
       toast.success("You have successfully been logged out!");
       navigate("/");
-    } catch (error) {
+    } catch {
       toast.error("Something went wrong when logging out.");
     }
   };
@@ -52,12 +48,8 @@ const Sidebar = ({ retrieveEventData, dateData, sidebarOpen }: IProps) => {
       if (accessToken) {
         await audioService.processAudio(audio, accessToken);
         toast.success("Audio successfully processed");
-
-        const { startDate, endDate } = dateData(new Date());
-
-        retrieveEventData(startDate, endDate);
       }
-    } catch (error) {
+    } catch {
       toast.error("Audio not processed");
     }
   };
@@ -67,20 +59,9 @@ const Sidebar = ({ retrieveEventData, dateData, sidebarOpen }: IProps) => {
   };
 
   const menuItems: MenuItem[] = [
-    {
-      icon: CalendarDaysIcon,
-      title: "Calendar",
-      hasBackground: true,
-    },
-    {
-      icon: Cog6ToothIcon,
-      title: "Settings",
-      onClick: () => setSettingsOpen(true),
-    },
-    {
-      icon: MicrophoneIcon,
-      customContent: <SpeechComponent onProcess={processAudio} />,
-    },
+    { icon: CalendarDaysIcon, title: "Calendar", hasBackground: true },
+    { icon: Cog6ToothIcon, title: "Settings", onClick: () => setSettingsOpen(true) },
+    { icon: MicrophoneIcon, customContent: <SpeechComponent onProcess={processAudio} /> },
   ];
 
   if (sidebarOpen) {

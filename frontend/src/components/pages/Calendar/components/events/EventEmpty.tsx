@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { useDroppable } from "@dnd-kit/core";
 
 interface IProps {
@@ -5,7 +6,7 @@ interface IProps {
   onClick?: () => void;
 }
 
-const EventEmpty = ({ id, onClick }: IProps) => {
+const EventEmptyComponent = ({ id, onClick }: IProps) => {
   const { setNodeRef, isOver } = useDroppable({ id: id });
 
   return (
@@ -19,4 +20,6 @@ const EventEmpty = ({ id, onClick }: IProps) => {
   );
 };
 
-export default EventEmpty;
+EventEmptyComponent.displayName = "EventEmpty";
+
+export default memo(EventEmptyComponent);

@@ -38,15 +38,16 @@ export const eventService = {
       });
   },
 
-  getEvents: async (startDate: string, endDate: string, accessToken: string): Promise<IEvent[]> => {
+  getEvents: async (accessToken: string): Promise<IEvent[]> => {
     return await axios
       .get(`${API_BASE_URL}/events`, {
-        params: { start_date: startDate, end_date: endDate },
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       })
-      .then(response => response.data.events)
+      .then(response => {
+        return response.data.events;
+      })
       .catch(error => {
         if (error.response && error.response.data && error.response.data.detail) {
           throw new Error(error.response.data.detail);

@@ -42,7 +42,6 @@ def create_event(
 
 @events.get("/api/v1/events", response_model=event.EventList)
 def get_events(
-    request: Annotated[event.GetEvent, Depends()],
     get_events_for_user_use_case: Annotated[
         GetEventsForUserUseCase,
         Depends(get_events_for_user_use_case),
@@ -50,7 +49,7 @@ def get_events(
     current_user: Annotated[str, Depends(get_current_user)],
 ):
     try:
-        return get_events_for_user_use_case.execute(current_user, request)
+        return get_events_for_user_use_case.execute(current_user)
     except UserNotFoundError as e:
         raise HTTPException(status_code=404, detail=str(e)) from e
     except EventsNotFoundError as e:

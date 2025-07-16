@@ -1,7 +1,7 @@
-import { useEffect, useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { DndContext } from "@dnd-kit/core";
 
-import { addDays, startOfWeek, parseISO, isWithinInterval } from "date-fns";
+import { addDays, startOfWeek, isSameWeek, parseISO } from "date-fns";
 
 import { useAuth } from "@/AuthProvider";
 import type { ITransformedEvent, ISelectedEvent, IEvent } from "@/models/IEvent";
@@ -26,23 +26,13 @@ const INITIAL_DATE = new Date();
 
 interface IProps {
   events: ITransformedEvent[];
-  retrieveEventData: (startDate: string, endDate: string) => void;
   transformEvents: (events: IEvent[]) => ITransformedEvent[];
   setEvents: React.Dispatch<React.SetStateAction<ITransformedEvent[]>>;
-  dateData: (currentWeek: Date) => { startDate: string; endDate: string };
   sidebarOpen: boolean;
   setSidebarOpen: (open: boolean) => void;
 }
 
-const Calendar = ({
-  events,
-  retrieveEventData,
-  transformEvents,
-  setEvents,
-  dateData,
-  sidebarOpen,
-  setSidebarOpen,
-}: IProps) => {
+const Calendar = ({ events, transformEvents, setEvents, sidebarOpen, setSidebarOpen }: IProps) => {
   useOAuthCallback();
 
   const [selectedSlot, setSelectedSlot] = useState<ISelectedEvent | null>();
@@ -60,8 +50,14 @@ const Calendar = ({
     setIsEventDetailPopupOpen,
     setIsEventPopupOpen,
   });
+
   const { currentWeek, setCurrentWeek, moveWeek } = useWeekNavigation(INITIAL_DATE);
-  const { sensors, onDragEnd } = useDrag({ events, editEvent });
+  const weekEvents = useMemo(
+    () => events.filter(e => isSameWeek(parseISO(e.date), currentWeek, { weekStartsOn: 1 })),
+    [events, currentWeek]
+  );
+
+  const { sensors, onDragEnd } = useDrag({ events: weekEvents, editEvent });
   const calendarView = useCalendarView();
 
   const weekStart = startOfWeek(currentWeek);
@@ -95,25 +91,7 @@ const Calendar = ({
     setIsEventDetailPopupOpen(false);
   };
 
-  const isCurrentWeekWithinRange = (start_date: string, end_date: string) => {
-    const startDate = parseISO(start_date);
-    const endDate = parseISO(end_date);
-
-    return isWithinInterval(currentWeek, { start: startDate, end: endDate });
-  };
-
-  useEffect(() => {
-    const { startDate, endDate } = dateData(currentWeek);
-
-    if (isCurrentWeekWithinRange(startDate, endDate)) {
-      retrieveEventData(startDate, endDate);
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentWeek]);
-
   const daysCount = calendarView === "single" ? 1 : calendarView === "triple" ? 3 : 7;
-
   const viewStartDate =
     calendarView === "single"
       ? new Date()
@@ -151,10 +129,9 @@ const Calendar = ({
           <CalendarGrid
             daysOfWeek={daysOfWeek}
             calendarView={calendarView}
-            events={events}
+            events={weekEvents}
             onEventClick={handleEventClick}
             onEventDetailsClick={handleEventDetailsClick}
-            weekStart={weekStart}
           />
           <TimeIndicator />
           {selectedSlot && (

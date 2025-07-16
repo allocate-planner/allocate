@@ -20,7 +20,7 @@ if db_url:
 # add your model's MetaData object here
 # for 'autogenerate' support
 from api.system.models.models import Base
-
+ 
 target_metadata = Base.metadata
 
 # other values from the config, defined by the needs of env.py,

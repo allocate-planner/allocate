@@ -43,9 +43,12 @@ class CreateEventUseCase:
 
         if request.description is not None:
             event_data["description"] = request.description
-
         if request.location is not None:
             event_data["location"] = request.location
+        if request.rrule is not None:
+            event_data["rrule"] = request.rrule
+        if request.exdate is not None:
+            event_data["exdate"] = request.exdate
 
         event = Event(**event_data)
 

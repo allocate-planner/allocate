@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 import { useNavigate } from "react-router-dom";
 
-import { startOfWeek, parseISO, getDay, format, endOfWeek, subWeeks, addWeeks } from "date-fns";
+import { startOfWeek, parseISO, getDay } from "date-fns";
 
 import Sidebar from "@/components/pages/Calendar/components/sidebar/Sidebar";
 import Calendar from "@/components/pages/Calendar/components/core/Calendar";
@@ -20,24 +20,7 @@ const CalendarPage = () => {
   const [events, setEvents] = useState<ITransformedEvent[]>([]);
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
 
-  const calculatePaginationDates = (currentWeek: Date) => {
-    const startDate = endOfWeek(subWeeks(currentWeek, 1), { weekStartsOn: 0 });
-    const endDate = endOfWeek(addWeeks(currentWeek, 1), { weekStartsOn: 0 });
-
-    return {
-      startDate: format(startDate, "yyyy-MM-dd"),
-      endDate: format(endDate, "yyyy-MM-dd"),
-    };
-  };
-
-  const retrieveEventData = async (startDate: string, endDate: string) => {
-    if (accessToken) {
-      const events = await eventService.getEvents(startDate, endDate, accessToken);
-      setEvents(transformEvents(events));
-    }
-  };
-
-  const transformEvents = (events: IEvent[]) => {
+  const transformEvents = useCallback((events: IEvent[]) => {
     return events.map((event: IEvent) => {
       const eventWeekStart = startOfWeek(parseISO(event.date));
 
@@ -56,7 +39,14 @@ const CalendarPage = () => {
         end_time: endTime,
       };
     });
-  };
+  }, []);
+
+  const retrieveEventData = useCallback(async () => {
+    if (accessToken) {
+      const events = await eventService.getEvents(accessToken);
+      setEvents(transformEvents(events));
+    }
+  }, [accessToken, transformEvents]);
 
   useEffect(() => {
     document.title = "allocate — Calendar";
@@ -66,19 +56,19 @@ const CalendarPage = () => {
     }
   }, [navigate, isAuthenticated]);
 
+  useEffect(() => {
+    if (accessToken) {
+      retrieveEventData();
+    }
+  }, [accessToken, retrieveEventData]);
+
   return (
     <div className="flex flex-row h-screen">
-      <Sidebar
-        retrieveEventData={retrieveEventData}
-        dateData={calculatePaginationDates}
-        sidebarOpen={sidebarOpen}
-      />
+      <Sidebar sidebarOpen={sidebarOpen} />
       <Calendar
         events={events}
-        retrieveEventData={retrieveEventData}
         transformEvents={transformEvents}
         setEvents={setEvents}
-        dateData={calculatePaginationDates}
         sidebarOpen={sidebarOpen}
         setSidebarOpen={setSidebarOpen}
       />
