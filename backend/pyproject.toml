@@ -5,6 +5,7 @@ description = "The backend for the allocate project."
 readme = "README.md"
 requires-python = ">=3.12.1"
 dependencies = [
+    "alembic>=1.16.4",
     "annotated-types==0.7.0",
     "anyio==4.5.0",
     "bcrypt>=4.3.0",

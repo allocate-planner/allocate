@@ -6,6 +6,7 @@ from sqlalchemy import (
     ForeignKey,
     Integer,
     String,
+    Text,
     Time,
 )
 from sqlalchemy.ext.declarative import declarative_base
@@ -41,6 +42,9 @@ class Event(Base):
     date = Column(Date, nullable=False)
     start_time = Column(Time, nullable=False)
     end_time = Column(Time, nullable=False)
+
+    rrule = Column(String(512), nullable=True)
+    exdate = Column(Text, nullable=True)
 
     colour = Column(String(256), nullable=False)
 
