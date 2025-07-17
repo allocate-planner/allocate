@@ -11,6 +11,7 @@ export const EventSchema = z.object({
   colour: z.string(),
   start_time: z.string(),
   end_time: z.string(),
+  repeated: z.boolean().optional(),
 });
 
 export const EventCreateSchema = z
@@ -74,3 +75,9 @@ export type IEvent = z.infer<typeof EventSchema>;
 export type IEventCreate = z.infer<typeof EventCreateSchema>;
 export type IEditEvent = z.infer<typeof EventEditSchema>;
 export type ITransformedEvent = z.infer<typeof TransformedEventSchema>;
+
+export type IEventUpdate = IEvent & {
+  previous_date?: string;
+  previous_start_time?: string;
+  previous_end_time?: string;
+};

@@ -1,6 +1,6 @@
 import { useSensors, useSensor, MouseSensor, type DragEndEvent } from "@dnd-kit/core";
 
-import type { ITransformedEvent } from "@/models/IEvent";
+import type { ITransformedEvent, IEventUpdate } from "@/models/IEvent";
 import {
   calculateNewDateFromDaySlot,
   calculateNewEndSlot,
@@ -9,7 +9,7 @@ import {
 
 interface IProps {
   events: ITransformedEvent[];
-  editEvent: (event: ITransformedEvent) => Promise<boolean>;
+  editEvent: (event: IEventUpdate) => Promise<boolean>;
 }
 
 export const useDrag = ({ events, editEvent }: IProps) => {
@@ -30,13 +30,16 @@ export const useDrag = ({ events, editEvent }: IProps) => {
     const draggedEvent = events.find(e => e.id === eventId);
     if (!draggedEvent) return;
 
-    const newEvent: ITransformedEvent = {
+    const newEvent: IEventUpdate = {
       ...draggedEvent,
       date: calculateNewDateFromDaySlot(draggedEvent.date, draggedEvent.day, dropDateSlot),
       start_time: convertTimeSlotIndexToISO(dropDateSlot),
       end_time: convertTimeSlotIndexToISO(
         calculateNewEndSlot(draggedEvent.start_time, draggedEvent.end_time, dropDateSlot)
       ),
+      previous_date: draggedEvent.date,
+      previous_start_time: draggedEvent.start_time,
+      previous_end_time: draggedEvent.end_time,
     };
 
     await editEvent(newEvent);

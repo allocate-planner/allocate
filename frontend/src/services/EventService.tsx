@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import type { IEvent, IEventCreate } from "@/models/IEvent";
+import type { IEvent, IEventCreate, IEventUpdate } from "@/models/IEvent";
 import { API_BASE_URL } from "@/utils/Constants";
 
 export const eventService = {
@@ -57,7 +57,7 @@ export const eventService = {
       });
   },
 
-  deleteEvent: async (event_id: number, accessToken: string) => {
+  deleteEvent: async (event_id: number, accessToken: string, date?: string) => {
     return await axios
       .delete(`${API_BASE_URL}/events/${event_id}`, {
         headers: {
@@ -65,6 +65,7 @@ export const eventService = {
         },
         data: {
           event_id: event_id,
+          ...(date && { date: date }),
         },
       })
       .catch(error => {
@@ -76,7 +77,7 @@ export const eventService = {
       });
   },
 
-  editEvent: async (eventDetails: IEvent, accessToken: string): Promise<IEvent> => {
+  editEvent: async (eventDetails: IEventUpdate, accessToken: string): Promise<IEvent> => {
     return await axios
       .put(
         `${API_BASE_URL}/events/${eventDetails.id}`,
@@ -94,6 +95,13 @@ export const eventService = {
             eventDetails.location !== undefined && {
               location: eventDetails.location,
             }),
+          ...(eventDetails.previous_date && { previous_date: eventDetails.previous_date }),
+          ...(eventDetails.previous_start_time && {
+            previous_start_time: eventDetails.previous_start_time,
+          }),
+          ...(eventDetails.previous_end_time && {
+            previous_end_time: eventDetails.previous_end_time,
+          }),
         },
         {
           headers: {

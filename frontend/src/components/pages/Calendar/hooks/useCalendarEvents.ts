@@ -3,7 +3,7 @@ import { toast } from "sonner";
 
 import { eventService } from "@/services/EventService";
 
-import type { ITransformedEvent, IEventCreate, IEvent } from "@/models/IEvent";
+import type { ITransformedEvent, IEventCreate, IEvent, IEventUpdate } from "@/models/IEvent";
 import type { Nullable } from "@/models/IUtility";
 
 interface IProps {
@@ -55,7 +55,7 @@ export const useCalendarEvents = ({
     }
   };
 
-  const editEvent = async (event: ITransformedEvent): Promise<boolean> => {
+  const editEvent = async (event: IEventUpdate): Promise<boolean> => {
     if (!accessToken) {
       toast.error("Authentication required");
       return false;
@@ -72,7 +72,17 @@ export const useCalendarEvents = ({
         throw new Error("Failed to transform new event");
       }
 
-      setEvents(prevEvents => prevEvents.map(e => (e.id === event.id ? transformedEvent : e)));
+      setEvents(prevEvents => {
+        if (event.repeated) {
+          const oldDate = event.previous_date ?? event.date;
+          const oldStart = event.previous_start_time ?? event.start_time;
+          const filtered = prevEvents.filter(
+            e => !(e.id === event.id && e.date === oldDate && e.start_time === oldStart)
+          );
+          return [...filtered, transformedEvent];
+        }
+        return prevEvents.map(e => (e.id === event.id ? transformedEvent : e));
+      });
 
       toast.success("Event was edited");
       setIsEventDetailPopupOpen(false);
@@ -86,7 +96,7 @@ export const useCalendarEvents = ({
     }
   };
 
-  const deleteEvent = async (eventId: number): Promise<boolean> => {
+  const deleteEvent = async (event: ITransformedEvent): Promise<boolean> => {
     if (!accessToken) {
       toast.error("Authentication required");
       return false;
@@ -94,9 +104,19 @@ export const useCalendarEvents = ({
 
     setIsLoading(true);
     try {
-      await eventService.deleteEvent(eventId, accessToken);
+      if (event.repeated) {
+        await eventService.deleteEvent(event.id, accessToken, event.date);
+      } else {
+        await eventService.deleteEvent(event.id, accessToken);
+      }
 
-      setEvents(prevEvents => prevEvents.filter(e => e.id !== eventId));
+      setEvents(prevEvents => {
+        if (event.repeated) {
+          return prevEvents.filter(e => !(e.id === event.id && e.date === event.date));
+        }
+
+        return prevEvents.filter(e => e.id !== event.id);
+      });
 
       toast.success("Event was deleted");
       setIsEventDetailPopupOpen(false);

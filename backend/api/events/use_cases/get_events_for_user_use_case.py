@@ -74,7 +74,10 @@ class GetEventsForUserUseCase:
 
         if event.exdate:
             for ex in event.exdate.split(","):
-                excluded.add(date_parser.parse(ex).date())
+                excluded_dt = date_parser.parse(ex)
+                if excluded_dt.tzinfo is None:
+                    excluded_dt = excluded_dt.replace(tzinfo=UTC)
+                excluded.add(excluded_dt.date())
 
         expanded: list[Event] = []
         for occ in occurrences:
@@ -91,9 +94,8 @@ class GetEventsForUserUseCase:
                     date=occ_date,
                     start_time=event.start_time,
                     end_time=event.end_time,
-                    rrule=event.rrule,
-                    exdate=event.exdate,
                     colour=event.colour,
+                    repeated=True,
                 ),
             )
 

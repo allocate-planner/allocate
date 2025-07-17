@@ -53,7 +53,7 @@ const Calendar = ({ events, transformEvents, setEvents, sidebarOpen, setSidebarO
 
   const { currentWeek, setCurrentWeek, moveWeek } = useWeekNavigation(INITIAL_DATE);
   const weekEvents = useMemo(
-    () => events.filter(e => isSameWeek(parseISO(e.date), currentWeek, { weekStartsOn: 1 })),
+    () => events.filter(e => isSameWeek(parseISO(e.date), currentWeek, { weekStartsOn: 0 })),
     [events, currentWeek]
   );
 

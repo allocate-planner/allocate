@@ -3,7 +3,12 @@ import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { EventEditSchema, type IEditEvent, type ITransformedEvent } from "@/models/IEvent";
+import {
+  EventEditSchema,
+  type IEditEvent,
+  type ITransformedEvent,
+  type IEventUpdate,
+} from "@/models/IEvent";
 import { Button } from "@/components/common/Button";
 
 import {
@@ -35,8 +40,8 @@ interface IProps {
   isOpen: boolean;
   event: ITransformedEvent;
   onClose: () => void;
-  onEdit: (event: ITransformedEvent) => Promise<boolean>;
-  onDelete: (eventId: number) => Promise<boolean>;
+  onEdit: (event: IEventUpdate) => Promise<boolean>;
+  onDelete: (event: ITransformedEvent) => Promise<boolean>;
 }
 
 const EventDetailPopup = ({ isOpen, event, onClose, onEdit, onDelete }: IProps) => {
@@ -58,13 +63,16 @@ const EventDetailPopup = ({ isOpen, event, onClose, onEdit, onDelete }: IProps) 
   });
 
   const onSubmit = (data: IEditEvent) => {
-    const newEvent = {
+    const newEvent: IEventUpdate = {
       ...event,
       title: data.title,
       description: data.description,
       location: data.location,
       start_time: convertToISO(data.start_time),
       end_time: convertToISO(data.end_time),
+      previous_date: event.date,
+      previous_start_time: event.start_time,
+      previous_end_time: event.end_time,
     };
 
     onEdit(newEvent);
@@ -216,7 +224,7 @@ const EventDetailPopup = ({ isOpen, event, onClose, onEdit, onDelete }: IProps) 
               type="submit"
               onClick={e => {
                 e.preventDefault();
-                onDelete(event.id);
+                onDelete(event);
               }}
             >
               {isSubmitting ? "Deleting..." : "Delete"}

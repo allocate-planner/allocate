@@ -1,4 +1,5 @@
-from datetime import date, time
+from datetime import date as date_type
+from datetime import time as time_type
 from typing import Annotated
 
 from pydantic import StringConstraints
@@ -18,9 +19,9 @@ class EventBase(FrozenBaseModel):
         Annotated[str, StringConstraints(strip_whitespace=True, max_length=256)] | None
     ) = None
 
-    date: date
-    start_time: time
-    end_time: time
+    date: date_type
+    start_time: time_type
+    end_time: time_type
 
     colour: Annotated[
         str | None,
@@ -33,6 +34,7 @@ class EventBase(FrozenBaseModel):
 
     rrule: str | None = None
     exdate: str | None = None
+    repeated: bool = False
 
 
 class Event(EventBase):
@@ -40,9 +42,20 @@ class Event(EventBase):
 
 
 class GetEvent(FrozenBaseModel):
-    start_date: date
-    end_date: date
+    start_date: date_type
+    end_date: date_type
 
 
 class EventList(FrozenBaseModel):
     events: list[Event]
+
+
+class DeleteEvent(FrozenBaseModel):
+    event_id: int
+    date: date_type | None = None
+
+
+class EditEvent(EventBase):
+    previous_date: date_type | None = None
+    previous_start_time: time_type | None = None
+    previous_end_time: time_type | None = None

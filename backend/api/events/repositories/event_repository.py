@@ -32,7 +32,21 @@ class EventRepository:
 
     def edit(self, event: Event, updates: EventBase) -> Event:
         for key, value in updates:
-            setattr(event, key, value)
+            if hasattr(event, key):
+                setattr(event, key, value)
+
+        self.db.commit()
+        self.db.refresh(event)
+
+        return event
+
+    def add_exdate(self, event: Event, exdate_entry: str) -> Event:
+        if event.exdate is not None:
+            existing = set(event.exdate.split(","))
+            if exdate_entry not in existing:
+                event.exdate = f"{event.exdate},{exdate_entry}"  # type: ignore  # noqa: PGH003
+        else:
+            event.exdate = exdate_entry  # type: ignore  # noqa: PGH003
 
         self.db.commit()
         self.db.refresh(event)

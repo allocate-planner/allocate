@@ -60,7 +60,7 @@ def get_events(
 
 @events.delete("/api/v1/events/{event_id}", response_model=None)
 def delete_event(
-    event_id: int,
+    event: event.DeleteEvent,
     delete_event_use_case: Annotated[
         DeleteEventUseCase,
         Depends(delete_event_use_case),
@@ -68,7 +68,7 @@ def delete_event(
     current_user: Annotated[str, Depends(get_current_user)],
 ):
     try:
-        delete_event_use_case.execute(event_id, current_user)
+        delete_event_use_case.execute(event, current_user)
 
         return {"Message": "Event deleted successfully"}  # noqa: TRY300
     except UserNotFoundError as e:
@@ -82,7 +82,7 @@ def delete_event(
 @events.put("/api/v1/events/{event_id}", response_model=event.Event)
 def edit_event(
     event_id: int,
-    request: event.EventBase,
+    request: event.EditEvent,
     edit_event_use_case: Annotated[EditEventUseCase, Depends(edit_event_use_case)],
     current_user: Annotated[str, Depends(get_current_user)],
 ):
