@@ -1,4 +1,4 @@
-<a href="https://allocate.day">
+<a align="center" href="https://allocate.day">
   <img alt="allocate" src="https://raw.githubusercontent.com/allocate-planner/.github/9adcb1f42814411838d533fc9f3da00a972d0c49/assets/logo.svg" width="auto" height="60">
 </a>
 
