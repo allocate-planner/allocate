@@ -1,8 +1,6 @@
-<a align="center" href="https://allocate.day">
+<p align="center">
   <img alt="allocate" src="https://raw.githubusercontent.com/allocate-planner/.github/9adcb1f42814411838d533fc9f3da00a972d0c49/assets/logo.svg" width="auto" height="60">
-</a>
-
-<h3 align="center">allocate</h3>
+</p>
 
 <p align="center">
     Increase your productivity with the help of an AI-powered day planner.
