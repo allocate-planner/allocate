@@ -43,18 +43,4 @@ class OpenAIWrapper:
         first_name: str,
         current_time: str,
     ) -> None:
-        self.prompt = self.prompt.format(
-            work_start_time="09:00",
-            work_end_time="17:00",
-            work_start_day="Monday",
-            work_end_day="Friday",
-            commute_time="30 minutes",
-            commute_type="car",
-            start_meeting_1_time="09:00am",
-            lunch_start_time="12:00",
-            lunch_end_time="13:00",
-            habit_1="reading",
-            habit_explanation_1="finds it too difficult to focus",
-        )
-
         self.prompt = f"{current_time}, {first_name} | {self.prompt}"
