@@ -60,7 +60,7 @@ class EditEventUseCase:
                 date=request.date,
                 start_time=request.start_time,
                 end_time=request.end_time,
-                colour=event.colour,
+                colour=request.colour if request.colour else event.colour,
                 user_id=event.user_id,
                 user=event.user,
             )

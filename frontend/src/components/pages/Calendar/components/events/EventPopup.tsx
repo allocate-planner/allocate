@@ -40,6 +40,8 @@ const rruleOptions = [
   { label: "Every year", value: "FREQ=YEARLY" },
 ];
 
+const colourOptions = ["#FD8A8A", "#FFCBCB", "#9EA1D4", "#F1F7B5", "#A8D1D1", "#DFEBEB"];
+
 interface IProps {
   isOpen: boolean;
   event: ISelectedEvent;
@@ -64,6 +66,7 @@ const EventPopup = ({ isOpen, event, onClose, onCreate }: IProps) => {
       start_time: convertToTimePeriodFromISO(event.start_time),
       end_time: convertToTimePeriodFromISO(event.end_time),
       rrule: "DNR",
+      colour: "#FD8A8A",
     },
   });
 
@@ -88,6 +91,7 @@ const EventPopup = ({ isOpen, event, onClose, onCreate }: IProps) => {
         start_time: convertToTimePeriodFromISO(event.start_time),
         end_time: convertToTimePeriodFromISO(event.end_time),
         rrule: "DNR",
+        colour: "#FD8A8A",
       });
     }
   }, [isOpen, event.date, event.start_time, event.end_time, reset]);
@@ -223,6 +227,28 @@ const EventPopup = ({ isOpen, event, onClose, onCreate }: IProps) => {
                 {errors.location && (
                   <p className="text-red-500 text-xs mt-1">{errors.location.message}</p>
                 )}
+              </div>
+            </div>
+            <div className="flex flex-row items-center justify-between space-x-4 w-full">
+              <Label className="w-1/3">Colour</Label>
+              <div className="flex flex-row items-center space-x-2 w-2/3">
+                <Controller
+                  name="colour"
+                  control={control}
+                  render={({ field }) => (
+                    <div className="flex space-x-2">
+                      {colourOptions.map(colour => (
+                        <button
+                          type="button"
+                          key={colour}
+                          onClick={() => field.onChange(colour)}
+                          className={`w-6 h-6 rounded-full transition-all ${field.value === colour ? "ring-1 ring-offset-2 ring-gray-800 scale-110" : ""}`}
+                          style={{ backgroundColor: colour }}
+                        />
+                      ))}
+                    </div>
+                  )}
+                />
               </div>
             </div>
 

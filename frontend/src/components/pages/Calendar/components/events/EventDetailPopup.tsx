@@ -44,6 +44,8 @@ const rruleOptions = [
   { label: "Every year", value: "FREQ=YEARLY" },
 ];
 
+const colourOptions = ["#FD8A8A", "#FFCBCB", "#9EA1D4", "#F1F7B5", "#A8D1D1", "#DFEBEB"];
+
 interface IProps {
   isOpen: boolean;
   event: ITransformedEvent;
@@ -68,6 +70,7 @@ const EventDetailPopup = ({ isOpen, event, onClose, onEdit, onDelete }: IProps) 
       start_time: convertToTimePeriodFromHHmm(event.start_time),
       end_time: convertToTimePeriodFromHHmm(event.end_time),
       rrule: event.rrule ?? "DNR",
+      colour: event.colour,
     },
   });
 
@@ -80,6 +83,7 @@ const EventDetailPopup = ({ isOpen, event, onClose, onEdit, onDelete }: IProps) 
       start_time: convertToISO(data.start_time),
       end_time: convertToISO(data.end_time),
       rrule: data.rrule === "DNR" ? undefined : data.rrule,
+      colour: data.colour,
       previous_date: event.date,
       previous_start_time: event.start_time,
       previous_end_time: event.end_time,
@@ -97,6 +101,7 @@ const EventDetailPopup = ({ isOpen, event, onClose, onEdit, onDelete }: IProps) 
         start_time: convertToTimePeriodFromHHmm(event.start_time),
         end_time: convertToTimePeriodFromHHmm(event.end_time),
         rrule: event.rrule ?? "DNR",
+        colour: event.colour,
       });
     }
   }, [
@@ -107,6 +112,7 @@ const EventDetailPopup = ({ isOpen, event, onClose, onEdit, onDelete }: IProps) 
     event.start_time,
     event.end_time,
     event.rrule,
+    event.colour,
     reset,
   ]);
 
@@ -242,6 +248,28 @@ const EventDetailPopup = ({ isOpen, event, onClose, onEdit, onDelete }: IProps) 
                 {errors.location && (
                   <p className="text-red-500 text-xs mt-1">{errors.location.message}</p>
                 )}
+              </div>
+            </div>
+            <div className="flex flex-row items-center justify-between space-x-4 w-full">
+              <Label className="w-1/3">Colour</Label>
+              <div className="flex flex-row items-center space-x-2 w-2/3">
+                <Controller
+                  name="colour"
+                  control={control}
+                  render={({ field }) => (
+                    <div className="flex space-x-2">
+                      {colourOptions.map(colour => (
+                        <button
+                          type="button"
+                          key={colour}
+                          onClick={() => field.onChange(colour)}
+                          className={`w-6 h-6 rounded-full transition-all ${field.value === colour ? "ring-1 ring-offset-2 ring-gray-800 scale-110" : ""}`}
+                          style={{ backgroundColor: colour }}
+                        />
+                      ))}
+                    </div>
+                  )}
+                />
               </div>
             </div>
 

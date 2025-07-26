@@ -45,6 +45,7 @@ export const EventEditSchema = z
     title: z.string().min(1, "A title must be provided"),
     description: z.string().optional(),
     location: z.string().optional(),
+    colour: z.string().optional(),
     start_time: z.string(),
     end_time: z.string(),
     rrule: z.string().optional(),

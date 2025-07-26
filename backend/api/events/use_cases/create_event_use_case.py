@@ -1,4 +1,3 @@
-import random
 from typing import Any
 
 from api.events.repositories.event_repository import EventRepository
@@ -34,9 +33,7 @@ class CreateEventUseCase:
             "date": request.date,
             "start_time": request.start_time,
             "end_time": request.end_time,
-            "colour": request.colour
-            if request.colour
-            else CreateEventUseCase.random_background_colour(),
+            "colour": request.colour if request.colour else "#FD8A8A",
             "user_id": user.id,
             "user": user,
         }
@@ -55,15 +52,3 @@ class CreateEventUseCase:
         self.event_repository.add(event)
 
         return EventSchema.model_validate(event)
-
-    @staticmethod
-    def random_background_colour() -> str:
-        bg_colours: list[str] = [
-            "#FD8A8A",
-            "#FFCBCB",
-            "#9EA1D4",
-            "#F1F7B5",
-            "#A8D1D1",
-            "#DFEBEB",
-        ]
-        return random.choice(bg_colours)  # noqa: S311
