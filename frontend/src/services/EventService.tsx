@@ -22,6 +22,7 @@ export const eventService = {
               location: eventDetails.location,
             }),
           ...(eventDetails.rrule && { rrule: eventDetails.rrule }),
+          ...(eventDetails.colour && { colour: eventDetails.colour }),
         },
         {
           headers: {
