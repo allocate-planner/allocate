@@ -98,7 +98,7 @@ const EventPopup = ({ isOpen, event, onClose, onCreate }: IProps) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[475px]">
+      <DialogContent className="sm:max-w-[475px]" onWheel={e => e.stopPropagation()}>
         <DialogHeader className="space-y-4">
           <DialogTitle>Add to Calendar</DialogTitle>
           <DialogDescription>

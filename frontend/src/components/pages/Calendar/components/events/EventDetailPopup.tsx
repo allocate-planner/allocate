@@ -83,7 +83,7 @@ const EventDetailPopup = ({ isOpen, event, onClose, onEdit, onDelete }: IProps) 
       start_time: convertToISO(data.start_time),
       end_time: convertToISO(data.end_time),
       rrule: data.rrule === "DNR" ? undefined : data.rrule,
-      colour: data.colour,
+      colour: data.colour ?? "#FD8A8A",
       previous_date: event.date,
       previous_start_time: event.start_time,
       previous_end_time: event.end_time,
@@ -118,7 +118,7 @@ const EventDetailPopup = ({ isOpen, event, onClose, onEdit, onDelete }: IProps) 
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[475px]">
+      <DialogContent className="sm:max-w-[475px]" onWheel={e => e.stopPropagation()}>
         <DialogHeader className="space-y-4">
           <DialogTitle>Edit Event</DialogTitle>
           <DialogDescription>
