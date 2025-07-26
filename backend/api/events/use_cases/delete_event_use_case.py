@@ -36,7 +36,7 @@ class DeleteEventUseCase:
         ):
             exdate_entry = datetime.combine(
                 event.date,
-                db_event.start_time,
+                db_event.start_time,  # type: ignore  # noqa: PGH003
             ).strftime(  # type: ignore  # noqa: PGH003
                 "%Y%m%dT%H%M%SZ",
             )

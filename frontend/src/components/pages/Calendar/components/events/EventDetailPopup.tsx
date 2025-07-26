@@ -36,6 +36,14 @@ import { Textarea } from "@/components/common/Textarea";
 
 import { convertToISO, convertToTimePeriodFromHHmm, times } from "@/utils/TimeUtils";
 
+const rruleOptions = [
+  { label: "Does not repeat", value: "DNR" },
+  { label: "Every day", value: "FREQ=DAILY" },
+  { label: "Every week", value: "FREQ=WEEKLY" },
+  { label: "Every month", value: "FREQ=MONTHLY" },
+  { label: "Every year", value: "FREQ=YEARLY" },
+];
+
 interface IProps {
   isOpen: boolean;
   event: ITransformedEvent;
@@ -59,6 +67,7 @@ const EventDetailPopup = ({ isOpen, event, onClose, onEdit, onDelete }: IProps) 
       location: event.location ?? "",
       start_time: convertToTimePeriodFromHHmm(event.start_time),
       end_time: convertToTimePeriodFromHHmm(event.end_time),
+      rrule: event.rrule ?? "DNR",
     },
   });
 
@@ -70,6 +79,7 @@ const EventDetailPopup = ({ isOpen, event, onClose, onEdit, onDelete }: IProps) 
       location: data.location,
       start_time: convertToISO(data.start_time),
       end_time: convertToISO(data.end_time),
+      rrule: data.rrule === "DNR" ? undefined : data.rrule,
       previous_date: event.date,
       previous_start_time: event.start_time,
       previous_end_time: event.end_time,
@@ -86,6 +96,7 @@ const EventDetailPopup = ({ isOpen, event, onClose, onEdit, onDelete }: IProps) 
         location: event.location ?? "",
         start_time: convertToTimePeriodFromHHmm(event.start_time),
         end_time: convertToTimePeriodFromHHmm(event.end_time),
+        rrule: event.rrule ?? "DNR",
       });
     }
   }, [
@@ -95,6 +106,7 @@ const EventDetailPopup = ({ isOpen, event, onClose, onEdit, onDelete }: IProps) 
     event.location,
     event.start_time,
     event.end_time,
+    event.rrule,
     reset,
   ]);
 
@@ -139,22 +151,6 @@ const EventDetailPopup = ({ isOpen, event, onClose, onEdit, onDelete }: IProps) 
                 />
                 {errors.description && (
                   <p className="text-red-500 text-xs mt-1">{errors.description.message}</p>
-                )}
-              </div>
-            </div>
-            <div className="flex flex-row items-center justify-between space-x-4 w-full">
-              <Label htmlFor="location" className="w-1/3">
-                Location
-              </Label>
-              <div className="flex flex-col w-2/3">
-                <Input
-                  id="location"
-                  placeholder="1600 Amphitheatre Parkway"
-                  className="w-full"
-                  {...register("location")}
-                />
-                {errors.location && (
-                  <p className="text-red-500 text-xs mt-1">{errors.location.message}</p>
                 )}
               </div>
             </div>
@@ -204,6 +200,48 @@ const EventDetailPopup = ({ isOpen, event, onClose, onEdit, onDelete }: IProps) 
                     </Select>
                   )}
                 />
+              </div>
+            </div>
+            <div className="flex flex-row items-center justify-between space-x-4 w-full">
+              <Label className="w-1/3">Repeat</Label>
+              <div className="flex flex-row justify-center items-center w-2/3">
+                <Controller
+                  name="rrule"
+                  control={control}
+                  render={({ field }) => (
+                    <Select onValueChange={field.onChange} value={field.value ?? "DNR"}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Does not repeat" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>Repeat</SelectLabel>
+                          {rruleOptions.map(option => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
+              </div>
+            </div>
+            <div className="flex flex-row items-center justify-between space-x-4 w-full">
+              <Label htmlFor="location" className="w-1/3">
+                Location
+              </Label>
+              <div className="flex flex-col w-2/3">
+                <Input
+                  id="location"
+                  placeholder="1600 Amphitheatre Parkway"
+                  className="w-full"
+                  {...register("location")}
+                />
+                {errors.location && (
+                  <p className="text-red-500 text-xs mt-1">{errors.location.message}</p>
+                )}
               </div>
             </div>
 

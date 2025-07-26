@@ -21,6 +21,7 @@ export const eventService = {
             eventDetails.location !== undefined && {
               location: eventDetails.location,
             }),
+          ...(eventDetails.rrule && { rrule: eventDetails.rrule }),
         },
         {
           headers: {
@@ -102,6 +103,7 @@ export const eventService = {
           ...(eventDetails.previous_end_time && {
             previous_end_time: eventDetails.previous_end_time,
           }),
+          ...(eventDetails.rrule && { rrule: eventDetails.rrule }),
         },
         {
           headers: {

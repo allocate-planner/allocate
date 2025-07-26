@@ -50,9 +50,10 @@ const CalendarGridComponent = ({
   };
 
   const eventClickHandlers = useMemo(() => {
-    const handlers = new Map();
+    const handlers = new Map<string, () => void>();
     events.forEach((event: ITransformedEvent) => {
-      handlers.set(event.id, () => onEventDetailsClick(event));
+      const key = `${event.id}-${event.date}`;
+      handlers.set(key, () => onEventDetailsClick(event));
     });
     return handlers;
   }, [events, onEventDetailsClick]);
@@ -82,28 +83,38 @@ const CalendarGridComponent = ({
                     onClick={() => onEventClick(day, timeSlotForBottom)}
                   />
                 </div>
-                {getEventsForTimeSlot(day, timeSlotForTop).map(event => (
-                  <Event
-                    key={event.id}
-                    id={event.id}
-                    title={event.title}
-                    colour={event.colour}
-                    startTime={event.start_time}
-                    endTime={event.end_time}
-                    onClick={eventClickHandlers.get(event.id)}
-                  />
-                ))}
-                {getEventsForTimeSlot(day, timeSlotForBottom).map(event => (
-                  <Event
-                    key={event.id}
-                    id={event.id}
-                    title={event.title}
-                    colour={event.colour}
-                    startTime={event.start_time}
-                    endTime={event.end_time}
-                    onClick={eventClickHandlers.get(event.id)}
-                  />
-                ))}
+                {getEventsForTimeSlot(day, timeSlotForTop).map(event => {
+                  const compositeId = `${event.id}-${event.date}`;
+                  const clickHandler = eventClickHandlers.get(compositeId);
+
+                  return (
+                    <Event
+                      key={compositeId}
+                      id={compositeId}
+                      title={event.title}
+                      colour={event.colour}
+                      startTime={event.start_time}
+                      endTime={event.end_time}
+                      {...(clickHandler && { onClick: clickHandler })}
+                    />
+                  );
+                })}
+                {getEventsForTimeSlot(day, timeSlotForBottom).map(event => {
+                  const compositeId = `${event.id}-${event.date}`;
+                  const clickHandler = eventClickHandlers.get(compositeId);
+
+                  return (
+                    <Event
+                      key={compositeId}
+                      id={compositeId}
+                      title={event.title}
+                      colour={event.colour}
+                      startTime={event.start_time}
+                      endTime={event.end_time}
+                      {...(clickHandler && { onClick: clickHandler })}
+                    />
+                  );
+                })}
               </React.Fragment>
             );
           })}

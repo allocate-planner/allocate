@@ -44,7 +44,8 @@ class GetEventsForUserUseCase:
         events_with_rrule: list[Event] = []
 
         for event in events:
-            if event.rrule is not None:
+            if event.rrule is not None and event.rrule != "DNR":
+                events_with_rrule.append(event)
                 events_with_rrule.extend(
                     self._expand_rrule(event, start_date, end_date),
                 )

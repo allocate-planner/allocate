@@ -11,6 +11,7 @@ export const EventSchema = z.object({
   colour: z.string(),
   start_time: z.string(),
   end_time: z.string(),
+  rrule: z.string().optional(),
   repeated: z.boolean().optional(),
 });
 
@@ -23,6 +24,7 @@ export const EventCreateSchema = z
     date: z.string(),
     start_time: z.string(),
     end_time: z.string(),
+    rrule: z.string().optional(),
   })
   .refine(data => data.start_time !== data.end_time, {
     message: "Start time must be different than end time",
@@ -45,6 +47,7 @@ export const EventEditSchema = z
     location: z.string().optional(),
     start_time: z.string(),
     end_time: z.string(),
+    rrule: z.string().optional(),
   })
   .refine(data => data.start_time !== data.end_time, {
     message: "Start time must be different than end time",

@@ -43,6 +43,11 @@ export const useCalendarEvents = ({
 
       setEvents(prevEvents => [...prevEvents, transformedNewEvent]);
 
+      if (event.rrule && event.rrule !== "DNR") {
+        const updatedEvents = await eventService.getEvents(accessToken);
+        setEvents(transformEvents(updatedEvents));
+      }
+
       toast.success("Event was created");
       setIsEventPopupOpen(false);
       return true;

@@ -6,7 +6,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { formatTimeSlotToHMM, formatTimeSlotToHMMA } from "@/utils/TimeUtils";
 
 interface IProps {
-  id: number;
+  id: string;
   title: string;
   colour: string;
   startTime: string;

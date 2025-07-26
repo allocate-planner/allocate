@@ -32,6 +32,14 @@ import { Label } from "@/components/common/Label";
 import { convertToISO, convertToTimePeriodFromISO, times } from "@/utils/TimeUtils";
 import { Textarea } from "@/components/common/Textarea";
 
+const rruleOptions = [
+  { label: "Does not repeat", value: "DNR" },
+  { label: "Every day", value: "FREQ=DAILY" },
+  { label: "Every week", value: "FREQ=WEEKLY" },
+  { label: "Every month", value: "FREQ=MONTHLY" },
+  { label: "Every year", value: "FREQ=YEARLY" },
+];
+
 interface IProps {
   isOpen: boolean;
   event: ISelectedEvent;
@@ -55,6 +63,7 @@ const EventPopup = ({ isOpen, event, onClose, onCreate }: IProps) => {
       date: event.date,
       start_time: convertToTimePeriodFromISO(event.start_time),
       end_time: convertToTimePeriodFromISO(event.end_time),
+      rrule: "DNR",
     },
   });
 
@@ -78,6 +87,7 @@ const EventPopup = ({ isOpen, event, onClose, onCreate }: IProps) => {
         date: event.date,
         start_time: convertToTimePeriodFromISO(event.start_time),
         end_time: convertToTimePeriodFromISO(event.end_time),
+        rrule: "DNR",
       });
     }
   }, [isOpen, event.date, event.start_time, event.end_time, reset]);
@@ -122,22 +132,6 @@ const EventPopup = ({ isOpen, event, onClose, onCreate }: IProps) => {
                 />
                 {errors.description && (
                   <p className="text-red-500 text-xs mt-1">{errors.description.message}</p>
-                )}
-              </div>
-            </div>
-            <div className="flex flex-row items-center justify-between space-x-4 w-full">
-              <Label htmlFor="location" className="w-1/3">
-                Location
-              </Label>
-              <div className="flex flex-col w-2/3">
-                <Input
-                  id="location"
-                  placeholder="1600 Amphitheatre Parkway"
-                  className="w-full"
-                  {...register("location")}
-                />
-                {errors.location && (
-                  <p className="text-red-500 text-xs mt-1">{errors.location.message}</p>
                 )}
               </div>
             </div>
@@ -187,6 +181,48 @@ const EventPopup = ({ isOpen, event, onClose, onCreate }: IProps) => {
                     </Select>
                   )}
                 />
+              </div>
+            </div>
+            <div className="flex flex-row items-center justify-between space-x-4 w-full">
+              <Label className="w-1/3">Repeat</Label>
+              <div className="flex flex-row justify-center items-center w-2/3">
+                <Controller
+                  name="rrule"
+                  control={control}
+                  render={({ field }) => (
+                    <Select onValueChange={field.onChange} value={field.value ?? "DNR"}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Does not repeat" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>Repeat</SelectLabel>
+                          {rruleOptions.map(option => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
+              </div>
+            </div>
+            <div className="flex flex-row items-center justify-between space-x-4 w-full">
+              <Label htmlFor="location" className="w-1/3">
+                Location
+              </Label>
+              <div className="flex flex-col w-2/3">
+                <Input
+                  id="location"
+                  placeholder="1600 Amphitheatre Parkway"
+                  className="w-full"
+                  {...register("location")}
+                />
+                {errors.location && (
+                  <p className="text-red-500 text-xs mt-1">{errors.location.message}</p>
+                )}
               </div>
             </div>
 
