@@ -1,6 +1,8 @@
 import { useSensors, useSensor, MouseSensor, type DragEndEvent } from "@dnd-kit/core";
+import { useAtomValue } from "jotai";
 
-import type { ITransformedEvent, IEventUpdate } from "@/models/IEvent";
+import { weekEventsAtom } from "@/atoms/eventsAtom";
+import type { IEventUpdate } from "@/models/IEvent";
 import {
   calculateNewDateFromDaySlot,
   calculateNewEndSlot,
@@ -8,11 +10,12 @@ import {
 } from "@/utils/TimeUtils";
 
 interface IProps {
-  events: ITransformedEvent[];
   editEvent: (event: IEventUpdate) => Promise<boolean>;
 }
 
-export const useDrag = ({ events, editEvent }: IProps) => {
+export const useDrag = ({ editEvent }: IProps) => {
+  const events = useAtomValue(weekEventsAtom);
+
   const sensors = useSensors(
     useSensor(MouseSensor, {
       activationConstraint: {
@@ -24,9 +27,10 @@ export const useDrag = ({ events, editEvent }: IProps) => {
   const onDragEnd = async (event: DragEndEvent) => {
     const { over, active } = event;
 
-    const eventId = active.id;
+    const compositeId = active.id as string;
     const dropDateSlot = over?.id as string;
 
+    const eventId = parseInt(compositeId.split("-")[0]!, 10);
     const draggedEvent = events.find(e => e.id === eventId);
     if (!draggedEvent) return;
 

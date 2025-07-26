@@ -1,6 +1,8 @@
 import { useMemo } from "react";
+import { useAtomValue } from "jotai";
 
 import { calendarHours, times, transformTo24HourFormat } from "@/utils/TimeUtils";
+import { weekEventsAtom } from "@/atoms/eventsAtom";
 import type { ITransformedEvent } from "@/models/IEvent";
 
 import Event from "@/components/pages/Calendar/components/events/Event";
@@ -12,7 +14,6 @@ import React from "react";
 interface IProps {
   daysOfWeek: number[];
   calendarView: CalendarView;
-  events: ITransformedEvent[];
   onEventClick: (day: number, timeSlot: string) => void;
   onEventDetailsClick: (event: ITransformedEvent) => void;
 }
@@ -20,10 +21,11 @@ interface IProps {
 const CalendarGridComponent = ({
   daysOfWeek,
   calendarView,
-  events,
   onEventClick,
   onEventDetailsClick,
 }: IProps) => {
+  const events = useAtomValue(weekEventsAtom);
+
   const getColSpan = () => {
     switch (calendarView) {
       case "single":

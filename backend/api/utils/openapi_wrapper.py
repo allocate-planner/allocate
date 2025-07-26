@@ -18,9 +18,14 @@ class OpenAIWrapper:
 
         return transcription.text
 
-    def prompt_chat(self, first_name: str, current_time: str, user_message: str) -> str:
+    def prompt_chat(
+        self,
+        current_time: str,
+        user_message: str,
+        events: list[dict] | None = None,
+    ) -> str:
         self._read_base_prompt_from_file()
-        self._populate_dynamic_content_in_prompt(first_name, current_time)
+        self._populate_dynamic_content_in_prompt(current_time, events or [])
 
         chat_completion = self.client.chat.completions.create(
             model="gpt-4o",
@@ -40,7 +45,24 @@ class OpenAIWrapper:
 
     def _populate_dynamic_content_in_prompt(
         self,
-        first_name: str,
         current_time: str,
+        events: list[dict],
     ) -> None:
-        self.prompt = f"{current_time}, {first_name} | {self.prompt}"
+        events_text = self._format_events_for_prompt(events)
+        self.prompt = self.prompt.replace("{events}", events_text)
+        self.prompt = self.prompt.replace("{time}", current_time)
+
+    def _format_events_for_prompt(self, events: list[dict]) -> str:
+        if not events:
+            return "No events scheduled"
+
+        formatted_events = []
+        for event in events:
+            title = event.get("title", "(no title)")
+            start_time = event.get("start_time", "")
+            end_time = event.get("end_time", "")
+
+            event_str = f"{start_time}|{end_time}|{title}"
+            formatted_events.append(event_str)
+
+        return "\n".join(formatted_events)

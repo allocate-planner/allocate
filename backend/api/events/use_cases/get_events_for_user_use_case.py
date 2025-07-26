@@ -44,7 +44,7 @@ class GetEventsForUserUseCase:
         events_with_rrule: list[Event] = []
 
         for event in events:
-            if event.rrule is not None and event.rrule != "DNR":
+            if event.rrule is not None and event.rrule != "DNR":  # pyright: ignore[reportGeneralTypeIssues]
                 events_with_rrule.append(event)
                 events_with_rrule.extend(
                     self._expand_rrule(event, start_date, end_date),
@@ -65,7 +65,7 @@ class GetEventsForUserUseCase:
         end_date: date,
     ) -> list[Event]:
         dtstart = datetime.combine(event.date, event.start_time).replace(tzinfo=UTC)
-        rule = rrulestr(event.rrule, dtstart=dtstart)
+        rule = rrulestr(event.rrule, dtstart=dtstart)  # type: ignore  # noqa: PGH003
 
         start_dt = datetime.combine(start_date, event.start_time).replace(tzinfo=UTC)
         end_dt = datetime.combine(end_date, event.end_time).replace(tzinfo=UTC)

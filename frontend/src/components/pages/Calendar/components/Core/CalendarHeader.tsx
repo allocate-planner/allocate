@@ -1,15 +1,15 @@
 import { format, startOfWeek, endOfWeek, isSameDay } from "date-fns";
+import { useAtomValue, useSetAtom } from "jotai";
 
 import { ArrowLeftIcon, ArrowRightIcon, Bars3Icon } from "@heroicons/react/24/outline";
 
 import { Button } from "@/components/common/Button";
+import { currentWeekAtom } from "@/atoms/eventsAtom";
 
 import type { CalendarView } from "@/components/pages/Calendar/hooks/useCalendarView";
 
 interface IProps {
-  currentWeek: Date;
   moveWeek: (direction: number) => void;
-  setCurrentWeek: (date: Date) => void;
   calendarView: CalendarView;
   sidebarOpen: boolean;
   setSidebarOpen: (sidebarOpen: boolean) => void;
@@ -17,14 +17,14 @@ interface IProps {
 }
 
 export const CalendarHeader = ({
-  currentWeek,
   moveWeek,
-  setCurrentWeek,
   calendarView,
   sidebarOpen,
   setSidebarOpen,
   weekDays,
 }: IProps) => {
+  const currentWeek = useAtomValue(currentWeekAtom);
+  const setCurrentWeek = useSetAtom(currentWeekAtom);
   const weekStart = startOfWeek(currentWeek);
   const weekEnd = endOfWeek(currentWeek);
 

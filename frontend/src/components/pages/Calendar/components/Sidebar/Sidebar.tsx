@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAtomValue } from "jotai";
 import { toast } from "sonner";
 
 import { CalendarDaysIcon, Cog6ToothIcon, MicrophoneIcon } from "@heroicons/react/24/outline";
 
 import { useAuth } from "@/AuthProvider";
 import { audioService } from "@/services/AudioService";
+import { todaysEventsAtom } from "@/atoms/eventsAtom";
 
 import SpeechComponent from "@/components/pages/Calendar/components/other/SpeechComponent";
 import SettingsPopup from "@/components/pages/Calendar/components/settings/SettingsPopup";
@@ -16,6 +18,7 @@ import UserInfo from "@/components/pages/Calendar/components/sidebar/UserInfo";
 
 interface IProps {
   sidebarOpen: boolean;
+  onEventsUpdate?: () => Promise<void>;
 }
 
 type Icon = React.ComponentType<React.ComponentProps<"svg">>;
@@ -27,11 +30,12 @@ export type MenuItem = {
   customContent?: React.ReactNode;
 };
 
-const Sidebar = ({ sidebarOpen }: IProps) => {
+const Sidebar = ({ sidebarOpen, onEventsUpdate }: IProps) => {
   const navigate = useNavigate();
 
   const { firstName, lastName, emailAddress, accessToken, logout } = useAuth();
   const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
+  const todaysEvents = useAtomValue(todaysEventsAtom);
 
   const logoutUser = async () => {
     try {
@@ -46,7 +50,8 @@ const Sidebar = ({ sidebarOpen }: IProps) => {
   const processAudio = async (audio: Blob) => {
     try {
       if (accessToken) {
-        await audioService.processAudio(audio, accessToken);
+        await audioService.processAudio(audio, accessToken, todaysEvents);
+        onEventsUpdate?.();
         toast.success("Audio successfully processed");
       }
     } catch {

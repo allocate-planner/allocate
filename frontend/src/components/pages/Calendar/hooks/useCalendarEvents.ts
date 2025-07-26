@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { useAtomValue, useSetAtom } from "jotai";
 import { toast } from "sonner";
 
 import { eventService } from "@/services/EventService";
+import { eventsAtom } from "@/atoms/eventsAtom";
 
 import type { ITransformedEvent, IEventCreate, IEvent, IEventUpdate } from "@/models/IEvent";
 import type { Nullable } from "@/models/IUtility";
@@ -9,7 +11,6 @@ import type { Nullable } from "@/models/IUtility";
 interface IProps {
   accessToken: Nullable<string>;
   transformEvents: (events: IEvent[]) => ITransformedEvent[];
-  setEvents: React.Dispatch<React.SetStateAction<ITransformedEvent[]>>;
   setIsEventDetailPopupOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setIsEventPopupOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -17,11 +18,12 @@ interface IProps {
 export const useCalendarEvents = ({
   accessToken,
   transformEvents,
-  setEvents,
   setIsEventDetailPopupOpen,
   setIsEventPopupOpen,
 }: IProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const events = useAtomValue(eventsAtom);
+  const setEvents = useSetAtom(eventsAtom);
 
   const createEvent = async (event: IEventCreate): Promise<boolean> => {
     if (!accessToken) {
@@ -41,7 +43,7 @@ export const useCalendarEvents = ({
         throw new Error("Failed to transform new event");
       }
 
-      setEvents(prevEvents => [...prevEvents, transformedNewEvent]);
+      setEvents([...events, transformedNewEvent]);
 
       if (event.rrule && event.rrule !== "DNR") {
         const updatedEvents = await eventService.getEvents(accessToken);
@@ -77,17 +79,16 @@ export const useCalendarEvents = ({
         throw new Error("Failed to transform new event");
       }
 
-      setEvents(prevEvents => {
-        if (event.repeated) {
-          const oldDate = event.previous_date ?? event.date;
-          const oldStart = event.previous_start_time ?? event.start_time;
-          const filtered = prevEvents.filter(
-            e => !(e.id === event.id && e.date === oldDate && e.start_time === oldStart)
-          );
-          return [...filtered, transformedEvent];
-        }
-        return prevEvents.map(e => (e.id === event.id ? transformedEvent : e));
-      });
+      if (event.repeated) {
+        const oldDate = event.previous_date ?? event.date;
+        const oldStart = event.previous_start_time ?? event.start_time;
+        const filtered = events.filter(
+          e => !(e.id === event.id && e.date === oldDate && e.start_time === oldStart)
+        );
+        setEvents([...filtered, transformedEvent]);
+      } else {
+        setEvents(events.map(e => (e.id === event.id ? transformedEvent : e)));
+      }
 
       toast.success("Event was edited");
       setIsEventDetailPopupOpen(false);
@@ -115,13 +116,11 @@ export const useCalendarEvents = ({
         await eventService.deleteEvent(event.id, accessToken);
       }
 
-      setEvents(prevEvents => {
-        if (event.repeated) {
-          return prevEvents.filter(e => !(e.id === event.id && e.date === event.date));
-        }
-
-        return prevEvents.filter(e => e.id !== event.id);
-      });
+      if (event.repeated) {
+        setEvents(events.filter(e => !(e.id === event.id && e.date === event.date)));
+      } else {
+        setEvents(events.filter(e => e.id !== event.id));
+      }
 
       toast.success("Event was deleted");
       setIsEventDetailPopupOpen(false);

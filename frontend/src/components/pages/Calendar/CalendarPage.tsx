@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 
 import { useNavigate } from "react-router-dom";
+import { useSetAtom } from "jotai";
 
 import { startOfWeek, parseISO, getDay } from "date-fns";
 
@@ -9,15 +10,16 @@ import Calendar from "@/components/pages/Calendar/components/core/Calendar";
 
 import { useAuth } from "@/AuthProvider";
 import { eventService } from "@/services/EventService";
+import { eventsAtom } from "@/atoms/eventsAtom";
 
-import type { IEvent, ITransformedEvent } from "@/models/IEvent";
+import type { IEvent } from "@/models/IEvent";
 
 const CalendarPage = () => {
   const navigate = useNavigate();
 
   const { accessToken, isAuthenticated } = useAuth();
 
-  const [events, setEvents] = useState<ITransformedEvent[]>([]);
+  const setEvents = useSetAtom(eventsAtom);
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
 
   const transformEvents = useCallback((events: IEvent[]) => {
@@ -46,7 +48,7 @@ const CalendarPage = () => {
       const events = await eventService.getEvents(accessToken);
       setEvents(transformEvents(events));
     }
-  }, [accessToken, transformEvents]);
+  }, [accessToken, transformEvents, setEvents]);
 
   useEffect(() => {
     document.title = "allocate — Calendar";
@@ -64,11 +66,9 @@ const CalendarPage = () => {
 
   return (
     <div className="flex flex-row h-screen">
-      <Sidebar sidebarOpen={sidebarOpen} />
+      <Sidebar sidebarOpen={sidebarOpen} onEventsUpdate={retrieveEventData} />
       <Calendar
-        events={events}
         transformEvents={transformEvents}
-        setEvents={setEvents}
         sidebarOpen={sidebarOpen}
         setSidebarOpen={setSidebarOpen}
       />

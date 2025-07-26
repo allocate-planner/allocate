@@ -1,4 +1,5 @@
 import io
+import json
 from datetime import date, datetime
 from io import BytesIO
 
@@ -26,6 +27,7 @@ class ProcessAudioUseCase:
         current_user: str,
         file: UploadFile,
         create_event_use_case: CreateEventUseCase,
+        events: str | None = None,
     ) -> list[EventBase]:
         user = self.user_repository.find_by_email(current_user)
 
@@ -37,10 +39,12 @@ class ProcessAudioUseCase:
             buffer = self._parse_file_into_buffer(file)
             transcribed_audio = self.openai_wrapper.transcribe_audio(buffer)
 
+            parsed_events = self._parse_events_json(events)
+
             llm_response = self.openai_wrapper.prompt_chat(
-                str(user.first_name),
                 datetime.now().strftime("%H:%M"),  # noqa: DTZ005
                 transcribed_audio,
+                parsed_events,
             )
 
             return ProcessAudioUseCase._transform_llm_output_to_pydantic_objects(
@@ -59,6 +63,15 @@ class ProcessAudioUseCase:
         buffer.name = "_user_audio_file.mp3"
 
         return buffer
+
+    def _parse_events_json(self, events_json: str | None) -> list[dict]:
+        if not events_json:
+            return []
+
+        try:
+            return json.loads(events_json)
+        except json.JSONDecodeError:
+            return []
 
     @staticmethod
     def _transform_llm_output_to_pydantic_objects(

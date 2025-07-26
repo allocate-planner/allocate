@@ -1,7 +1,7 @@
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback } from "react";
 import { DndContext } from "@dnd-kit/core";
 
-import { addDays, startOfWeek, isSameWeek, parseISO } from "date-fns";
+import { addDays, startOfWeek } from "date-fns";
 
 import { useAuth } from "@/AuthProvider";
 import type { ITransformedEvent, ISelectedEvent, IEvent } from "@/models/IEvent";
@@ -22,17 +22,13 @@ import { CalendarTimeColumn } from "@/components/pages/Calendar/components/core/
 import { CalendarGrid } from "@/components/pages/Calendar/components/core/CalendarGrid";
 import TimeIndicator from "@/components/pages/Calendar/components/other/TimeIndicator";
 
-const INITIAL_DATE = new Date();
-
 interface IProps {
-  events: ITransformedEvent[];
   transformEvents: (events: IEvent[]) => ITransformedEvent[];
-  setEvents: React.Dispatch<React.SetStateAction<ITransformedEvent[]>>;
   sidebarOpen: boolean;
   setSidebarOpen: (open: boolean) => void;
 }
 
-const Calendar = ({ events, transformEvents, setEvents, sidebarOpen, setSidebarOpen }: IProps) => {
+const Calendar = ({ transformEvents, sidebarOpen, setSidebarOpen }: IProps) => {
   useOAuthCallback();
 
   const [selectedSlot, setSelectedSlot] = useState<ISelectedEvent | null>();
@@ -46,18 +42,13 @@ const Calendar = ({ events, transformEvents, setEvents, sidebarOpen, setSidebarO
   const { createEvent, editEvent, deleteEvent } = useCalendarEvents({
     accessToken,
     transformEvents,
-    setEvents,
     setIsEventDetailPopupOpen,
     setIsEventPopupOpen,
   });
 
-  const { currentWeek, setCurrentWeek, moveWeek } = useWeekNavigation(INITIAL_DATE);
-  const weekEvents = useMemo(
-    () => events.filter(e => isSameWeek(parseISO(e.date), currentWeek, { weekStartsOn: 0 })),
-    [events, currentWeek]
-  );
+  const { currentWeek, moveWeek } = useWeekNavigation();
 
-  const { sensors, onDragEnd } = useDrag({ events: weekEvents, editEvent });
+  const { sensors, onDragEnd } = useDrag({ editEvent });
   const calendarView = useCalendarView();
 
   const weekStart = startOfWeek(currentWeek);
@@ -113,9 +104,7 @@ const Calendar = ({ events, transformEvents, setEvents, sidebarOpen, setSidebarO
     <DndContext sensors={sensors} onDragEnd={onDragEnd}>
       <div className="w-full flex flex-col items-start bg-gray-50 rounded-xl">
         <CalendarHeader
-          currentWeek={currentWeek}
           moveWeek={moveWeek}
-          setCurrentWeek={setCurrentWeek}
           calendarView={calendarView}
           sidebarOpen={sidebarOpen}
           setSidebarOpen={setSidebarOpen}
@@ -129,7 +118,6 @@ const Calendar = ({ events, transformEvents, setEvents, sidebarOpen, setSidebarO
           <CalendarGrid
             daysOfWeek={daysOfWeek}
             calendarView={calendarView}
-            events={weekEvents}
             onEventClick={handleEventClick}
             onEventDetailsClick={handleEventDetailsClick}
           />
