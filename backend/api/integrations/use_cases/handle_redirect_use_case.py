@@ -1,3 +1,5 @@
+from backend.api.system.interfaces.use_cases import UseCase
+
 from api.integrations.providers.provider_registry import ProviderRegistry
 from api.integrations.repositories.integration_repository import IntegrationRepository
 from api.system.models.models import Integration
@@ -6,7 +8,7 @@ from api.users.errors.user_not_found_error import UserNotFoundError
 from api.users.repositories.user_repository import UserRepository
 
 
-class HandleRedirectUseCase:
+class HandleRedirectUseCase(UseCase):
     def __init__(
         self,
         integration_repository: IntegrationRepository,

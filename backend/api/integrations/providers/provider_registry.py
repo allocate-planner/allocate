@@ -12,6 +12,3 @@ class ProviderRegistry:
             msg = f"Unknown provider: {provider_name}"
             raise ValueError(msg)
         return self._providers[provider_name]
-
-    def get_supported_providers(self) -> list[str]:
-        return list(self._providers.keys())

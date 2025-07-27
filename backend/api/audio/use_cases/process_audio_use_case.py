@@ -9,6 +9,7 @@ from api.audio.errors.audio_processing_error import AudioProcessingError
 from api.events.use_cases.create_event_use_case import CreateEventUseCase
 from api.infrastructure.ai.scheduling_service import SchedulingService
 from api.infrastructure.ai.transcription_service import TranscriptionService
+from api.system.interfaces.use_cases import UseCase
 from api.system.schemas.event import EventBase
 from api.users.errors.user_not_found_error import UserNotFoundError
 from api.users.repositories.user_repository import UserRepository
@@ -20,7 +21,7 @@ SEPARATOR: str = "|"
 MIN_PARTS_REQUIRED: int = 3
 
 
-class ProcessAudioUseCase:
+class ProcessAudioUseCase(UseCase):
     def __init__(
         self,
         transcription_service: TranscriptionService,

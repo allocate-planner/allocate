@@ -1,17 +1,24 @@
 from sqlalchemy.orm import Session
 
+from api.system.interfaces.repositories import Repository
 from api.system.models.models import Integration
 
 
-class IntegrationRepository:
+class IntegrationRepository(Repository):
     def __init__(self, db: Session) -> None:
         self.db = db
 
-    def add(self, integration: Integration) -> None:
-        self.db.add(integration)
+    def add(self, entity: Integration) -> None:
+        self.db.add(entity)
         self.db.commit()
+        self.db.refresh(entity)
 
-        self.db.refresh(integration)
+    def find_by_id(self, entity_id: int) -> Integration | None:
+        return self.db.query(Integration).filter_by(id=entity_id).first()
+
+    def delete(self, entity: Integration) -> None:
+        self.db.delete(entity)
+        self.db.commit()
 
     def retrieve_integrations_for_user(
         self,

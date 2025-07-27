@@ -2,11 +2,12 @@ from typing import Any
 
 from api.integrations.providers.provider_registry import ProviderRegistry
 from api.integrations.repositories.integration_repository import IntegrationRepository
+from api.system.interfaces.use_cases import AsyncUseCase
 from api.users.errors.user_not_found_error import UserNotFoundError
 from api.users.repositories.user_repository import UserRepository
 
 
-class SearchNotionUseCase:
+class SearchIntegrationUseCase(AsyncUseCase):
     def __init__(
         self,
         integration_repository: IntegrationRepository,
@@ -15,9 +16,13 @@ class SearchNotionUseCase:
         self.integration_repository = integration_repository
         self.user_repository = user_repository
 
-    async def execute(self, query: str, current_user: str) -> dict[str, Any]:
+    async def execute(
+        self,
+        query: str,
+        current_user: str,
+        provider: str,
+    ) -> dict[str, Any]:
         user = self.user_repository.find_by_email(current_user)
-        provider = "notion"
 
         if user is None:
             msg = "User not found"
@@ -35,4 +40,4 @@ class SearchNotionUseCase:
             )
         )
 
-        return await concrete_provider.search(query, integration.access_token)
+        return await concrete_provider.search(query, str(integration.access_token))

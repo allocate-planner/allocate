@@ -2,12 +2,13 @@ from datetime import datetime
 
 from api.events.errors.event_not_found_error import EventNotFoundError
 from api.events.repositories.event_repository import EventRepository
+from api.system.interfaces.use_cases import UseCase
 from api.system.schemas.event import DeleteEvent
 from api.users.errors.user_not_found_error import UserNotFoundError
 from api.users.repositories.user_repository import UserRepository
 
 
-class DeleteEventUseCase:
+class DeleteEventUseCase(UseCase):
     def __init__(
         self,
         event_repository: EventRepository,

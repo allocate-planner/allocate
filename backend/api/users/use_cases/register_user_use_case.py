@@ -1,3 +1,4 @@
+from api.system.interfaces.use_cases import UseCase
 from api.system.models.models import User
 from api.system.schemas.user import User as UserSchema
 from api.system.schemas.user import UserDetails
@@ -6,7 +7,7 @@ from api.users.hashers.bcrypt_hasher import BCryptHasher
 from api.users.repositories.user_repository import UserRepository
 
 
-class RegisterUserUseCase:
+class RegisterUserUseCase(UseCase):
     def __init__(
         self,
         user_repository: UserRepository,

@@ -3,12 +3,16 @@ from typing import Any
 
 from langchain_core.tools import tool
 
-from api.integrations.use_cases.search_notion_use_case import SearchNotionUseCase
+from api.integrations.use_cases.search_integration_use_case import (
+    SearchIntegrationUseCase,
+)
+
+NOTION_PROVIDER = "notion"
 
 
 class ToolsService:
-    def __init__(self, search_notion_use_case: SearchNotionUseCase) -> None:
-        self.search_notion_use_case = search_notion_use_case
+    def __init__(self, search_integration_use_case: SearchIntegrationUseCase) -> None:
+        self.search_integration_use_case = search_integration_use_case
 
     def get_tools_for_user(self, current_user: str) -> list:
         @tool
@@ -16,7 +20,11 @@ class ToolsService:
             """Search user's Notion workspace for documents, pages, or databases."""
             try:
                 return asyncio.run(
-                    self.search_notion_use_case.execute(query, current_user),
+                    self.search_integration_use_case.execute(
+                        query,
+                        current_user,
+                        NOTION_PROVIDER,
+                    ),
                 )
             except Exception as e:
                 return {"Error": str(e)}

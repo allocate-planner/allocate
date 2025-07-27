@@ -1,10 +1,11 @@
 from api.integrations.repositories.integration_repository import IntegrationRepository
+from api.system.interfaces.use_cases import UseCase
 from api.system.schemas.integration import ProviderEnum
 from api.users.errors.user_not_found_error import UserNotFoundError
 from api.users.repositories.user_repository import UserRepository
 
 
-class RetrieveIntegrationsUseCase:
+class RetrieveIntegrationsUseCase(UseCase):
     def __init__(
         self,
         integration_repository: IntegrationRepository,

@@ -2,6 +2,7 @@ from datetime import datetime
 
 from api.events.errors.event_not_found_error import EventNotFoundError
 from api.events.repositories.event_repository import EventRepository
+from api.system.interfaces.use_cases import UseCase
 from api.system.models.models import Event as EventModel
 from api.system.schemas.event import EditEvent as EditEventSchema
 from api.system.schemas.event import Event as EventSchema
@@ -9,7 +10,7 @@ from api.users.errors.user_not_found_error import UserNotFoundError
 from api.users.repositories.user_repository import UserRepository
 
 
-class EditEventUseCase:
+class EditEventUseCase(UseCase):
     def __init__(
         self,
         event_repository: EventRepository,

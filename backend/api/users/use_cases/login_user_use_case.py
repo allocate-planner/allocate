@@ -4,6 +4,7 @@ import jwt
 from fastapi.security import OAuth2PasswordRequestForm
 
 from api.config import Config
+from api.system.interfaces.use_cases import UseCase
 from api.system.schemas.user import UserWithToken
 from api.users.errors.invalid_credentials_error import InvalidCredentialsError
 from api.users.errors.user_not_found_error import UserNotFoundError
@@ -11,7 +12,7 @@ from api.users.hashers.bcrypt_hasher import BCryptHasher
 from api.users.repositories.user_repository import UserRepository
 
 
-class LoginUserUseCase:
+class LoginUserUseCase(UseCase):
     def __init__(
         self,
         user_repository: UserRepository,
