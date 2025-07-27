@@ -29,6 +29,10 @@ class DeleteEventUseCase:
             msg = "Event not found"
             raise EventNotFoundError(msg)
 
+        if db_event.user_id != user.id:  # type: ignore  # noqa: PGH003
+            msg = "Event not found"
+            raise EventNotFoundError(msg)
+
         if (
             db_event.rrule is not None
             and event.date is not None

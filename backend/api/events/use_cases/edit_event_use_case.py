@@ -36,6 +36,10 @@ class EditEventUseCase:
             msg = "Event not found"
             raise EventNotFoundError(msg)
 
+        if event.user_id != user.id:  # type: ignore  # noqa: PGH003
+            msg = "Event not found"
+            raise EventNotFoundError(msg)
+
         if event.rrule is None:
             self.event_repository.edit(event, request)
             return EventSchema.model_validate(event)
@@ -48,8 +52,8 @@ class EditEventUseCase:
 
         if ghost_conditions:
             exdate_entry = datetime.combine(
-                request.previous_date or event.date,
-                request.previous_start_time or event.start_time,
+                request.previous_date or event.date,  # type: ignore  # noqa: PGH003
+                request.previous_start_time or event.start_time,  # type: ignore  # noqa: PGH003
             ).strftime("%Y%m%dT%H%M%SZ")
             self.event_repository.add_exdate(event, exdate_entry)
 

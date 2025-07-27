@@ -6,7 +6,7 @@ from fastapi.security import OAuth2PasswordBearer
 from jwt import PyJWTError
 from sqlalchemy.orm import Session
 
-from api.config import Config
+from api.config import config
 from api.database import get_db
 from api.events.repositories.event_repository import EventRepository
 from api.integrations.repositories.integration_repository import IntegrationRepository
@@ -34,17 +34,13 @@ def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]) -> str | Non
         return None
 
     try:
-        if Config.JWT_SECRET_KEY:
+        if config.JWT_SECRET_KEY:
             payload = jwt.decode(
                 token,
-                Config.JWT_SECRET_KEY,
-                algorithms=[Config.JWT_ALGORITHM],
+                config.JWT_SECRET_KEY,
+                algorithms=[config.JWT_ALGORITHM],
             )
 
-            if payload is not None:
-                user_email = payload.get("sub")
-
-                return str(user_email)
-        return None  # noqa: TRY300
+            return str(payload.get("sub"))
     except PyJWTError:
         return None

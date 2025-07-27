@@ -21,3 +21,14 @@ class DevelopmentConfig(Config):
     DEVELOPMENT: bool = True
     DEBUG: bool = True
     ENV: str = "debug"
+
+
+def get_config() -> Config:
+    env = os.environ.get("ALLOCATE_ENV", "development").lower()
+
+    if env == "production":
+        return ProductionConfig()
+    return DevelopmentConfig()
+
+
+config = get_config()

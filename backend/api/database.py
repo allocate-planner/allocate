@@ -1,9 +1,9 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from api.config import DevelopmentConfig, ProductionConfig
+from api.config import config
 
-database_url = DevelopmentConfig.DATABASE_URL or ProductionConfig.DATABASE_URL
+database_url = config.DATABASE_URL
 
 if database_url:
     engine = create_engine(database_url)
