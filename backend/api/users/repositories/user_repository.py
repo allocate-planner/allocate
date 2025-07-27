@@ -19,3 +19,7 @@ class UserRepository(Repository):
 
     def find_by_email(self, email_address: str) -> User | None:
         return self.db.query(User).filter_by(email_address=email_address).first()
+
+    def delete(self, entity: User) -> None:
+        self.db.delete(entity)
+        self.db.commit()
