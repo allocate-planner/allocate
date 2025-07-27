@@ -1,4 +1,4 @@
-from typing import Annotated, Any
+from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException
 
@@ -7,7 +7,6 @@ from api.integrations.dependencies import (
     connect_integration_use_case,
     handle_redirect_use_case,
     retrieve_integrations_use_case,
-    search_notion_use_case,
 )
 from api.integrations.use_cases.connect_integration_use_case import (
     ConnectIntegrationUseCase,
@@ -16,7 +15,6 @@ from api.integrations.use_cases.handle_redirect_use_case import HandleRedirectUs
 from api.integrations.use_cases.retrieve_integrations_use_case import (
     RetrieveIntegrationsUseCase,
 )
-from api.integrations.use_cases.search_notion_use_case import SearchNotionUseCase
 from api.system.schemas.integration import (
     IntegrationCreate,
     OAuthCallbackData,
@@ -82,24 +80,6 @@ def retrieve_integrations(
 ):
     try:
         return retrieve_integration_use_case.execute(
-            current_user,
-        )
-    except UserNotFoundError as e:
-        raise HTTPException(status_code=404, detail=str(e)) from e
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e)) from e
-
-
-@integrations.get("/api/v1/mcp/notion/search", response_model=dict[str, Any])
-async def search_notion(
-    search_notion_use_case: Annotated[
-        SearchNotionUseCase,
-        Depends(search_notion_use_case),
-    ],
-    current_user: Annotated[str, Depends(get_current_user)],
-):
-    try:
-        return await search_notion_use_case.execute(
             current_user,
         )
     except UserNotFoundError as e:

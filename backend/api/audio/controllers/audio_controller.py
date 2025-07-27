@@ -14,7 +14,7 @@ audio = APIRouter()
 
 
 @audio.post("/api/v1/audio", response_model=list[EventBase])
-def process_audio(
+async def process_audio(
     file: Annotated[UploadFile, File()],
     events: Annotated[str, Form()],
     process_audio_use_case: Annotated[
@@ -28,7 +28,7 @@ def process_audio(
     current_user: Annotated[str, Depends(get_current_user)],
 ):
     try:
-        return process_audio_use_case.execute(
+        return await process_audio_use_case.execute(
             current_user,
             file,
             create_event_use_case,

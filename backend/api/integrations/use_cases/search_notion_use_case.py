@@ -15,7 +15,7 @@ class SearchNotionUseCase:
         self.integration_repository = integration_repository
         self.user_repository = user_repository
 
-    async def execute(self, current_user: str) -> dict[str, Any]:
+    async def execute(self, query: str, current_user: str) -> dict[str, Any]:
         user = self.user_repository.find_by_email(current_user)
         provider = "notion"
 
@@ -35,4 +35,4 @@ class SearchNotionUseCase:
             )
         )
 
-        return await concrete_provider.search("Rules", integration.access_token)
+        return await concrete_provider.search(query, integration.access_token)
