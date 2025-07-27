@@ -25,10 +25,14 @@ allocate is a modern calendar application with native AI features, primarily foc
 - [Python](https://www.python.org/) – backend language
 - [FastAPI](https://fastapi.tiangolo.com/) – backend framework
 - [Astral](https://docs.astral.sh/) – backend tooling
+- [PostgreSQL](https://www.postgresql.org/) – database
+
 - [TypeScript](https://www.typescriptlang.org/) – frontend language
 - [React](https://react.dev/) – frontend framework
-- [PostgreSQL](https://www.postgresql.org/) – database
+
 - [OpenAI](https://openai.com/) – LLM & transcription models
+- [LangChain](https://www.langchain.com/) – LLM tooling
+
 - [GitHub](https://github.com/features/actions) – CI/CD _(soon)_
 - [Docker](https://www.docker.com/) - containers _(soon)_
 - [AWS](https://aws.amazon.com/) – cloud/infra _(soon)_
