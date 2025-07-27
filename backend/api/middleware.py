@@ -1,0 +1,102 @@
+import logging
+from collections.abc import Awaitable, Callable
+
+import jwt
+from fastapi import Request, Response
+from fastapi.responses import JSONResponse
+from jwt import PyJWTError
+
+from api.audio.errors.audio_processing_error import AudioProcessingError
+from api.config import config
+from api.events.errors.event_not_found_error import EventNotFoundError
+from api.events.errors.events_not_found_error import EventsNotFoundError
+from api.users.errors.invalid_credentials_error import InvalidCredentialsError
+from api.users.errors.user_already_exists_error import UserAlreadyExistsError
+from api.users.errors.user_not_found_error import UserNotFoundError
+
+logger = logging.getLogger(__name__)
+
+ANONYMOUS_USER_ID = "ANONYMOUS"
+
+
+async def request_logging_middleware(
+    request: Request,
+    call_next: Callable[[Request], Awaitable[Response]],
+) -> Response:
+    user_id = ANONYMOUS_USER_ID
+
+    auth_header = request.headers.get("authorization")
+    if auth_header and auth_header.startswith("Bearer "):
+        token = auth_header.split(" ")[1]
+        try:
+            if config.JWT_SECRET_KEY:
+                payload = jwt.decode(
+                    token,
+                    config.JWT_SECRET_KEY,
+                    algorithms=[config.JWT_ALGORITHM],
+                )
+                user_id = str(payload.get("sub", ANONYMOUS_USER_ID))
+        except PyJWTError:
+            pass
+
+    logger.info(
+        "USER %s %s %s",
+        user_id,
+        request.method,
+        request.url.path,
+    )
+
+    return await call_next(request)
+
+
+async def error_handling_middleware(
+    request: Request,
+    call_next: Callable[[Request], Awaitable[Response]],
+) -> Response:
+    try:
+        return await call_next(request)
+    except (
+        UserNotFoundError,
+        EventNotFoundError,
+        EventsNotFoundError,
+    ):
+        logger.exception(
+            "Business logic error on %s %s",
+            request.method,
+            request.url.path,
+        )
+        return JSONResponse(status_code=404, content={"detail": "Resource not found"})
+    except UserAlreadyExistsError:
+        logger.exception(
+            "Business logic error on %s %s",
+            request.method,
+            request.url.path,
+        )
+        return JSONResponse(status_code=409, content={"detail": "User already exists"})
+    except InvalidCredentialsError:
+        logger.exception(
+            "Business logic error on %s %s",
+            request.method,
+            request.url.path,
+        )
+        return JSONResponse(status_code=401, content={"detail": "Invalid credentials"})
+    except AudioProcessingError:
+        logger.exception(
+            "Business logic error on %s %s",
+            request.method,
+            request.url.path,
+        )
+        return JSONResponse(
+            status_code=400,
+            content={"detail": "Audio processing failed"},
+        )
+    except Exception:
+        logger.exception(
+            "Unexpected error on %s %s",
+            request.method,
+            request.url.path,
+        )
+        return JSONResponse(
+            status_code=500,
+            content={"detail": "An unexpected error occurred. Please try again later."},
+        )
