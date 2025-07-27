@@ -1,7 +1,6 @@
-from backend.api.system.interfaces.use_cases import UseCase
-
 from api.integrations.providers.provider_registry import ProviderRegistry
 from api.integrations.repositories.integration_repository import IntegrationRepository
+from api.system.interfaces.use_cases import UseCase
 from api.system.models.models import Integration
 from api.system.schemas.integration import IntegrationCreate, OAuthCallbackData
 from api.users.errors.user_not_found_error import UserNotFoundError
