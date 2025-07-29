@@ -36,3 +36,18 @@ class UserWithToken(UserBase):
 
     access_token: str
     refresh_token: str
+
+
+class EditUser(FrozenBaseModel):
+    first_name: Annotated[
+        str | None,
+        StringConstraints(strip_whitespace=True, max_length=64),
+    ] = None
+    last_name: Annotated[
+        str | None,
+        StringConstraints(strip_whitespace=True, max_length=64),
+    ] = None
+    password: Annotated[
+        str | None,
+        StringConstraints(strip_whitespace=True, max_length=256),
+    ] = None
