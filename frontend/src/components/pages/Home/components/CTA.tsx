@@ -27,7 +27,7 @@ const CTA = () => {
           >
             Get started
           </a>
-          <a href="#" className="text-sm/6 font-semibold text-gray-900 z-10">
+          <a href="#features" className="text-sm/6 font-semibold text-gray-900 z-10">
             Learn more <span aria-hidden="true">→</span>
           </a>
         </div>

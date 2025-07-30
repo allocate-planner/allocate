@@ -9,25 +9,25 @@ const features = [
   {
     name: "Voice-first scheduling",
     description:
-      'Just say "I need to finish the auth ticket today" and watch your calendar organize itself with the right time blocks and links.',
+      'Just say "I need to review the API documentation this afternoon" and watch your calendar organise itself with the right time blocks and links.',
     icon: MicrophoneIcon,
   },
   {
     name: "Powerful integrations",
     description:
-      "Seamlessly connects to Notion, Linear, GitHub, Gmail, and more. Mention a ticket or PR and it automatically pulls in all the context you need.",
+      "Seamlessly connects to Notion, Linear, GitHub, Gmail, and more. Your AI assistant understands the context from all your connected tools.",
     icon: LinkIcon,
   },
   {
-    name: "Universal calendar",
+    name: "Lightning-fast performance",
     description:
-      "Import your schedules from Google Calendar, Proton Calendar and others in just one click. Your existing workflow, supercharged.",
+      "Built for speed with fast responses and smooth interactions. No waiting around, your schedule updates as quickly as you can think.",
     icon: CalendarDaysIcon,
   },
   {
-    name: "Intuitive UI",
+    name: "Intuitive interface",
     description:
-      "Beautiful, clean interface that gets out of your way. Drag and drop when you want to, or just speak your plans into existence.",
+      "Beautiful, minimalist design with a modern aesthetic that feels right at home. Zero clutter, just you and your schedule.",
     icon: SparklesIcon,
   },
 ];
@@ -42,8 +42,8 @@ const Features = () => {
         </p>
         <p className="mt-6 text-pretty text-lg/8 text-gray-600">
           Stop playing calendar tetris and start speaking your schedule into existence. Our
-          AI-powered planner understands your day, finds optimal time slots, and connects all your
-          tools automatically.
+          AI-powered planner understands your day, finds optimal time slots, and uses your connected
+          tools as context to create smarter, more relevant events.
         </p>
       </div>
       <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-4xl">

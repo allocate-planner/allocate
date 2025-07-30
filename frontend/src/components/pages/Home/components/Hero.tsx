@@ -1,6 +1,9 @@
 import { motion } from "motion/react";
 
-import { containerVariants, headerVariants } from "@/components/pages/Home/components/MotionVariants";
+import {
+  containerVariants,
+  headerVariants,
+} from "@/components/pages/Home/components/MotionVariants";
 
 const Hero = () => {
   return (
@@ -29,7 +32,7 @@ const Hero = () => {
               Your day, planned in seconds
             </h1>
             <p className="mt-8 text-pretty text-lg font-medium text-gray-500 sm:text-xl/8">
-              The smartest way to plan your day. Speak naturally, get perfectly organized calendars
+              The smartest way to plan your day. Speak naturally, get perfectly organised calendars
               with zero manual work.
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
@@ -39,7 +42,7 @@ const Hero = () => {
               >
                 Get started
               </a>
-              <a href="#" className="text-sm/6 font-semibold text-gray-900">
+              <a href="#features" className="text-sm/6 font-semibold text-gray-900">
                 Learn more <span aria-hidden="true">→</span>
               </a>
             </div>
