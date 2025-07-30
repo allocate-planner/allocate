@@ -1,6 +1,6 @@
 from api.system.interfaces.use_cases import UseCase
 from api.system.schemas.user import EditUser as EditUserSchema
-from api.system.schemas.user import User as UserSchema
+from api.system.schemas.user import UserBase as UserBaseSchema
 from api.users.errors.user_not_found_error import UserNotFoundError
 from api.users.hashers.bcrypt_hasher import BCryptHasher
 from api.users.repositories.user_repository import UserRepository
@@ -19,7 +19,7 @@ class EditUserUseCase(UseCase):
         self,
         request: EditUserSchema,
         current_user: str,
-    ) -> UserSchema:
+    ) -> UserBaseSchema:
         user = self.user_repository.find_by_email(current_user)
 
         if user is None:
@@ -31,4 +31,11 @@ class EditUserUseCase(UseCase):
             hashed_password = self.bcrypt_hasher.hash(request.password)
 
         self.user_repository.edit(user, request, hashed_password)
-        return UserSchema.model_validate(user)
+
+        user_base = UserBaseSchema(
+            first_name=str(user.first_name),
+            last_name=str(user.last_name),
+            email_address=str(user.email_address),
+        )
+
+        return UserBaseSchema.model_validate(user_base)

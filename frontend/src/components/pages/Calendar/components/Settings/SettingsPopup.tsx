@@ -14,13 +14,16 @@ import AccountTab from "@/components/pages/Calendar/components/settings/tabs/Acc
 import ImportTab from "@/components/pages/Calendar/components/settings/tabs/ImportTab";
 import IntegrationsTab from "@/components/pages/Calendar/components/settings/tabs/IntegrationsTab";
 import CalendarTab from "@/components/pages/Calendar/components/settings/tabs/CalendarTab";
+import type { IStoredUser } from "@/models/IUser";
 
 interface IProps {
   isOpen: boolean;
   firstName: string;
   lastName: string;
   emailAddress: string;
+  accessToken: string;
   onClose: () => void;
+  onUserUpdate?: (updatedUser: IStoredUser) => void;
 }
 
 const SettingsPopup = (props: IProps) => {
@@ -42,6 +45,8 @@ const SettingsPopup = (props: IProps) => {
             firstName={props.firstName}
             lastName={props.lastName}
             emailAddress={props.emailAddress}
+            accessToken={props.accessToken}
+            {...(props.onUserUpdate && { onUserUpdate: props.onUserUpdate })}
           />
         );
       case "import":

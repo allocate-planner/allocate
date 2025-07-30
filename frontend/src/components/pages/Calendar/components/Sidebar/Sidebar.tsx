@@ -8,6 +8,7 @@ import { CalendarDaysIcon, Cog6ToothIcon, MicrophoneIcon } from "@heroicons/reac
 import { useAuth } from "@/AuthProvider";
 import { audioService } from "@/services/AudioService";
 import { todaysEventsAtom } from "@/atoms/eventsAtom";
+import type { IStoredUser } from "@/models/IUser";
 
 import SpeechComponent from "@/components/pages/Calendar/components/other/SpeechComponent";
 import SettingsPopup from "@/components/pages/Calendar/components/settings/SettingsPopup";
@@ -33,9 +34,15 @@ export type MenuItem = {
 const Sidebar = ({ sidebarOpen, onEventsUpdate }: IProps) => {
   const navigate = useNavigate();
 
-  const { firstName, lastName, emailAddress, accessToken, logout } = useAuth();
+  const { firstName, lastName, emailAddress, accessToken, logout, login } = useAuth();
+  
   const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
   const todaysEvents = useAtomValue(todaysEventsAtom);
+
+  if (!accessToken) {
+    toast.error("Authentication required");
+    return false;
+  }
 
   const logoutUser = async () => {
     try {
@@ -61,6 +68,12 @@ const Sidebar = ({ sidebarOpen, onEventsUpdate }: IProps) => {
 
   const closeSettings = () => {
     setSettingsOpen(false);
+  };
+
+  const handleUserUpdate = (updatedUser: IStoredUser) => {
+    if (updatedUser) {
+      login(updatedUser);
+    }
   };
 
   const menuItems: MenuItem[] = [
@@ -102,8 +115,10 @@ const Sidebar = ({ sidebarOpen, onEventsUpdate }: IProps) => {
           firstName={firstName}
           lastName={lastName}
           emailAddress={emailAddress}
+          accessToken={accessToken}
           isOpen={settingsOpen}
           onClose={closeSettings}
+          onUserUpdate={handleUserUpdate}
         />
       )}
     </nav>

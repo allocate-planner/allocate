@@ -10,6 +10,7 @@ export const AuthContextSchema = z.object({
   lastName: z.string(),
   emailAddress: z.string(),
   accessToken: z.string().nullable(),
+  refreshToken: z.string().nullable(),
   login: z.function().args(z.custom<IStoredUser>()).returns(z.void()),
   logout: z.function().args().returns(z.void()),
 });

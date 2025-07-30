@@ -13,6 +13,7 @@ const defaultAuthContext: IAuthContext = {
   lastName: "",
   emailAddress: "",
   accessToken: null,
+  refreshToken: null,
   login: () => {},
   logout: () => {},
 };
@@ -57,10 +58,11 @@ export const AuthProvider = ({ children }: IAuthProvider) => {
   const contextValue: IAuthContext = {
     id: user?.id || 0,
     isAuthenticated: !!user,
-    firstName: user?.first_name || "",
-    lastName: user?.last_name || "",
-    emailAddress: user?.email_address || "",
-    accessToken: user?.access_token || null,
+    firstName: user?.firstName || "",
+    lastName: user?.lastName || "",
+    emailAddress: user?.emailAddress || "",
+    accessToken: user?.accessToken || null,
+    refreshToken: user?.refreshToken || null,
     login,
     logout,
   };

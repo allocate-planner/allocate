@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 
 from api.dependencies import get_current_user
-from api.system.schemas.user import EditUser, User, UserDetails, UserWithToken
+from api.system.schemas.user import EditUser, User, UserBase, UserDetails, UserWithToken
 from api.users.dependencies import (
     edit_user_use_case,
     get_email_address_validator,
@@ -69,7 +69,7 @@ def edit_user(
     edit_user_use_case: Annotated[EditUserUseCase, Depends(edit_user_use_case)],
     current_user: Annotated[str, Depends(get_current_user)],
     password_validator: Annotated[PasswordValidator, Depends(get_password_validator)],
-) -> User:
+) -> UserBase:
     if request.password is not None:
         validation_password_errors = password_validator.validate_user_password(
             request.password,
