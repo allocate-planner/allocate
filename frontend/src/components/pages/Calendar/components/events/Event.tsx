@@ -11,10 +11,11 @@ interface IProps {
   colour: string;
   startTime: string;
   endTime: string;
+  hasDescription?: boolean;
   onClick?: () => void;
 }
 
-const Event = memo(({ id, title, colour, startTime, endTime, onClick }: IProps) => {
+const Event = memo(({ id, title, colour, startTime, endTime, hasDescription, onClick }: IProps) => {
   const startTimeParts = startTime.split(":").map(Number);
   const endTimeParts = endTime.split(":").map(Number);
 
@@ -30,8 +31,10 @@ const Event = memo(({ id, title, colour, startTime, endTime, onClick }: IProps) 
 
   const style = {
     transform: CSS.Translate.toString(transform),
-    opacity: isDragging ? 0.5 : 1,
     zIndex: isDragging ? 1000 : 10,
+    boxShadow: hasDescription
+      ? "inset 0 0 6px rgba(255, 255, 255, 0.4), inset 0 0 1px rgba(255, 255, 255, 0.6)"
+      : undefined,
   };
 
   return (
@@ -45,8 +48,8 @@ const Event = memo(({ id, title, colour, startTime, endTime, onClick }: IProps) 
       className={`absolute z-10 flex ${
         duration === 1 ? "flex-row items-center space-x-2" : "flex-col"
       } text-sm items-start w-full h-full rounded-sm box-border px-4 py-1 hover:cursor-pointer ${
-        isDragging ? "cursor-grabbing" : "cursor-grab"
-      }`}
+        isDragging ? "cursor-grabbing opacity-50" : "cursor-grab"
+      } ${!isDragging && hasDescription ? "opacity-90" : !isDragging ? "opacity-100" : ""}`}
       onClick={onClick}
       {...listeners}
       {...attributes}

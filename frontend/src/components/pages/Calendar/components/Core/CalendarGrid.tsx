@@ -97,6 +97,7 @@ const CalendarGridComponent = ({
                       colour={event.colour}
                       startTime={event.start_time}
                       endTime={event.end_time}
+                      hasDescription={!!event.description}
                       {...(clickHandler && { onClick: clickHandler })}
                     />
                   );
@@ -113,6 +114,7 @@ const CalendarGridComponent = ({
                       colour={event.colour}
                       startTime={event.start_time}
                       endTime={event.end_time}
+                      hasDescription={!!event.description}
                       {...(clickHandler && { onClick: clickHandler })}
                     />
                   );
