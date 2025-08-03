@@ -48,6 +48,12 @@ export const formatTimeSlotToHMMA = (hour: number, minute: number): string => {
   return format(set(new Date(), { hours: hour, minutes: minute }), "h:mma").toUpperCase();
 };
 
+// Input:  "10"
+// Output: "10AM"
+export const formatHourLabel = (hour: number): string => {
+  return format(set(new Date(), { hours: hour, minutes: 0 }), "ha").toUpperCase();
+};
+
 // Input:  "05, 00"
 // Output: "05:00:00+01:00"
 export const formatISOFromTimeSlot = (hour: number, minute: number): string => {

@@ -62,14 +62,14 @@ const CalendarGridComponent = ({
 
   return (
     <div
-      className={`${getColSpan()} w-full h-full row-span-48 grid-rows-subgrid grid-cols-subgrid grid divide-gray-200 divide-x`}
+      className={`${getColSpan()} w-full h-full row-span-48 grid-rows-subgrid grid-cols-subgrid grid`}
     >
-      {daysOfWeek.map((day: number) => (
+      {daysOfWeek.map((day: number, dayIndex: number) => (
         <div
           key={day}
-          className="w-full h-full min-w-0 col-span-1 row-span-48 grid grid-rows-subgrid grid-cols-subgrid box-border divide-gray-200 divide-y relative"
+          className={`w-full h-full min-w-0 col-span-1 row-span-48 grid grid-rows-subgrid grid-cols-subgrid box-border divide-gray-200 divide-y relative ${dayIndex > 0 ? "border-l border-gray-200" : "border-l-0"}`}
         >
-          {calendarHours.map((_: number, index: number) => {
+          {calendarHours.map((hour: number, index: number) => {
             const timeSlotForTop = times[index * 2]!;
             const timeSlotForBottom = times[index * 2 + 1]!;
 

@@ -29,17 +29,17 @@ export const CalendarHeader = ({
   const getGridCols = () => {
     switch (calendarView) {
       case "single":
-        return "grid-cols-[100px_1fr]";
+        return "grid-cols-[60px_1fr]";
       case "triple":
-        return "grid-cols-4";
+        return "grid-cols-[60px_repeat(3,1fr)]";
       default:
-        return "grid-cols-8";
+        return "grid-cols-[60px_repeat(7,1fr)]";
     }
   };
 
   return (
-    <div className={`${getGridCols()} grid grid-rows-1 w-full`}>
-      <div className="col-span-8 border-b flex justify-between">
+    <div className="w-full flex flex-col">
+      <div className="border-b flex justify-between">
         <div className="p-4 flex items-center space-x-4">
           {calendarView === "single" ? (
             <Bars3Icon
@@ -66,23 +66,23 @@ export const CalendarHeader = ({
           </Button>
         </div>
       </div>
-      <div className="border-r border-b flex flex-col justify-center items-center p-4 ">
-        <h3 className="font-light text-sm">GMT +1</h3>
+      <div className={`${getGridCols()} grid grid-rows-1 w-full`}>
+        <div className="border-b"></div>
+        {weekDays.map((day: Date) => (
+          <div
+            key={day.toISOString()}
+            className={`
+              border-r border-b
+              ${isSameDay(day, new Date()) ? "border-b-violet-400" : "border-gray-200"} 
+              flex justify-center items-center p-4
+            `}
+          >
+            <span className={`${isSameDay(day, new Date()) ? "font-bold" : ""}`}>
+              {format(day, "EEE d")}
+            </span>
+          </div>
+        ))}
       </div>
-      {weekDays.map((day: Date) => (
-        <div
-          key={day.toISOString()}
-          className={`
-            border-r border-b
-            ${isSameDay(day, new Date()) ? "border-b-violet-400" : "border-gray-200"} 
-            flex justify-center items-center p-4
-          `}
-        >
-          <span className={`${isSameDay(day, new Date()) ? "font-bold" : ""}`}>
-            {format(day, "EEE d")}
-          </span>
-        </div>
-      ))}
     </div>
   );
 };

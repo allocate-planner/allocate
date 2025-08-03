@@ -95,10 +95,10 @@ const Calendar = ({ transformEvents, sidebarOpen, setSidebarOpen }: IProps) => {
 
   const gridCols =
     calendarView === "single"
-      ? "grid-cols-[100px_1fr]"
+      ? "grid-cols-[60px_1fr]"
       : calendarView === "triple"
-        ? "grid-cols-4"
-        : "grid-cols-8";
+        ? "grid-cols-[60px_repeat(3,1fr)]"
+        : "grid-cols-[60px_repeat(7,1fr)]";
 
   return (
     <DndContext sensors={sensors} onDragEnd={onDragEnd}>
@@ -112,7 +112,7 @@ const Calendar = ({ transformEvents, sidebarOpen, setSidebarOpen }: IProps) => {
         />
 
         <div
-          className={`${gridCols} grid row-span-48 h-full w-full overflow-y-scroll no-scrollbar divide-gray-200 divide-x relative`}
+          className={`${gridCols} grid row-span-48 h-full w-full overflow-y-scroll no-scrollbar relative`}
         >
           <CalendarTimeColumn />
           <CalendarGrid
