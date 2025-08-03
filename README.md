@@ -17,6 +17,10 @@
 
 <br/>
 
+> [!WARNING] > **Active Development**
+>
+> This project is currently in active development and is not yet production-ready. You should expect bugs, incomplete features, and breaking changes. Pipelines, Docker, and cloud infrastructure are still pending implementation. Use at your own discretion and please report any issues you encounter.
+
 ## Introduction
 
 allocate is a modern calendar application with native AI features, primarily focused on voice interaction. Instead of manually scheduling your days, simply speak your plans and watch your schedule appear seamlessly, with smart integrations to Notion, Linear, GitHub, Gmail, and more to give your events meaningful context.
