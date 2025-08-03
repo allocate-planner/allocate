@@ -2,6 +2,7 @@ const footerNavigation = {
   company: [
     { name: "About", href: "#" },
     { name: "Contact Us", href: "#" },
+    { name: "GitHub", href: "https://github.com/allocate-planner/allocate" },
   ],
   legal: [
     { name: "Terms of Service", href: "#" },
