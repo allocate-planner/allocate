@@ -1,5 +1,4 @@
-import { useState, useRef } from "react";
-
+import { useState, useRef, useEffect } from "react";
 import { toast } from "sonner";
 
 interface IProps {
@@ -7,81 +6,104 @@ interface IProps {
 }
 
 const SpeechComponent = ({ onProcess }: IProps) => {
-  const mimeType = "audio/webm";
-
-  const [permission, setPermission] = useState<boolean>(false);
-  const [stream, setStream] = useState<MediaStream | null>(null);
-  const mediaRecorder = useRef<MediaRecorder | null>(null);
-  const [recordingStatus, setRecordingStatus] = useState<"inactive" | "recording">("inactive");
+  const [isRecording, setIsRecording] = useState(false);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const streamRef = useRef<MediaStream | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
 
-  const handleAudioProcessing = (audioBlob: Blob) => {
-    onProcess(audioBlob);
-  };
-
-  const getMicrophonePermission = async () => {
-    if ("MediaRecorder" in window) {
-      try {
-        const streamData = await navigator.mediaDevices.getUserMedia({
-          audio: true,
-        });
-
-        setPermission(true);
-        setStream(streamData);
-      } catch (err) {
-        if (err instanceof Error) {
-          alert(err.message);
-        }
-      }
-    } else {
-      toast.error("The MediaRecorder API is not supported in your browser");
+  const cleanupStream = () => {
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach(track => track.stop());
+      streamRef.current = null;
     }
   };
 
   const startRecording = async () => {
-    if (stream) {
-      setRecordingStatus("recording");
+    if (!("MediaRecorder" in window)) {
+      toast.error("Recording not supported in your browser");
+      return;
+    }
 
-      const media = new MediaRecorder(stream, { mimeType });
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: {
+          sampleRate: 16000,
+          channelCount: 1,
+          echoCancellation: false,
+          noiseSuppression: false,
+          autoGainControl: false,
+        },
+      });
+      streamRef.current = stream;
+
+      const supportedTypes = ["audio/webm", "audio/mp4", "audio/ogg", "audio/wav"];
+      const mimeType =
+        supportedTypes.find(type => MediaRecorder.isTypeSupported(type)) || "audio/webm";
+
+      const mediaRecorder = new MediaRecorder(stream, {
+        mimeType,
+        audioBitsPerSecond: 128000,
+      });
+      mediaRecorderRef.current = mediaRecorder;
       audioChunksRef.current = [];
 
-      mediaRecorder.current = media;
-      mediaRecorder.current.start();
-
-      mediaRecorder.current.ondataavailable = (event: BlobEvent) => {
+      mediaRecorder.ondataavailable = event => {
         if (event.data.size > 0) {
           audioChunksRef.current.push(event.data);
         }
       };
+
+      mediaRecorder.onerror = () => {
+        toast.error("Recording error occurred");
+      };
+
+      await new Promise(resolve => setTimeout(resolve, 100));
+
+      mediaRecorder.start(100);
+      setIsRecording(true);
+    } catch (error) {
+      toast.error("Failed to access microphone");
+      cleanupStream();
     }
   };
 
   const stopRecording = () => {
-    if (mediaRecorder.current) {
-      setRecordingStatus("inactive");
+    if (mediaRecorderRef.current && isRecording) {
+      setIsRecording(false);
 
-      mediaRecorder.current.stop();
+      mediaRecorderRef.current.onstop = () => {
+        const totalSize = audioChunksRef.current.reduce((total, chunk) => total + chunk.size, 0);
 
-      mediaRecorder.current.onstop = () => {
+        if (totalSize === 0) {
+          toast.error("No audio data recorded");
+          cleanupStream();
+          return;
+        }
+
+        const mimeType = mediaRecorderRef.current?.mimeType || "audio/webm";
         const audioBlob = new Blob(audioChunksRef.current, { type: mimeType });
-        handleAudioProcessing(audioBlob);
+
+        onProcess(audioBlob);
+        cleanupStream();
       };
+
+      if (mediaRecorderRef.current.state === "recording") {
+        mediaRecorderRef.current.stop();
+      }
     }
   };
 
+  useEffect(() => {
+    return () => cleanupStream();
+  }, []);
+
   return (
     <div>
-      {!permission && (
-        <button onClick={getMicrophonePermission} type="button">
+      {!isRecording ? (
+        <button onClick={startRecording} type="button">
           Record
         </button>
-      )}
-      {permission && recordingStatus === "inactive" && (
-        <button onClick={startRecording} type="button">
-          Start
-        </button>
-      )}
-      {recordingStatus === "recording" && (
+      ) : (
         <button onClick={stopRecording} type="button">
           Stop
         </button>

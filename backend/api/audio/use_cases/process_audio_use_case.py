@@ -105,11 +105,15 @@ class ProcessAudioUseCase(UseCase):
             start_time, end_time, title = parts[0], parts[1], parts[2]
             description = parts[3] if len(parts) > MAX_PARTS else None
 
+            start_time_obj = datetime.strptime(start_time, TIME_FORMAT).time()  # noqa: DTZ007
+            if start_time_obj.minute not in [0, 30]:
+                continue
+
             event = EventBase(  # noqa: PLW2901
                 title=title,
                 description=description,
                 date=current_date,
-                start_time=datetime.strptime(start_time, TIME_FORMAT).time(),  # noqa: DTZ007
+                start_time=start_time_obj,
                 end_time=datetime.strptime(end_time, TIME_FORMAT).time(),  # noqa: DTZ007
                 colour=CreateEventUseCase.random_background_colour(),
             )
