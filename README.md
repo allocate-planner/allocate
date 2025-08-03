@@ -17,8 +17,7 @@
 
 <br/>
 
-> [!WARNING] > **Active Development**
->
+> [!WARNING]
 > This project is currently in active development and is not yet production-ready. You should expect bugs, incomplete features, and breaking changes. Pipelines, Docker, and cloud infrastructure are still pending implementation. Use at your own discretion and please report any issues you encounter.
 
 ## Introduction
