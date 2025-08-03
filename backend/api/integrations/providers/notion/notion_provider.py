@@ -47,7 +47,7 @@ class NotionProvider:
 
         async with httpx.AsyncClient() as client:
             response = await client.post(
-                f"{NOTION_URL}auth/token",
+                f"{NOTION_URL}oauth/token",
                 json=data,
                 headers=headers,
             )
