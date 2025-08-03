@@ -39,9 +39,7 @@ allocate is a modern calendar application with native AI features, primarily foc
 
 The video below shows an early preview of allocate, which is still under ongoing development. It runs through a sample workflow including integrations, voice interaction, and general user experience.
 
-<video width="1024" controls>
-  <source src="https://public-content-allocate.s3.eu-west-2.amazonaws.com/allocate_demo_alpha.mp4" type="video/mp4">
-</video>
+https://github.com/user-attachments/assets/8952e356-c2c9-4499-902d-b8cb788cd0f1
 
 ## Contributing
 
