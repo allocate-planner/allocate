@@ -55,17 +55,27 @@ async def error_handling_middleware(
 ) -> Response:
     try:
         return await call_next(request)
-    except (
-        UserNotFoundError,
-        EventNotFoundError,
-        EventsNotFoundError,
-    ):
+    except UserNotFoundError:
         logger.exception(
             "Business logic error on %s %s",
             request.method,
             request.url.path,
         )
-        return JSONResponse(status_code=404, content={"detail": "Resource not found"})
+        return JSONResponse(status_code=404, content={"detail": "User not found"})
+    except EventNotFoundError:
+        logger.exception(
+            "Business logic error on %s %s",
+            request.method,
+            request.url.path,
+        )
+        return JSONResponse(status_code=404, content={"detail": "Event not found"})
+    except EventsNotFoundError:
+        logger.exception(
+            "Business logic error on %s %s",
+            request.method,
+            request.url.path,
+        )
+        return JSONResponse(status_code=404, content={"detail": "Events not found"})
     except UserAlreadyExistsError:
         logger.exception(
             "Business logic error on %s %s",
@@ -79,7 +89,10 @@ async def error_handling_middleware(
             request.method,
             request.url.path,
         )
-        return JSONResponse(status_code=401, content={"detail": "Invalid credentials"})
+        return JSONResponse(
+            status_code=401,
+            content={"detail": "Invalid email or password"},
+        )
     except AudioProcessingError:
         logger.exception(
             "Business logic error on %s %s",
