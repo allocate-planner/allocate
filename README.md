@@ -7,6 +7,7 @@
     <br />
     <a href="#introduction"><strong>Introduction</strong></a> ·
     <a href="#tech-stack"><strong>Tech Stack</strong></a> ·
+    <a href="#demo"><strong>Demo</strong></a> ·
     <a href="#contributing"><strong>Contributing</strong></a>
 </p>
 
@@ -33,6 +34,14 @@ allocate is a modern calendar application with native AI features, primarily foc
 - [GitHub](https://github.com/features/actions) – CI/CD _(soon)_
 - [Docker](https://www.docker.com/) - containers _(soon)_
 - [AWS](https://aws.amazon.com/) – cloud/infra _(soon)_
+
+## Demo
+
+The video below shows an early preview of allocate, which is still under ongoing development. It runs through a sample workflow including integrations, voice interaction, and general user experience.
+
+<video width="1024" controls>
+  <source src="https://public-content-allocate.s3.eu-west-2.amazonaws.com/allocate_demo_alpha.mp4" type="video/mp4">
+</video>
 
 ## Contributing
 
