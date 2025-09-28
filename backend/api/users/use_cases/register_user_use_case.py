@@ -1,3 +1,4 @@
+from api.services.email_service import EmailService
 from api.system.interfaces.use_cases import UseCase
 from api.system.models.models import User
 from api.system.schemas.user import User as UserSchema
@@ -12,9 +13,11 @@ class RegisterUserUseCase(UseCase):
         self,
         user_repository: UserRepository,
         bcrypt_hasher: BCryptHasher,
+        email_service: EmailService,
     ) -> None:
         self.user_repository = user_repository
         self.bcrypt_hasher = bcrypt_hasher
+        self.email_service = email_service
 
     def execute(self, request: UserDetails) -> UserSchema:
         if self.user_repository.find_by_email(request.email_address):
@@ -31,5 +34,6 @@ class RegisterUserUseCase(UseCase):
         )
 
         self.user_repository.add(user)
+        self.email_service.send_welcome_email(str(user.email_address))
 
         return user

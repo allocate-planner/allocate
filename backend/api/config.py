@@ -4,8 +4,10 @@ import os
 class Config:
     DATABASE_URL: str | None = os.environ.get("ALLOCATE_DATABASE")
 
-    JWT_SECRET_KEY: str | None = os.environ.get("SECRET_KEY")
-    JWT_REFRESH_SECRET_KEY: str | None = os.environ.get("REFRESH_SECRET_KEY")
+    PLUNK_API_KEY: str | None = os.environ.get("ALLOCATE_PLUNK_API_KEY")
+
+    JWT_SECRET_KEY: str | None = os.environ.get("ALLOCATE_JWT_SECRET_KEY")
+    JWT_REFRESH_SECRET_KEY: str | None = os.environ.get("ALLOCATE_JWT_REFRESH_KEY")
     JWT_ALGORITHM: str = "HS256"
     JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = 43800
     JWT_REFRESH_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7
