@@ -65,6 +65,10 @@ class HandleRedirectUseCase(UseCase):
 
         if db_integration is None:
             self.integration_repository.add(integration)
+
             return IntegrationCreate.model_validate(integration)
 
-        return IntegrationCreate.model_validate(db_integration)
+        self.integration_repository.delete(db_integration)
+        self.integration_repository.add(integration)
+
+        return IntegrationCreate.model_validate(integration)
