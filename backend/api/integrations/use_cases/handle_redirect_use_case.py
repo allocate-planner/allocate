@@ -58,6 +58,13 @@ class HandleRedirectUseCase(UseCase):
 
         integration = Integration(**integration_data)
 
-        self.integration_repository.add(integration)
+        db_integration = self.integration_repository.find_by_user_and_provider(
+            user.id,  # type: ignore  # noqa: PGH003
+            provider,
+        )
 
-        return IntegrationCreate.model_validate(integration)
+        if db_integration is None:
+            self.integration_repository.add(integration)
+            return IntegrationCreate.model_validate(integration)
+
+        return IntegrationCreate.model_validate(db_integration)

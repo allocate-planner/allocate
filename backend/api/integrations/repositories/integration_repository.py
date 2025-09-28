@@ -9,12 +9,25 @@ class IntegrationRepository(Repository):
         self.db = db
 
     def add(self, entity: Integration) -> None:
+        self.db.query(Integration).filter_by()
+
         self.db.add(entity)
         self.db.commit()
         self.db.refresh(entity)
 
     def find_by_id(self, entity_id: int) -> Integration | None:
         return self.db.query(Integration).filter_by(id=entity_id).first()
+
+    def find_by_user_and_provider(
+        self,
+        user_id: int,
+        provider: str,
+    ) -> Integration | None:
+        return (
+            self.db.query(Integration)
+            .filter_by(user_id=user_id, provider=provider)
+            .first()
+        )
 
     def delete(self, entity: Integration) -> None:
         self.db.delete(entity)
