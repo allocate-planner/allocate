@@ -35,7 +35,7 @@ class CreateEventUseCase(UseCase):
             "date": request.date,
             "start_time": request.start_time,
             "end_time": request.end_time,
-            "colour": request.colour if request.colour else "#FD8A8A",
+            "colour": request.colour if request.colour else "#8D85D2",
             "user_id": user.id,
             "user": user,
         }
@@ -58,11 +58,11 @@ class CreateEventUseCase(UseCase):
     @staticmethod
     def random_background_colour() -> str:
         bg_colours: list[str] = [
-            "#FD8A8A",
-            "#FFCBCB",
-            "#9EA1D4",
-            "#F1F7B5",
-            "#A8D1D1",
-            "#DFEBEB",
+            "#8D85D2",
+            "#86B89A",
+            "#A9C7EA",
+            "#F7CEB7",
+            "#E09BA7",
+            "#C3CEDC",
         ]
         return random.choice(bg_colours)  # noqa: S311

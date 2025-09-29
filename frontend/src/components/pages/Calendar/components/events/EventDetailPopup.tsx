@@ -44,7 +44,7 @@ const rruleOptions = [
   { label: "Every year", value: "FREQ=YEARLY" },
 ];
 
-const colourOptions = ["#FD8A8A", "#FFCBCB", "#9EA1D4", "#F1F7B5", "#A8D1D1", "#DFEBEB"];
+const colourOptions = ["#8D85D2", "#86B89A", "#A9C7EA", "#F7CEB7", "#E09BA7", "#C3CEDC"];
 
 interface IProps {
   isOpen: boolean;
@@ -83,7 +83,7 @@ const EventDetailPopup = ({ isOpen, event, onClose, onEdit, onDelete }: IProps) 
       start_time: convertToISO(data.start_time),
       end_time: convertToISO(data.end_time),
       rrule: data.rrule === "DNR" ? undefined : data.rrule,
-      colour: data.colour ?? "#FD8A8A",
+      colour: data.colour ?? "#8D85D2",
       previous_date: event.date,
       previous_start_time: event.start_time,
       previous_end_time: event.end_time,

@@ -40,7 +40,7 @@ const rruleOptions = [
   { label: "Every year", value: "FREQ=YEARLY" },
 ];
 
-const colourOptions = ["#FD8A8A", "#FFCBCB", "#9EA1D4", "#F1F7B5", "#A8D1D1", "#DFEBEB"];
+const colourOptions = ["#8D85D2", "#86B89A", "#A9C7EA", "#F7CEB7", "#E09BA7", "#C3CEDC"];
 
 interface IProps {
   isOpen: boolean;
@@ -66,7 +66,7 @@ const EventPopup = ({ isOpen, event, onClose, onCreate }: IProps) => {
       start_time: convertToTimePeriodFromISO(event.start_time),
       end_time: convertToTimePeriodFromISO(event.end_time),
       rrule: "DNR",
-      colour: "#FD8A8A",
+      colour: "#8D85D2",
     },
   });
 
@@ -91,7 +91,7 @@ const EventPopup = ({ isOpen, event, onClose, onCreate }: IProps) => {
         start_time: convertToTimePeriodFromISO(event.start_time),
         end_time: convertToTimePeriodFromISO(event.end_time),
         rrule: "DNR",
-        colour: "#FD8A8A",
+        colour: "#8D85D2",
       });
     }
   }, [isOpen, event.date, event.start_time, event.end_time, reset]);
