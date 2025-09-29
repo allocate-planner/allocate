@@ -1,7 +1,7 @@
 import { format, isSameDay } from "date-fns";
 import { useAtomValue, useSetAtom } from "jotai";
 
-import { ArrowLeftIcon, ArrowRightIcon, Bars3Icon } from "@heroicons/react/24/outline";
+import { Bars3Icon, ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 
 import { Button } from "@/components/common/Button";
 import { currentWeekAtom } from "@/atoms/eventsAtom";
@@ -50,16 +50,16 @@ export const CalendarHeader = ({
           <h2 className="text-lg font-semibold">{format(currentWeek, "MMMM yyyy")}</h2>
         </div>
         <div className="flex justify-center items-center space-x-8 p-4">
-          <ArrowLeftIcon
-            className="w-6 h-6 cursor-pointer hover:scale-125 transform transition duration-300"
+          <ChevronLeftIcon
+            className="w-6 h-6 cursor-pointer hover:scale-110 transform transition duration-100"
             onClick={() => moveWeek(-1)}
           />
-          <ArrowRightIcon
-            className="w-6 h-6 cursor-pointer hover:scale-125 transform transition duration-300"
+          <ChevronRightIcon
+            className="w-6 h-6 cursor-pointer hover:scale-110 transform transition duration-100"
             onClick={() => moveWeek(1)}
           />
           <Button
-            className="bg-violet-100 border border-violet-400 text-violet-700 h-full rounded-lg hover:bg-violet-200"
+            className="bg-white border border-gray-300 text-gray-700 h-full rounded-lg hover:bg-gray-50"
             onClick={() => setCurrentWeek(new Date())}
           >
             Today
