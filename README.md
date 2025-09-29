@@ -34,7 +34,7 @@ allocate is a modern calendar application with native AI features, primarily foc
 - [React](https://react.dev/) – frontend framework
 - [OpenAI](https://openai.com/) – LLM & transcription models
 - [LangChain](https://www.langchain.com/) – LLM tooling
-- [GitHub](https://github.com/features/actions) – CI/CD _(soon)_
+- [GitHub](https://github.com/features/actions) – CI/CD
 - [Docker](https://www.docker.com/) - containers _(soon)_
 - [AWS](https://aws.amazon.com/) – cloud/infra _(soon)_
 
