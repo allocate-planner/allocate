@@ -21,7 +21,7 @@ ignore = [
     "T201",
     "ANN201",
     "BLE001",
-    "ANN101",
+    "COM812"
 ]
 
 [format]
