@@ -65,4 +65,4 @@ class CreateEventUseCase(UseCase):
             "#E09BA7",
             "#C3CEDC",
         ]
-        return random.choice(bg_colours)  # noqa: S311
+        return random.choice(bg_colours)  # noqa: S311  # nosec B311
