@@ -1,15 +1,28 @@
 import { useState, useRef, useEffect } from "react";
 import { toast } from "sonner";
 
+import { MicrophoneIcon } from "@heroicons/react/24/outline";
+
 interface IProps {
-  onProcess: (audio: Blob) => void;
+  onProcess: (audio: Blob) => Promise<void> | void;
+  onRecordingChange: (isRecording: boolean) => void;
+  onProcessingChange: (isProcessing: boolean) => void;
+  stopSignal: number;
+  isProcessing: boolean;
 }
 
-const SpeechComponent = ({ onProcess }: IProps) => {
+const SpeechComponent = ({
+  onProcess,
+  onRecordingChange,
+  onProcessingChange,
+  stopSignal,
+  isProcessing,
+}: IProps) => {
   const [isRecording, setIsRecording] = useState(false);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
+  const previousStopSignalRef = useRef<number>(stopSignal);
 
   const cleanupStream = () => {
     if (streamRef.current) {
@@ -19,6 +32,10 @@ const SpeechComponent = ({ onProcess }: IProps) => {
   };
 
   const startRecording = async () => {
+    if (isRecording || isProcessing) {
+      return;
+    }
+
     if (!("MediaRecorder" in window)) {
       toast.error("Recording not supported in your browser");
       return;
@@ -55,60 +72,81 @@ const SpeechComponent = ({ onProcess }: IProps) => {
 
       mediaRecorder.onerror = () => {
         toast.error("Recording error occurred");
+        cleanupStream();
+        setIsRecording(false);
+        onRecordingChange(false);
+        onProcessingChange(false);
       };
 
       await new Promise(resolve => setTimeout(resolve, 100));
 
       mediaRecorder.start(100);
       setIsRecording(true);
+      onRecordingChange(true);
     } catch (error) {
       toast.error("Failed to access microphone");
       cleanupStream();
+      onRecordingChange(false);
     }
   };
 
   const stopRecording = () => {
-    if (mediaRecorderRef.current && isRecording) {
-      setIsRecording(false);
+    if (!mediaRecorderRef.current || !isRecording) {
+      return;
+    }
 
-      mediaRecorderRef.current.onstop = () => {
-        const totalSize = audioChunksRef.current.reduce((total, chunk) => total + chunk.size, 0);
+    const recorder = mediaRecorderRef.current;
+    setIsRecording(false);
+    onRecordingChange(false);
 
-        if (totalSize === 0) {
-          toast.error("No audio data recorded");
-          cleanupStream();
-          return;
-        }
+    recorder.onstop = () => {
+      const totalSize = audioChunksRef.current.reduce((total, chunk) => total + chunk.size, 0);
 
-        const mimeType = mediaRecorderRef.current?.mimeType || "audio/webm";
-        const audioBlob = new Blob(audioChunksRef.current, { type: mimeType });
-
-        onProcess(audioBlob);
+      if (totalSize === 0) {
+        toast.error("No audio data recorded");
         cleanupStream();
-      };
-
-      if (mediaRecorderRef.current.state === "recording") {
-        mediaRecorderRef.current.stop();
+        onProcessingChange(false);
+        return;
       }
+
+      const mimeType = recorder.mimeType || "audio/webm";
+      const audioBlob = new Blob(audioChunksRef.current, { type: mimeType });
+
+      onProcessingChange(true);
+
+      Promise.resolve(onProcess(audioBlob)).finally(() => {
+        cleanupStream();
+        onProcessingChange(false);
+      });
+    };
+
+    if (recorder.state !== "inactive") {
+      recorder.stop();
     }
   };
+
+  useEffect(() => {
+    if (stopSignal !== previousStopSignalRef.current) {
+      previousStopSignalRef.current = stopSignal;
+      stopRecording();
+    }
+  }, [stopSignal]);
 
   useEffect(() => {
     return () => cleanupStream();
   }, []);
 
+  if (isRecording || isProcessing) {
+    return null;
+  }
+
   return (
-    <div>
-      {!isRecording ? (
-        <button onClick={startRecording} type="button">
-          Record
-        </button>
-      ) : (
-        <button onClick={stopRecording} type="button">
-          Stop
-        </button>
-      )}
-    </div>
+    <>
+      <MicrophoneIcon className="ml-2 w-6 h-6 flex-shrink-0" />
+      <button onClick={startRecording} type="button" className="text-left">
+        Record
+      </button>
+    </>
   );
 };
 

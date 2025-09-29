@@ -1,6 +1,13 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-import { Sheet, SheetContent, SheetDescription, SheetHeader } from "@/components/common/Sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+} from "@/components/common/Sheet";
 
 import { type MenuItem } from "@/components/pages/Calendar/components/sidebar/Sidebar";
 import UserInfo from "@/components/pages/Calendar/components/sidebar/UserInfo";
@@ -12,6 +19,7 @@ interface IProps {
   lastName: string;
   emailAddress: string;
   onLogout: () => void;
+  footerContent?: React.ReactNode;
 }
 
 const HamburgerMenu = ({
@@ -21,15 +29,17 @@ const HamburgerMenu = ({
   lastName,
   emailAddress,
   onLogout,
+  footerContent,
 }: IProps) => {
   const [open, setOpen] = useState<boolean>(sidebarOpen);
+  const navigate = useNavigate();
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetContent side={"left"} className="flex flex-col justify-between">
         <SheetHeader>
           <div className="border-b-[1px] border-gray-200 flex flex-col justify-between items-center p-12">
-            <img src="/logo.svg" alt="Allocate Logo" />
+            <img src="/logo.svg" alt="Allocate Logo" onClick={() => navigate("/")} />
           </div>
           <SheetDescription>
             <div className="mt-4 text-black space-y-1">
@@ -43,13 +53,14 @@ const HamburgerMenu = ({
             ${item.onClick ? "hover:cursor-pointer" : ""}
           `}
                 >
-                  <item.icon className="ml-2 w-6 h-6" />
+                  {item.icon ? <item.icon className="ml-2 w-6 h-6" /> : null}
                   {item.customContent ? item.customContent : <h2>{item.title}</h2>}
                 </div>
               ))}
             </div>
           </SheetDescription>
         </SheetHeader>
+        {footerContent ? <SheetFooter className="mt-auto">{footerContent}</SheetFooter> : null}
         <UserInfo
           firstName={firstName}
           lastName={lastName}

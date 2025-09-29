@@ -3,13 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { useAtomValue } from "jotai";
 import { toast } from "sonner";
 
-import { CalendarDaysIcon, Cog6ToothIcon, MicrophoneIcon } from "@heroicons/react/24/outline";
+import { CalendarDaysIcon, Cog6ToothIcon } from "@heroicons/react/24/outline";
 
 import { useAuth } from "@/AuthProvider";
 import { audioService } from "@/services/AudioService";
 import { todaysEventsAtom } from "@/atoms/eventsAtom";
 import type { IStoredUser } from "@/models/IUser";
 
+import OrbComponent from "@/components/pages/Calendar/components/other/OrbComponent";
 import SpeechComponent from "@/components/pages/Calendar/components/other/SpeechComponent";
 import SettingsPopup from "@/components/pages/Calendar/components/settings/SettingsPopup";
 
@@ -24,8 +25,9 @@ interface IProps {
 
 type Icon = React.ComponentType<React.ComponentProps<"svg">>;
 export type MenuItem = {
-  icon: Icon;
+  icon?: Icon;
   title?: string;
+  classNames?: string;
   hasBackground?: boolean;
   onClick?: () => void;
   customContent?: React.ReactNode;
@@ -35,7 +37,7 @@ const Sidebar = ({ sidebarOpen, onEventsUpdate }: IProps) => {
   const navigate = useNavigate();
 
   const { firstName, lastName, emailAddress, accessToken, logout, login } = useAuth();
-  
+
   const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
   const todaysEvents = useAtomValue(todaysEventsAtom);
 
@@ -76,10 +78,43 @@ const Sidebar = ({ sidebarOpen, onEventsUpdate }: IProps) => {
     }
   };
 
+  const [stopSignal, setStopSignal] = useState<number>(0);
+  const [isRecording, setIsRecording] = useState<boolean>(false);
+  const [isProcessingRecording, setIsProcessingRecording] = useState<boolean>(false);
+
+  const handleRecordingChange = (recording: boolean) => {
+    setIsRecording(recording);
+  };
+
+  const handleProcessingChange = (processing: boolean) => {
+    setIsProcessingRecording(processing);
+  };
+
+  const handleOrbStop = () => {
+    setStopSignal(previous => previous + 1);
+    setIsRecording(false);
+    setIsProcessingRecording(false);
+  };
+
+  const handleProcessAudio = async (audio: Blob) => {
+    await processAudio(audio);
+  };
+
   const menuItems: MenuItem[] = [
     { icon: CalendarDaysIcon, title: "Calendar", hasBackground: true },
     { icon: Cog6ToothIcon, title: "Settings", onClick: () => setSettingsOpen(true) },
-    { icon: MicrophoneIcon, customContent: <SpeechComponent onProcess={processAudio} /> },
+    {
+      customContent: (
+        <SpeechComponent
+          onProcess={handleProcessAudio}
+          onRecordingChange={handleRecordingChange}
+          onProcessingChange={handleProcessingChange}
+          stopSignal={stopSignal}
+          isProcessing={isProcessingRecording}
+        />
+      ),
+      classNames: isRecording || isProcessingRecording ? "hidden" : "",
+    },
   ];
 
   if (sidebarOpen) {
@@ -91,18 +126,33 @@ const Sidebar = ({ sidebarOpen, onEventsUpdate }: IProps) => {
         lastName={lastName}
         emailAddress={emailAddress}
         onLogout={logoutUser}
+        footerContent={
+          isRecording || isProcessingRecording ? (
+            <OrbComponent onStop={handleOrbStop} isProcessing={isProcessingRecording} />
+          ) : null
+        }
       />
     );
   }
 
   return (
     <nav className="hidden h-screen w-72 lg:flex flex-col justify-between border-r-[1px] border-gray-200 flex-shrink-0">
-      <div className="flex flex-col">
+      <div className="flex flex-col flex-1">
         <div className="border-b-[1px] border-gray-200 flex flex-col justify-between items-center p-12">
-          <img src="/logo.svg" alt="Allocate Logo" />
+          <img
+            src="/logo.svg"
+            alt="Allocate Logo"
+            className="cursor-pointer"
+            onClick={() => navigate("/")}
+          />
         </div>
         <MenuList menuItems={menuItems} />
       </div>
+      {isRecording || isProcessingRecording ? (
+        <div className="px-6 pb-4">
+          <OrbComponent onStop={handleOrbStop} isProcessing={isProcessingRecording} />
+        </div>
+      ) : null}
       <UserInfo
         firstName={firstName}
         lastName={lastName}
