@@ -1,6 +1,6 @@
-import os
-
 import httpx
+
+from api.config import config
 
 PLUNK_URL = "https://api.useplunk.com/v1/send"
 
@@ -8,7 +8,7 @@ PLUNK_URL = "https://api.useplunk.com/v1/send"
 class EmailService:
     def __init__(self) -> None:
         self.url = PLUNK_URL
-        self.api_key = os.environ.get("PLUNK_API_KEY")
+        self.api_key = config.PLUNK_API_KEY
 
     def send_welcome_email(self, recipient: str) -> None:
         self.body = """
