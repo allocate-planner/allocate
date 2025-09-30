@@ -46,9 +46,7 @@ class GetEventsForUserUseCase(UseCase):
 
         for event in events:
             if event.rrule is not None and event.rrule != "DNR":  # pyright: ignore[reportGeneralTypeIssues]
-                is_excluded = self._is_base_date_excluded(event)
-                if not is_excluded:
-                    events_with_rrule.append(event)
+                events_with_rrule.append(event)
                 events_with_rrule.extend(
                     self._expand_rrule(event, start_date, end_date)
                 )
@@ -60,20 +58,6 @@ class GetEventsForUserUseCase(UseCase):
         ]
 
         return EventList(events=validated_events)
-
-    def _is_base_date_excluded(self, event: Event) -> bool:
-        if not event.exdate:
-            return False
-
-        for ex in event.exdate.split(","):  # type: ignore  # noqa: PGH003
-            excluded_dt = date_parser.parse(ex)
-            if excluded_dt.tzinfo is None:
-                excluded_dt = excluded_dt.replace(tzinfo=UTC)
-
-            if excluded_dt.date() == event.date:  # type: ignore  # noqa: PGH003
-                return True
-
-        return False
 
     def _expand_rrule(
         self,
