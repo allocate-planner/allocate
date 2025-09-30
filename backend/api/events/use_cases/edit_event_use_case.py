@@ -43,7 +43,7 @@ class EditEventUseCase(UseCase):
             msg = "Event not found"
             raise EventNotFoundError(msg)
 
-        if event.rrule is None:
+        if event.rrule is None or event.rrule == "DNR":  # type: ignore  # noqa: PGH003
             updated_fields = self._merge_with_existing_event(event, request)
             self.event_repository.edit(event, updated_fields)
             return EventSchema.model_validate(event)

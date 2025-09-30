@@ -70,23 +70,19 @@ export const useCalendarEvents = ({
 
     setIsLoading(true);
     try {
-      const updatedEvent = await eventService.editEvent(event, accessToken);
-
-      const transformedUpdateEvent = transformEvents([updatedEvent]);
-      const transformedEvent = transformedUpdateEvent[0];
-
-      if (!transformedEvent) {
-        throw new Error("Failed to transform new event");
-      }
-
       if (event.repeated) {
-        const oldDate = event.previous_date ?? event.date;
-        const oldStart = event.previous_start_time ?? event.start_time;
-        const filtered = events.filter(
-          e => !(e.id === event.id && e.date === oldDate && e.start_time === oldStart)
-        );
-        setEvents([...filtered, transformedEvent]);
+        await eventService.editEvent(event, accessToken);
+        const updatedEvents = await eventService.getEvents(accessToken);
+        setEvents(transformEvents(updatedEvents));
       } else {
+        const updatedEvent = await eventService.editEvent(event, accessToken);
+        const transformedUpdateEvent = transformEvents([updatedEvent]);
+        const transformedEvent = transformedUpdateEvent[0];
+
+        if (!transformedEvent) {
+          throw new Error("Failed to transform new event");
+        }
+
         setEvents(events.map(e => (e.id === event.id ? transformedEvent : e)));
       }
 

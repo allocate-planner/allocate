@@ -104,7 +104,6 @@ export const eventService = {
           ...(eventDetails.previous_end_time && {
             previous_end_time: eventDetails.previous_end_time,
           }),
-          ...(eventDetails.rrule && { rrule: eventDetails.rrule }),
         },
         {
           headers: {

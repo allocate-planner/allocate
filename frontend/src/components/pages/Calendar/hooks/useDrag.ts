@@ -42,7 +42,12 @@ export const useDrag = ({ editEvent }: IProps) => {
       draggedEvent.repeated === true || (draggedEvent.rrule && draggedEvent.rrule !== "DNR");
 
     const newEvent: IEventUpdate = {
-      ...draggedEvent,
+      id: draggedEvent.id,
+      title: draggedEvent.title,
+      description: draggedEvent.description,
+      location: draggedEvent.location,
+      colour: draggedEvent.colour,
+      repeated: draggedEvent.repeated,
       start_time: convertTimeSlotIndexToISO(dropDateSlot),
       end_time: convertTimeSlotIndexToISO(
         calculateNewEndSlot(draggedEvent.start_time, draggedEvent.end_time, dropDateSlot)

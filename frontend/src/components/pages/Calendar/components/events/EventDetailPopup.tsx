@@ -78,14 +78,14 @@ const EventDetailPopup = ({ isOpen, event, onClose, onEdit, onDelete }: IProps) 
     const isRecurringOccurrence = event.repeated === true || (event.rrule && event.rrule !== "DNR");
 
     const newEvent: IEventUpdate = {
-      ...event,
+      id: event.id,
       title: data.title,
       description: data.description,
       location: data.location,
       start_time: convertToISO(data.start_time),
       end_time: convertToISO(data.end_time),
-      rrule: data.rrule === "DNR" ? undefined : data.rrule,
       colour: data.colour ?? "#8D85D2",
+      repeated: event.repeated,
       ...(isRecurringOccurrence
         ? {
             previous_date: event.date,

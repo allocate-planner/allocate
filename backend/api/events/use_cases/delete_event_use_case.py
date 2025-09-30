@@ -36,6 +36,7 @@ class DeleteEventUseCase(UseCase):
 
         if (
             db_event.rrule is not None
+            and db_event.rrule != "DNR"  # type: ignore  # noqa: PGH003
             and event.date is not None
             and event.date != db_event.date
         ):
