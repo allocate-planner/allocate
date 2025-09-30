@@ -80,7 +80,8 @@ export type IEventCreate = z.infer<typeof EventCreateSchema>;
 export type IEditEvent = z.infer<typeof EventEditSchema>;
 export type ITransformedEvent = z.infer<typeof TransformedEventSchema>;
 
-export type IEventUpdate = IEvent & {
+export type IEventUpdate = Omit<IEvent, "date"> & {
+  date?: string;
   previous_date?: string;
   previous_start_time?: string;
   previous_end_time?: string;

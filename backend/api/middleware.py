@@ -10,6 +10,7 @@ from api.audio.errors.audio_processing_error import AudioProcessingError
 from api.config import config
 from api.events.errors.event_not_found_error import EventNotFoundError
 from api.events.errors.events_not_found_error import EventsNotFoundError
+from api.events.errors.recurring_event_edit_error import RecurringEventEditError
 from api.users.errors.invalid_credentials_error import InvalidCredentialsError
 from api.users.errors.user_already_exists_error import UserAlreadyExistsError
 from api.users.errors.user_not_found_error import UserNotFoundError
@@ -76,6 +77,15 @@ async def error_handling_middleware(
             request.url.path,
         )
         return JSONResponse(status_code=404, content={"detail": "Events not found"})
+    except RecurringEventEditError:
+        logger.exception(
+            "Business logic error on %s %s",
+            request.method,
+            request.url.path,
+        )
+        return JSONResponse(
+            status_code=400, content={"detail": "Cannot edit first repeated event"}
+        )
     except UserAlreadyExistsError:
         logger.exception(
             "Business logic error on %s %s",

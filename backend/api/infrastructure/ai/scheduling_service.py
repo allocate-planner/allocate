@@ -22,12 +22,14 @@ class SchedulingService:
     def _create_scheduling_agent(
         self,
         current_time: str,
-        events: list[dict],
+        events_by_date: dict[str, list[dict]],
         current_user: str,
     ) -> Any:  # noqa: ANN401
         llm = ChatOpenAI(model=LLM_MODEL, temperature=LLM_TEMPERATURE)
         tools = self.tools_service.get_tools_for_user(current_user)
-        prompt = self.transcription_service.get_scheduling_prompt(current_time, events)
+        prompt = self.transcription_service.get_scheduling_prompt(
+            current_time, events_by_date
+        )
 
         return create_react_agent(model=llm, tools=tools, prompt=prompt)
 
@@ -35,10 +37,12 @@ class SchedulingService:
         self,
         current_time: str,
         user_message: str,
-        events: list[dict],
+        events_by_date: dict[str, list[dict]],
         current_user: str,
     ) -> str:
-        agent = self._create_scheduling_agent(current_time, events, current_user)
+        agent = self._create_scheduling_agent(
+            current_time, events_by_date, current_user
+        )
         result = await agent.ainvoke(
             {"messages": [{"role": "user", "content": user_message}]},
         )

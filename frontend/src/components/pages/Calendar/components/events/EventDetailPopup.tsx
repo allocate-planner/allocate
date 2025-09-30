@@ -75,6 +75,8 @@ const EventDetailPopup = ({ isOpen, event, onClose, onEdit, onDelete }: IProps) 
   });
 
   const onSubmit = (data: IEditEvent) => {
+    const isRecurringOccurrence = event.repeated === true || (event.rrule && event.rrule !== "DNR");
+
     const newEvent: IEventUpdate = {
       ...event,
       title: data.title,
@@ -84,9 +86,15 @@ const EventDetailPopup = ({ isOpen, event, onClose, onEdit, onDelete }: IProps) 
       end_time: convertToISO(data.end_time),
       rrule: data.rrule === "DNR" ? undefined : data.rrule,
       colour: data.colour ?? "#8D85D2",
-      previous_date: event.date,
-      previous_start_time: event.start_time,
-      previous_end_time: event.end_time,
+      ...(isRecurringOccurrence
+        ? {
+            previous_date: event.date,
+            previous_start_time: event.start_time,
+            previous_end_time: event.end_time,
+          }
+        : {
+            date: event.date,
+          }),
     };
 
     onEdit(newEvent);

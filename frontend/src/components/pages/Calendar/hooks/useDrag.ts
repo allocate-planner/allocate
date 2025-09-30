@@ -30,20 +30,32 @@ export const useDrag = ({ editEvent }: IProps) => {
     const compositeId = active.id as string;
     const dropDateSlot = over?.id as string;
 
-    const eventId = parseInt(compositeId.split("-")[0]!, 10);
-    const draggedEvent = events.find(e => e.id === eventId);
+    const firstDashIndex = compositeId.indexOf("-");
+    const eventIdStr = compositeId.substring(0, firstDashIndex);
+    const eventDate = compositeId.substring(firstDashIndex + 1);
+    const eventId = parseInt(eventIdStr, 10);
+
+    const draggedEvent = events.find(e => e.id === eventId && e.date === eventDate);
     if (!draggedEvent) return;
+
+    const isRecurringOccurrence =
+      draggedEvent.repeated === true || (draggedEvent.rrule && draggedEvent.rrule !== "DNR");
 
     const newEvent: IEventUpdate = {
       ...draggedEvent,
-      date: calculateNewDateFromDaySlot(draggedEvent.date, draggedEvent.day, dropDateSlot),
       start_time: convertTimeSlotIndexToISO(dropDateSlot),
       end_time: convertTimeSlotIndexToISO(
         calculateNewEndSlot(draggedEvent.start_time, draggedEvent.end_time, dropDateSlot)
       ),
-      previous_date: draggedEvent.date,
-      previous_start_time: draggedEvent.start_time,
-      previous_end_time: draggedEvent.end_time,
+      ...(isRecurringOccurrence
+        ? {
+            previous_date: draggedEvent.date,
+            previous_start_time: draggedEvent.start_time,
+            previous_end_time: draggedEvent.end_time,
+          }
+        : {
+            date: calculateNewDateFromDaySlot(draggedEvent.date, draggedEvent.day, dropDateSlot),
+          }),
     };
 
     await editEvent(newEvent);

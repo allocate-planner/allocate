@@ -1,0 +1,2 @@
+class RecurringEventEditError(Exception):
+    pass

@@ -28,9 +28,11 @@ class TranscriptionService:
 
         return transcription.text
 
-    def get_scheduling_prompt(self, current_time: str, events: list[dict]) -> str:
+    def get_scheduling_prompt(
+        self, current_time: str, events_by_date: dict[str, list[dict]]
+    ) -> str:
         self._read_base_prompt_from_file()
-        self._populate_dynamic_content_in_prompt(current_time, events)
+        self._populate_dynamic_content_in_prompt(current_time, events_by_date)
 
         return self.prompt
 
@@ -41,26 +43,35 @@ class TranscriptionService:
     def _populate_dynamic_content_in_prompt(
         self,
         current_time: str,
-        events: list[dict],
+        events_by_date: dict[str, list[dict]],
     ) -> None:
-        events_text = self._format_events_for_prompt(events)
-        day = datetime.now(tz=UTC).strftime("%A")
+        events_text = self._format_events_by_date(events_by_date)
+        day = datetime.now(tz=UTC).strftime("%A, %B %d, %Y")
 
         self.prompt = self.prompt.replace(PLACEHOLDER_EVENTS, events_text)
         self.prompt = self.prompt.replace(PLACEHOLDER_TIME, current_time)
         self.prompt = self.prompt.replace(PLACEHOLDER_DAY, day)
 
-    def _format_events_for_prompt(self, events: list[dict]) -> str:
-        if not events:
+    def _format_events_by_date(self, events_by_date: dict[str, list[dict]]) -> str:
+        if not events_by_date:
             return NO_EVENTS_TEXT
 
         formatted_events = []
-        for event in events:
-            title = event.get("title", NO_TITLE_TEXT)
-            start_time = event.get("start_time", "")
-            end_time = event.get("end_time", "")
 
-            event_str = f"{start_time}|{end_time}|{title}"
-            formatted_events.append(event_str)
+        for date_key in sorted(events_by_date.keys()):
+            events = events_by_date[date_key]
+            formatted_events.append(f"\n{date_key}:")
+
+            for event in events:
+                _id = event.get("id", "")
+                title = event.get("title", NO_TITLE_TEXT)
+                start_time = event.get("start_time", "")
+                end_time = event.get("end_time", "")
+                description = event.get("description", "")
+
+                event_str = (
+                    f"  - ID:{_id} | {start_time}-{end_time} | {title} | {description}"
+                )
+                formatted_events.append(event_str)
 
         return "\n".join(formatted_events)

@@ -55,7 +55,33 @@ class DeleteEvent(FrozenBaseModel):
     date: date_type | None = None
 
 
-class EditEvent(EventBase):
+class EditEvent(FrozenBaseModel):
+    title: (
+        Annotated[str, StringConstraints(strip_whitespace=True, max_length=256)] | None
+    ) = None
+    description: (
+        Annotated[str, StringConstraints(strip_whitespace=True, max_length=1024)] | None
+    ) = None
+    location: (
+        Annotated[str, StringConstraints(strip_whitespace=True, max_length=256)] | None
+    ) = None
+
+    date: date_type | None = None
+    start_time: time_type | None = None
+    end_time: time_type | None = None
+
+    colour: (
+        Annotated[
+            str | None,
+            StringConstraints(
+                strip_whitespace=True,
+                max_length=256,
+                pattern="^#(?:[0-9a-fA-F]{3}){1,2}$",
+            ),
+        ]
+        | None
+    ) = None
+
     previous_date: date_type | None = None
     previous_start_time: time_type | None = None
     previous_end_time: time_type | None = None
