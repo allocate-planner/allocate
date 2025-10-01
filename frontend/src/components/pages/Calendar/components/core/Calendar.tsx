@@ -48,7 +48,7 @@ const Calendar = ({ transformEvents, sidebarOpen, setSidebarOpen }: IProps) => {
 
   const { currentWeek, moveWeek } = useWeekNavigation();
 
-  const { sensors, onDragEnd } = useDrag({ editEvent });
+  const { sensors, onDragEnd } = useDrag({ createEvent, editEvent });
   const calendarView = useCalendarView();
 
   const weekStart = startOfWeek(currentWeek);

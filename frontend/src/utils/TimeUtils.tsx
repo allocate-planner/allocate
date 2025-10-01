@@ -118,6 +118,19 @@ export const convertTimeSlotIndexToISO = (timeSlotIndex: string): string => {
   return formatISOFromTimeSlot(hour, minutes);
 };
 
+// Input: "08:30"
+// Output: 17
+export const convertTimeToSlotIndex = (time: string): number => {
+  const [hoursStr = "0", minutesStr = "0"] = time.split(":");
+  const hours = parseInt(hoursStr, 10);
+  const minutes = parseInt(minutesStr, 10);
+
+  if (Number.isNaN(hours) || Number.isNaN(minutes)) {
+    return 0;
+  }
+  return hours * 2 + Math.floor(minutes / 30);
+};
+
 // Input: originalStartTime "02:30", originalEndTime "03:30", newDaySlot "0-1"
 // Output: "0-3" (slot 1 + 2 slots difference = slot 3)
 export const calculateNewEndSlot = (

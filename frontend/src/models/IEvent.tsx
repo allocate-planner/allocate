@@ -65,7 +65,6 @@ export const EventEditSchema = z
   );
 
 export const TransformedEventSchema = EventSchema.extend({
-  event_week_start: z.date(),
   day: z.number(),
 });
 

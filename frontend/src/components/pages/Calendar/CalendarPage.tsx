@@ -3,7 +3,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSetAtom } from "jotai";
 
-import { startOfWeek, parseISO, getDay } from "date-fns";
+import { parseISO, getDay } from "date-fns";
 
 import Sidebar from "@/components/pages/Calendar/components/sidebar/Sidebar";
 import Calendar from "@/components/pages/Calendar/components/core/Calendar";
@@ -24,8 +24,6 @@ const CalendarPage = () => {
 
   const transformEvents = useCallback((events: IEvent[]) => {
     return events.map((event: IEvent) => {
-      const eventWeekStart = startOfWeek(parseISO(event.date));
-
       const startTimeParts = event.start_time.split(":");
       const endTimeParts = event.end_time.split(":");
 
@@ -35,7 +33,6 @@ const CalendarPage = () => {
 
       return {
         ...event,
-        event_week_start: eventWeekStart,
         day: getDay(eventDate),
         start_time: startTime,
         end_time: endTime,
