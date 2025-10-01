@@ -65,7 +65,7 @@ class EditEventUseCase(UseCase):
                 if request.description
                 else event.description,  # type: ignore  # noqa: PGH003
                 location=request.location if request.location else event.location,  # type: ignore  # noqa: PGH003
-                date=request.previous_date,  # type: ignore  # noqa: PGH003
+                date=request.date if request.date else event.date,  # type: ignore  # noqa: PGH003
                 start_time=request.start_time
                 if request.start_time
                 else event.start_time,  # type: ignore  # noqa: PGH003
