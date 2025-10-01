@@ -6,7 +6,7 @@ from langgraph.prebuilt import create_react_agent
 from api.infrastructure.ai.tools_service import ToolsService
 from api.infrastructure.ai.transcription_service import TranscriptionService
 
-LLM_MODEL: str = "gpt-5-2025-08-07"
+LLM_MODEL: str = "gpt-5-mini-2025-08-07"
 LLM_TEMPERATURE: float = 1
 
 
