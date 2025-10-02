@@ -1,5 +1,5 @@
 import { atom } from "jotai";
-import { isToday, parseISO, isSameWeek, isWithinInterval, addDays, startOfDay } from "date-fns";
+import { parseISO, isSameWeek, isWithinInterval, addDays, startOfDay } from "date-fns";
 import type { ITransformedEvent } from "@/models/IEvent";
 
 export const eventsAtom = atom<ITransformedEvent[]>([]);

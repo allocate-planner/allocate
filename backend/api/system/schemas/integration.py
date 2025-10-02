@@ -21,16 +21,24 @@ class OAuthCallbackData(FrozenBaseModel):
         str,
         StringConstraints(strip_whitespace=True, max_length=256),
     ]
+    state: Annotated[
+        str,
+        StringConstraints(strip_whitespace=True, max_length=512),
+    ]
 
 
 class OAuthConnect(FrozenBaseModel):
     authorization_url: Annotated[
         str,
-        StringConstraints(strip_whitespace=True, max_length=256),
+        StringConstraints(strip_whitespace=True, max_length=512),
     ]
     provider: Annotated[
         str,
         StringConstraints(strip_whitespace=True, max_length=256),
+    ]
+    state: Annotated[
+        str,
+        StringConstraints(strip_whitespace=True, max_length=512),
     ]
 
 
@@ -70,5 +78,5 @@ class IntegrationBase(FrozenBaseModel):
     user_id: int
 
 
-class IntegrationCreate(IntegrationBase):
-    pass
+class IntegrationStatus(FrozenBaseModel):
+    connected: bool

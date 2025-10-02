@@ -12,14 +12,15 @@ class NotionProvider:
     client_secret = os.environ.get("ALLOCATE_NOTION_SECRET")
     redirect_uri = os.environ.get("ALLOCATE_NOTION_REDIRECT_URI")
 
-    def get_oauth_url(self):
+    def get_oauth_url(self, state: str):
         notion_oauth_url = os.environ.get("ALLOCATE_NOTION_AUTH_URL")
 
         if notion_oauth_url is None:
             msg = "Notion OAuth URL is empty"
             raise ValueError(msg)
 
-        return notion_oauth_url
+        separator = "&" if "?" in notion_oauth_url else "?"
+        return f"{notion_oauth_url}{separator}state={state}"
 
     async def exchange_code_for_token(self, code: str) -> str:
         if (

@@ -43,7 +43,7 @@ class IntegrationRepository(Repository):
         self,
         user_id: int,
         provider: str,
-    ) -> Integration:
+    ) -> Integration | None:
         return (
             self.db.query(Integration)
             .filter(

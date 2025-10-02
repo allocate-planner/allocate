@@ -40,4 +40,8 @@ class SearchIntegrationUseCase(AsyncUseCase):
             )
         )
 
+        if integration is None:
+            msg = "Integration not connected"
+            raise ValueError(msg)
+
         return await concrete_provider.search(query, str(integration.access_token))

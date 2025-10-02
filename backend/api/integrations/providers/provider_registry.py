@@ -1,3 +1,4 @@
+from api.integrations.providers.linear.linear_provider import LinearProvider
 from api.integrations.providers.notion.notion_provider import NotionProvider
 
 
@@ -5,6 +6,7 @@ class ProviderRegistry:
     def __init__(self) -> None:
         self._providers: dict[str, type] = {
             "notion": NotionProvider,
+            "linear": LinearProvider,
         }
 
     def get_provider(self, provider_name: str) -> type:

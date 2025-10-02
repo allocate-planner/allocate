@@ -16,7 +16,7 @@ from api.integrations.use_cases.retrieve_integrations_use_case import (
     RetrieveIntegrationsUseCase,
 )
 from api.system.schemas.integration import (
-    IntegrationCreate,
+    IntegrationStatus,
     OAuthCallbackData,
     OAuthConnect,
 )
@@ -41,7 +41,7 @@ def connect_integration(
 
 @integrations.post(
     "/api/v1/integrations/{provider}/redirect",
-    response_model=IntegrationCreate,
+    response_model=IntegrationStatus,
 )
 async def handle_redirect_for_integration(
     provider: str,

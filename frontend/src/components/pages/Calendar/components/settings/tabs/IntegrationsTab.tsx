@@ -11,6 +11,7 @@ type IntegrationItem = {
   description: string;
   iconPath: string;
   connected?: boolean;
+  status: "enabled" | "disabled";
 };
 
 const baseIntegrations: IntegrationItem[] = [
@@ -18,31 +19,37 @@ const baseIntegrations: IntegrationItem[] = [
     name: "Notion",
     description: "Access your pages, databases, and workspace content.",
     iconPath: "/brands/notion.svg",
-  },
-  {
-    name: "Gmail",
-    description: "Access your emails, drafts, and scheduled messages.",
-    iconPath: "/brands/gmail.svg",
+    status: "enabled",
   },
   {
     name: "Linear",
     description: "Access your issues, tickets, and project roadmaps.",
     iconPath: "/brands/linear.svg",
+    status: "enabled",
+  },
+  {
+    name: "Gmail",
+    description: "Access your emails, drafts, and scheduled messages.",
+    iconPath: "/brands/gmail.svg",
+    status: "disabled",
   },
   {
     name: "GitHub",
     description: "Access your repositories, issues, and pull requests.",
     iconPath: "/brands/github.svg",
+    status: "disabled",
   },
   {
     name: "Figma",
     description: "Access your design files, projects, and prototypes.",
     iconPath: "/brands/figma.svg",
+    status: "disabled",
   },
   {
     name: "Slack",
     description: "Access your channels, messages, and team conversations.",
     iconPath: "/brands/slack.svg",
+    status: "disabled",
   },
 ];
 
@@ -55,7 +62,10 @@ const IntegrationsTab = () => {
         const oauth_provider = provider.toLowerCase() as SupportedProviders;
         const response = await integrationService.connectIntegration(oauth_provider, accessToken);
         sessionStorage.setItem("oauth-provider", oauth_provider);
-        window.location.href = response.authorization_url;
+        sessionStorage.setItem("oauth-state", response.state);
+        window.location.assign(
+          `${response.authorization_url}&state=${encodeURIComponent(response.state)}`
+        );
       } catch (error) {
         /* empty */
       }
@@ -100,7 +110,7 @@ const IntegrationsTab = () => {
       </div>
       <div className="grid grid-cols-2 gap-4">
         {integrationStates.map((integration: IntegrationItem, index: number) => {
-          return integration.name === "Notion" ? (
+          return integration.status === "enabled" ? (
             <div
               key={index}
               className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 relative"

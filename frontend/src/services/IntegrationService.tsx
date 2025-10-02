@@ -35,6 +35,7 @@ export const integrationService = {
   handleRedirect: async (
     provider: SupportedProviders,
     code: string,
+    state: string,
     accessToken: string
   ): Promise<IntegrationResponse> => {
     return await axios
@@ -42,6 +43,7 @@ export const integrationService = {
         `${API_BASE_URL}/integrations/${String(provider)}/redirect`,
         {
           code: code,
+          state: state,
         },
         {
           headers: {
