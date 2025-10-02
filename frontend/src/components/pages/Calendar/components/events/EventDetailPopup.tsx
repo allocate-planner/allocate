@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -20,15 +20,17 @@ import {
   DialogTitle,
 } from "@/components/common/Dialog";
 
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/common/Popover";
 import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/common/Select";
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/common/Command";
+import { Check } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 import { Input } from "@/components/common/Input";
 import { Label } from "@/components/common/Label";
@@ -55,6 +57,10 @@ interface IProps {
 }
 
 const EventDetailPopup = ({ isOpen, event, onClose, onEdit, onDelete }: IProps) => {
+  const [startOpen, setStartOpen] = useState<boolean>(false);
+  const [endOpen, setEndOpen] = useState<boolean>(false);
+  const [rruleOpen, setRruleOpen] = useState<boolean>(false);
+
   const {
     register,
     handleSubmit,
@@ -98,6 +104,7 @@ const EventDetailPopup = ({ isOpen, event, onClose, onEdit, onDelete }: IProps) 
     };
 
     onEdit(newEvent);
+    onClose();
   };
 
   useEffect(() => {
@@ -175,21 +182,46 @@ const EventDetailPopup = ({ isOpen, event, onClose, onEdit, onDelete }: IProps) 
                   name="start_time"
                   control={control}
                   render={({ field }) => (
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <SelectTrigger>
-                        <SelectValue placeholder={field.value} />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          <SelectLabel>Start Time</SelectLabel>
-                          {times.map((time, index) => (
-                            <SelectItem key={index} value={time}>
-                              {time}
-                            </SelectItem>
-                          ))}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
+                    <Popover open={startOpen} onOpenChange={setStartOpen}>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          aria-expanded={startOpen}
+                          className="w-full justify-between"
+                        >
+                          {field.value || "Start"}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-[200px] p-0">
+                        <Command>
+                          <CommandInput placeholder="Search time..." className="h-9" />
+                          <CommandList>
+                            <CommandEmpty>No results.</CommandEmpty>
+                            <CommandGroup>
+                              {times.map((time, index) => (
+                                <CommandItem
+                                  key={index}
+                                  value={time}
+                                  onSelect={val => {
+                                    field.onChange(val);
+                                    setStartOpen(false);
+                                  }}
+                                >
+                                  {time}
+                                  <Check
+                                    className={cn(
+                                      "ml-auto",
+                                      field.value === time ? "opacity-100" : "opacity-0"
+                                    )}
+                                  />
+                                </CommandItem>
+                              ))}
+                            </CommandGroup>
+                          </CommandList>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
                   )}
                 />
                 <Label>To</Label>
@@ -197,21 +229,46 @@ const EventDetailPopup = ({ isOpen, event, onClose, onEdit, onDelete }: IProps) 
                   name="end_time"
                   control={control}
                   render={({ field }) => (
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <SelectTrigger>
-                        <SelectValue placeholder={field.value} />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          <SelectLabel>End Time</SelectLabel>
-                          {times.map((time, index) => (
-                            <SelectItem key={index} value={time}>
-                              {time}
-                            </SelectItem>
-                          ))}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
+                    <Popover open={endOpen} onOpenChange={setEndOpen}>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          aria-expanded={endOpen}
+                          className="w-full justify-between"
+                        >
+                          {field.value || "End"}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-[200px] p-0">
+                        <Command>
+                          <CommandInput placeholder="Search time..." className="h-9" />
+                          <CommandList>
+                            <CommandEmpty>No results.</CommandEmpty>
+                            <CommandGroup>
+                              {times.map((time, index) => (
+                                <CommandItem
+                                  key={index}
+                                  value={time}
+                                  onSelect={val => {
+                                    field.onChange(val);
+                                    setEndOpen(false);
+                                  }}
+                                >
+                                  {time}
+                                  <Check
+                                    className={cn(
+                                      "ml-auto",
+                                      field.value === time ? "opacity-100" : "opacity-0"
+                                    )}
+                                  />
+                                </CommandItem>
+                              ))}
+                            </CommandGroup>
+                          </CommandList>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
                   )}
                 />
               </div>
@@ -223,21 +280,49 @@ const EventDetailPopup = ({ isOpen, event, onClose, onEdit, onDelete }: IProps) 
                   name="rrule"
                   control={control}
                   render={({ field }) => (
-                    <Select onValueChange={field.onChange} value={field.value ?? "DNR"}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Does not repeat" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          <SelectLabel>Repeat</SelectLabel>
-                          {rruleOptions.map(option => (
-                            <SelectItem key={option.value} value={option.value}>
-                              {option.label}
-                            </SelectItem>
-                          ))}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
+                    <Popover open={rruleOpen} onOpenChange={setRruleOpen}>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          aria-expanded={rruleOpen}
+                          className="w-full justify-between"
+                        >
+                          {rruleOptions.find(o => o.value === (field.value ?? "DNR"))?.label ||
+                            "Does not repeat"}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-[240px] p-0">
+                        <Command>
+                          <CommandInput placeholder="Search repeat..." className="h-9" />
+                          <CommandList>
+                            <CommandEmpty>No results.</CommandEmpty>
+                            <CommandGroup>
+                              {rruleOptions.map(option => (
+                                <CommandItem
+                                  key={option.value}
+                                  value={option.value}
+                                  onSelect={val => {
+                                    field.onChange(val);
+                                    setRruleOpen(false);
+                                  }}
+                                >
+                                  {option.label}
+                                  <Check
+                                    className={cn(
+                                      "ml-auto",
+                                      (field.value ?? "DNR") === option.value
+                                        ? "opacity-100"
+                                        : "opacity-0"
+                                    )}
+                                  />
+                                </CommandItem>
+                              ))}
+                            </CommandGroup>
+                          </CommandList>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
                   )}
                 />
               </div>
@@ -299,6 +384,7 @@ const EventDetailPopup = ({ isOpen, event, onClose, onEdit, onDelete }: IProps) 
               onClick={e => {
                 e.preventDefault();
                 onDelete(event);
+                onClose();
               }}
             >
               {isSubmitting ? "Deleting..." : "Delete"}
