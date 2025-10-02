@@ -8,8 +8,12 @@ import {
 const features = [
   {
     name: "Voice-first scheduling",
-    description:
-      'Just say "I need to review the API documentation this afternoon" and watch your calendar organise itself with the right time blocks and links.',
+    description: (
+      <>
+        Just say <i>find that database optimisation ticket</i> and watch it fetch from Linear and
+        slot it into your calendar.
+      </>
+    ),
     icon: MicrophoneIcon,
   },
   {
