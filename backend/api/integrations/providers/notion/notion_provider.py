@@ -4,10 +4,25 @@ from typing import Any
 
 import httpx
 
+MAX_CONNECTIONS = 100
+MAX_KEEPALIVE_CONNECTIONS = 20
+CONNECT_TIMEOUT = 1.0
+READ_TIMEOUT = 10.0
+WRITE_TIMEOUT = 10.0
+POOL_TIMEOUT = 5.0
+
 _client = httpx.AsyncClient(
     http2=True,
-    limits=httpx.Limits(max_keepalive_connections=20, max_connections=100),
-    timeout=httpx.Timeout(connect=1.0, read=10.0, write=10.0, pool=5.0),
+    limits=httpx.Limits(
+        max_keepalive_connections=MAX_KEEPALIVE_CONNECTIONS,
+        max_connections=MAX_CONNECTIONS,
+    ),
+    timeout=httpx.Timeout(
+        connect=CONNECT_TIMEOUT,
+        read=READ_TIMEOUT,
+        write=WRITE_TIMEOUT,
+        pool=POOL_TIMEOUT,
+    ),
 )
 
 NOTION_URL = "https://api.notion.com/v1/"
