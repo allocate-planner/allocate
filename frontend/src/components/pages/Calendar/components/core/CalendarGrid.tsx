@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useAtomValue } from "jotai";
 
 import { calendarHours, times, transformTo24HourFormat } from "@/utils/TimeUtils";
@@ -16,6 +16,8 @@ interface IProps {
   calendarView: CalendarView;
   onEventClick: (day: number, timeSlot: string) => void;
   onEventDetailsClick: (event: ITransformedEvent) => void;
+  onEmptyContextMenu: (day: number, timeSlot: string, e: React.MouseEvent<HTMLDivElement>) => void;
+  onEventContextMenu: (event: ITransformedEvent, e: React.MouseEvent<HTMLDivElement>) => void;
 }
 
 const CalendarGridComponent = ({
@@ -23,6 +25,8 @@ const CalendarGridComponent = ({
   calendarView,
   onEventClick,
   onEventDetailsClick,
+  onEmptyContextMenu,
+  onEventContextMenu,
 }: IProps) => {
   const events = useAtomValue(weekEventsAtom);
 
@@ -79,10 +83,12 @@ const CalendarGridComponent = ({
                   <EventEmpty
                     id={`${day}-${index * 2}`}
                     onClick={() => onEventClick(day, timeSlotForTop)}
+                    onContextMenu={e => onEmptyContextMenu(day, timeSlotForTop, e)}
                   />
                   <EventEmpty
                     id={`${day}-${index * 2 + 1}`}
                     onClick={() => onEventClick(day, timeSlotForBottom)}
+                    onContextMenu={e => onEmptyContextMenu(day, timeSlotForBottom, e)}
                   />
                 </div>
                 {getEventsForTimeSlot(day, timeSlotForTop).map(event => {
@@ -99,6 +105,7 @@ const CalendarGridComponent = ({
                       endTime={event.end_time}
                       hasDescription={!!event.description}
                       {...(clickHandler && { onClick: clickHandler })}
+                      onContextMenu={e => onEventContextMenu(event, e)}
                     />
                   );
                 })}
@@ -116,6 +123,7 @@ const CalendarGridComponent = ({
                       endTime={event.end_time}
                       hasDescription={!!event.description}
                       {...(clickHandler && { onClick: clickHandler })}
+                      onContextMenu={e => onEventContextMenu(event, e)}
                     />
                   );
                 })}

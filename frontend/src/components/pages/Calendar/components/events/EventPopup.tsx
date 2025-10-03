@@ -174,7 +174,7 @@ const EventPopup = ({ isOpen, event, onClose, onCreate }: IProps) => {
                                 <CommandItem
                                   key={index}
                                   value={time}
-                                  onSelect={val => {
+                                  onSelect={(val: string) => {
                                     field.onChange(val);
                                     setStartOpen(false);
                                   }}
@@ -221,7 +221,7 @@ const EventPopup = ({ isOpen, event, onClose, onCreate }: IProps) => {
                                 <CommandItem
                                   key={index}
                                   value={time}
-                                  onSelect={val => {
+                                  onSelect={(val: string) => {
                                     field.onChange(val);
                                     setEndOpen(false);
                                   }}
@@ -273,7 +273,7 @@ const EventPopup = ({ isOpen, event, onClose, onCreate }: IProps) => {
                                 <CommandItem
                                   key={option.value}
                                   value={option.value}
-                                  onSelect={val => {
+                                  onSelect={(val: string) => {
                                     field.onChange(val);
                                     setRruleOpen(false);
                                   }}

@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
+import { useAtomValue } from "jotai";
 
 import { useAuth } from "@/AuthProvider";
 import type { SupportedProviders } from "@/models/IProvider";
 import { integrationService } from "@/services/IntegrationService";
+import { integrationsAtom } from "@/atoms/integrationsAtom";
 
 import { LinkIcon } from "@heroicons/react/24/outline";
 
@@ -55,6 +57,7 @@ const baseIntegrations: IntegrationItem[] = [
 
 const IntegrationsTab = () => {
   const { accessToken } = useAuth();
+  const integrations = useAtomValue(integrationsAtom);
 
   const handleConnect = async (provider: string) => {
     if (accessToken) {
@@ -70,26 +73,15 @@ const IntegrationsTab = () => {
     }
   };
 
-  const [integrationStates, setIntegrationStates] = useState<IntegrationItem[]>(baseIntegrations);
-
-  useEffect(() => {
-    const retrieveIntegrations = async () => {
-      if (accessToken) {
-        const integrations = await integrationService.retrieveIntegrations(accessToken);
-        const updatedIntegrations = baseIntegrations.map(integration => {
-          const key = integration.name.toLowerCase();
-          return {
-            ...integration,
-            connected: integrations[key] === true,
-          };
-        });
-        setIntegrationStates(updatedIntegrations);
-      }
-    };
-
-    retrieveIntegrations();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const integrationStates: IntegrationItem[] = useMemo(() => {
+    return baseIntegrations.map(integration => {
+      const key = integration.name.toLowerCase();
+      return {
+        ...integration,
+        connected: integrations[key] === true,
+      };
+    });
+  }, [integrations]);
 
   return (
     <section className="w-full flex flex-col p-8 space-y-12">

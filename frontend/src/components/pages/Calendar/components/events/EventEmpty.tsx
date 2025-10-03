@@ -4,9 +4,10 @@ import { useDroppable } from "@dnd-kit/core";
 interface IProps {
   id: string;
   onClick?: () => void;
+  onContextMenu?: (e: React.MouseEvent<HTMLDivElement>) => void;
 }
 
-const EventEmptyComponent = ({ id, onClick }: IProps) => {
+const EventEmptyComponent = ({ id, onClick, onContextMenu }: IProps) => {
   const { setNodeRef, isOver } = useDroppable({ id: id });
 
   return (
@@ -16,6 +17,7 @@ const EventEmptyComponent = ({ id, onClick }: IProps) => {
         isOver ? "bg-violet-100" : ""
       }`}
       onClick={onClick}
+      onContextMenu={onContextMenu}
     />
   );
 };
