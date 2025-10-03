@@ -42,7 +42,7 @@ allocate is a modern calendar application with native AI features, primarily foc
 
 The video below shows an early preview of allocate, which is still under ongoing development. It runs through a sample workflow including integrations, voice interaction, and general user experience.
 
-https://github.com/user-attachments/assets/8952e356-c2c9-4499-902d-b8cb788cd0f1
+https://github.com/user-attachments/assets/b925d657-bd7d-45f3-b522-7d33ef91916f
 
 ## Contributing
 
