@@ -40,7 +40,6 @@ class NotionProvider:
             msg = "Notion OAuth URL is empty"
             raise ValueError(msg)
 
-        print("Notion OAuth URL: ", notion_oauth_url)
         separator = "&" if "?" in notion_oauth_url else "?"
 
         if "state" not in notion_oauth_url:

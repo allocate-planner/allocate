@@ -7,7 +7,7 @@ from api.infrastructure.ai.tools_service import ToolsService
 from api.infrastructure.ai.transcription_service import TranscriptionService
 
 LLM_MODEL: str = "qwen/qwen3-235b-a22b-2507"
-LLM_TEMPERATURE: float = 1
+LLM_TEMPERATURE: float = 0
 
 
 class SchedulingService:

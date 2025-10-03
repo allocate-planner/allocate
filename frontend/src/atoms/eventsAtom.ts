@@ -12,12 +12,14 @@ export const weekEventsAtom = atom(get => {
   return events.filter(event => isSameWeek(parseISO(event.date), currentWeek, { weekStartsOn: 0 }));
 });
 
-export const next7DaysEventsAtom = atom(get => {
+export const scheduledEventsAtom = atom(get => {
   const events = get(eventsAtom);
   const today = startOfDay(new Date());
-  const sevenDaysFromNow = addDays(today, 6);
+
+  const sevenDaysBefore = addDays(today, -7);
+  const sevenDaysAfter = addDays(today, 7);
 
   return events.filter(event =>
-    isWithinInterval(parseISO(event.date), { start: today, end: sevenDaysFromNow })
+    isWithinInterval(parseISO(event.date), { start: sevenDaysBefore, end: sevenDaysAfter })
   );
 });

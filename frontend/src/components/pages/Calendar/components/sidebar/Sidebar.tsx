@@ -7,7 +7,7 @@ import { CalendarDaysIcon, Cog6ToothIcon } from "@heroicons/react/24/outline";
 
 import { useAuth } from "@/AuthProvider";
 import { audioService } from "@/services/AudioService";
-import { next7DaysEventsAtom } from "@/atoms/eventsAtom";
+import { scheduledEventsAtom } from "@/atoms/eventsAtom";
 import type { IStoredUser } from "@/models/IUser";
 
 import OrbComponent from "@/components/pages/Calendar/components/other/OrbComponent";
@@ -39,7 +39,7 @@ const Sidebar = ({ sidebarOpen, onEventsUpdate }: IProps) => {
   const { firstName, lastName, emailAddress, accessToken, logout, login } = useAuth();
 
   const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
-  const next7DaysEvents = useAtomValue(next7DaysEventsAtom);
+  const scheduledEvents = useAtomValue(scheduledEventsAtom);
 
   if (!accessToken) {
     toast.error("Authentication required");
@@ -59,7 +59,7 @@ const Sidebar = ({ sidebarOpen, onEventsUpdate }: IProps) => {
   const processAudio = async (audio: Blob) => {
     try {
       if (accessToken) {
-        await audioService.processAudio(audio, accessToken, next7DaysEvents);
+        await audioService.processAudio(audio, accessToken, scheduledEvents);
         onEventsUpdate?.();
         toast.success("Audio successfully processed");
       }
