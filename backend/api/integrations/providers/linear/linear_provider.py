@@ -3,6 +3,12 @@ from typing import Any
 
 import httpx
 
+_client = httpx.AsyncClient(
+    http2=True,
+    limits=httpx.Limits(max_keepalive_connections=20, max_connections=100),
+    timeout=httpx.Timeout(connect=1.0, read=10.0, write=10.0, pool=5.0),
+)
+
 LINEAR_URL = "https://api.linear.app/graphql"
 
 
@@ -44,14 +50,14 @@ class LinearProvider:
             "Content-Type": "application/x-www-form-urlencoded",
         }
 
-        async with httpx.AsyncClient() as client:
-            response = await client.post(
-                LinearProvider.oauth_token_url,
-                data=data,
-                headers=headers,
-            )
-            response.raise_for_status()
-            return response.json()
+        response = await _client.post(
+            LinearProvider.oauth_token_url,
+            data=data,
+            headers=headers,
+        )
+
+        response.raise_for_status()
+        return response.json()
 
     async def search(self, query: str, access_token: str) -> dict[str, Any]:
         headers = {
@@ -81,14 +87,14 @@ class LinearProvider:
             "variables": {"term": query},
         }
 
-        async with httpx.AsyncClient() as client:
-            response = await client.post(
-                LINEAR_URL,
-                json=payload,
-                headers=headers,
-            )
-            response.raise_for_status()
-            response_data = response.json()
+        response = await _client.post(
+            LINEAR_URL,
+            json=payload,
+            headers=headers,
+        )
+
+        response.raise_for_status()
+        response_data = response.json()
 
         errors = response_data.get("errors")
 

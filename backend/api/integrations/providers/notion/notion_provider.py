@@ -4,6 +4,12 @@ from typing import Any
 
 import httpx
 
+_client = httpx.AsyncClient(
+    http2=True,
+    limits=httpx.Limits(max_keepalive_connections=20, max_connections=100),
+    timeout=httpx.Timeout(connect=1.0, read=10.0, write=10.0, pool=5.0),
+)
+
 NOTION_URL = "https://api.notion.com/v1/"
 
 
@@ -46,14 +52,14 @@ class NotionProvider:
             "Accept": "application/json",
         }
 
-        async with httpx.AsyncClient() as client:
-            response = await client.post(
-                f"{NOTION_URL}oauth/token",
-                json=data,
-                headers=headers,
-            )
-            response.raise_for_status()
-            return response.json()
+        response = await _client.post(
+            f"{NOTION_URL}oauth/token",
+            json=data,
+            headers=headers,
+        )
+
+        response.raise_for_status()
+        return response.json()
 
     async def search(self, query: str, access_token: str) -> dict[str, Any]:
         data = {
@@ -65,11 +71,11 @@ class NotionProvider:
             "Notion-Version": "2022-06-28",
         }
 
-        async with httpx.AsyncClient() as client:
-            response = await client.post(
-                f"{NOTION_URL}search",
-                json=data,
-                headers=headers,
-            )
-            response.raise_for_status()
-            return response.json()
+        response = await _client.post(
+            f"{NOTION_URL}search",
+            json=data,
+            headers=headers,
+        )
+
+        response.raise_for_status()
+        return response.json()

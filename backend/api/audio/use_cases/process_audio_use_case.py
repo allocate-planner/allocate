@@ -52,8 +52,9 @@ class ProcessAudioUseCase(UseCase):
 
         try:
             buffer = self._parse_file_into_buffer(file)
-            transcribed_audio = self.transcription_service.transcribe_audio(buffer)
-
+            transcribed_audio = await self.transcription_service.transcribe_audio(
+                buffer
+            )
             current_time = datetime.now().strftime(TIME_FORMAT)  # noqa: DTZ005
 
             parsed_events = self._parse_events_json(events)

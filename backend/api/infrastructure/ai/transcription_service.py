@@ -2,7 +2,7 @@ import os
 from datetime import UTC, datetime
 from io import BytesIO
 
-from openai import OpenAI
+from openai import AsyncOpenAI
 
 BASE_PROMPT_PATH: str = "base.prompt"
 TRANSCRIPTION_MODEL: str = "whisper-large-v3"
@@ -18,17 +18,19 @@ NO_TITLE_TEXT: str = "(no title)"
 BASE_URL = "https://api.groq.com/openai/v1"
 API_KEY = os.environ.get("ALLOCATE_GROQ_API_KEY")
 
+_cached_base_prompt: str | None = None
+
 
 class TranscriptionService:
     def __init__(self) -> None:
-        self.client = OpenAI(
+        self.client = AsyncOpenAI(
             base_url=BASE_URL,
             api_key=API_KEY,
         )
         self.prompt = ""
 
-    def transcribe_audio(self, buffer: BytesIO) -> str:
-        transcription = self.client.audio.transcriptions.create(
+    async def transcribe_audio(self, buffer: BytesIO) -> str:
+        transcription = await self.client.audio.transcriptions.create(
             model=TRANSCRIPTION_MODEL,
             file=buffer,
         )
@@ -44,8 +46,11 @@ class TranscriptionService:
         return self.prompt
 
     def _read_base_prompt_from_file(self) -> None:
-        with open(BASE_PROMPT_PATH, encoding=FILE_ENCODING) as file:
-            self.prompt = file.read()
+        global _cached_base_prompt  # noqa: PLW0603
+        if _cached_base_prompt is None:
+            with open(BASE_PROMPT_PATH, encoding=FILE_ENCODING) as file:
+                _cached_base_prompt = file.read()
+        self.prompt = _cached_base_prompt
 
     def _populate_dynamic_content_in_prompt(
         self,
