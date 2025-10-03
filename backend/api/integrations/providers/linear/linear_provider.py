@@ -26,7 +26,11 @@ class LinearProvider:
             raise ValueError(msg)
 
         separator = "&" if "?" in linear_oauth_url else "?"
-        return f"{linear_oauth_url}{separator}state={state}"
+
+        if "state" not in linear_oauth_url:
+            return f"{linear_oauth_url}{separator}state={state}"
+
+        return f"{linear_oauth_url}"
 
     async def exchange_code_for_token(self, code: str) -> str:
         if (

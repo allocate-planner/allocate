@@ -63,9 +63,7 @@ const IntegrationsTab = () => {
         const response = await integrationService.connectIntegration(oauth_provider, accessToken);
         sessionStorage.setItem("oauth-provider", oauth_provider);
         sessionStorage.setItem("oauth-state", response.state);
-        window.location.assign(
-          `${response.authorization_url}&state=${encodeURIComponent(response.state)}`
-        );
+        window.location.assign(`${response.authorization_url}`);
       } catch (error) {
         /* empty */
       }

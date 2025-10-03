@@ -25,8 +25,13 @@ class NotionProvider:
             msg = "Notion OAuth URL is empty"
             raise ValueError(msg)
 
+        print("Notion OAuth URL: ", notion_oauth_url)
         separator = "&" if "?" in notion_oauth_url else "?"
-        return f"{notion_oauth_url}{separator}state={state}"
+
+        if "state" not in notion_oauth_url:
+            return f"{notion_oauth_url}{separator}state={state}"
+
+        return f"{notion_oauth_url}"
 
     async def exchange_code_for_token(self, code: str) -> str:
         if (
