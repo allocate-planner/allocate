@@ -1,10 +1,11 @@
+import os
 from datetime import UTC, datetime
 from io import BytesIO
 
 from openai import OpenAI
 
 BASE_PROMPT_PATH: str = "base.prompt"
-TRANSCRIPTION_MODEL: str = "whisper-1"
+TRANSCRIPTION_MODEL: str = "whisper-large-v3"
 FILE_ENCODING: str = "utf8"
 
 PLACEHOLDER_EVENTS: str = "{events}"
@@ -14,10 +15,16 @@ PLACEHOLDER_DAY: str = "{day}"
 NO_EVENTS_TEXT: str = "No events scheduled"
 NO_TITLE_TEXT: str = "(no title)"
 
+BASE_URL = "https://api.groq.com/openai/v1"
+API_KEY = os.environ.get("ALLOCATE_GROQ_API_KEY")
+
 
 class TranscriptionService:
     def __init__(self) -> None:
-        self.client = OpenAI()
+        self.client = OpenAI(
+            base_url=BASE_URL,
+            api_key=API_KEY,
+        )
         self.prompt = ""
 
     def transcribe_audio(self, buffer: BytesIO) -> str:
