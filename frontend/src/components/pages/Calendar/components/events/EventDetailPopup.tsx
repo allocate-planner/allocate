@@ -133,7 +133,7 @@ const EventDetailPopup = ({ isOpen, event, onClose, onEdit, onDelete }: IProps) 
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[475px]" onWheel={e => e.stopPropagation()}>
+      <DialogContent className="sm:max-w-[550px]" onWheel={e => e.stopPropagation()}>
         <DialogHeader className="space-y-4">
           <DialogTitle>Edit Event</DialogTitle>
           <DialogDescription>
