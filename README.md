@@ -18,7 +18,7 @@
 <br/>
 
 > [!WARNING]
-> This project is currently in active development and is not yet production-ready. You should expect bugs, incomplete features, and breaking changes. Pipelines, Docker, and cloud infrastructure are still pending implementation. Use at your own discretion and please report any issues you encounter.
+> This project is currently in active development and is not yet production-ready. You should expect bugs, incomplete features, and breaking changes. Use at your own discretion and please report any issues you encounter.
 
 ## Introduction
 
@@ -35,16 +35,17 @@ allocate is a modern calendar application with native AI features, primarily foc
 - [Zod](https://zod.dev/) – schema validation
 - [shadcn/ui](https://ui.shadcn.com/) – for components
 - [OpenAI](https://openai.com/) – LLM & transcription models
-- [LangChain](https://www.langchain.com/) – LLM tooling
 - [GitHub](https://github.com/features/actions) – CI/CD
+- [LangChain](https://www.langchain.com/) – LLM tooling
+- [Langfuse](https://langfuse.com/) – LLM observability _(soon)_
 - [Docker](https://www.docker.com/) - containers _(soon)_
 - [AWS](https://aws.amazon.com/) – cloud/infra _(soon)_
 
 ## Demo
 
-The video below shows an early preview of allocate, which is still under ongoing development. It runs through a sample workflow including integrations, voice interaction, and general user experience.
+The video below shows an early preview of allocate, which is still under ongoing development. It runs through a sample workflow including integrations, voice interaction, and general user experience. Recorded with [cap.so](https://cap.so/) & [ElevenLabs](https://elevenlabs.io/).
 
-https://github.com/user-attachments/assets/8952e356-c2c9-4499-902d-b8cb788cd0f1
+https://github.com/user-attachments/assets/b925d657-bd7d-45f3-b522-7d33ef91916f
 
 ## Contributing
 
