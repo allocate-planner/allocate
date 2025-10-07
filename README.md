@@ -32,6 +32,8 @@ allocate is a modern calendar application with native AI features, primarily foc
 - [PostgreSQL](https://www.postgresql.org/) – database
 - [TypeScript](https://www.typescriptlang.org/) – frontend language
 - [React](https://react.dev/) – frontend framework
+- [Zod](https://zod.dev/) – schema validation
+- [shadcn/ui](https://ui.shadcn.com/) – for components
 - [OpenAI](https://openai.com/) – LLM & transcription models
 - [LangChain](https://www.langchain.com/) – LLM tooling
 - [GitHub](https://github.com/features/actions) – CI/CD
