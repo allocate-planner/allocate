@@ -42,7 +42,6 @@
     "dist",
     "build",
     "coverage",
-    "src/components/common/Orb.tsx"
   ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

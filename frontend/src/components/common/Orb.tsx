@@ -48,16 +48,16 @@ export function Orb({
       >
         <Scene
           colors={colors}
-          colorsRef={colorsRef}
-          seed={seed}
+          {...(colorsRef ? { colorsRef } : {})}
+          {...(seed !== undefined ? { seed } : {})}
           agentState={agentState}
           volumeMode={volumeMode}
-          manualInput={manualInput}
-          manualOutput={manualOutput}
-          inputVolumeRef={inputVolumeRef}
-          outputVolumeRef={outputVolumeRef}
-          getInputVolume={getInputVolume}
-          getOutputVolume={getOutputVolume}
+          {...(manualInput !== undefined ? { manualInput } : {})}
+          {...(manualOutput !== undefined ? { manualOutput } : {})}
+          {...(inputVolumeRef ? { inputVolumeRef } : {})}
+          {...(outputVolumeRef ? { outputVolumeRef } : {})}
+          {...(getInputVolume ? { getInputVolume } : {})}
+          {...(getOutputVolume ? { getOutputVolume } : {})}
         />
       </Canvas>
     </div>
@@ -141,7 +141,13 @@ function Scene({
     const apply = () => {
       if (!circleRef.current) return;
       const isDark = document.documentElement.classList.contains("dark");
-      circleRef.current.material.uniforms.uInverted.value = isDark ? 1 : 0;
+      if (
+        circleRef.current.material &&
+        circleRef.current.material.uniforms &&
+        circleRef.current.material.uniforms.uInverted
+      ) {
+        circleRef.current.material.uniforms.uInverted.value = isDark ? 1 : 0;
+      }
     };
 
     apply();
@@ -162,7 +168,7 @@ function Scene({
       if (live[0]) targetColor1Ref.current.set(live[0]);
       if (live[1]) targetColor2Ref.current.set(live[1]);
     }
-    const u = mat.uniforms;
+    const u = (mat as any).uniforms as any;
     u.uTime.value += delta * 0.5;
 
     if (u.uOpacity.value < 1) {
