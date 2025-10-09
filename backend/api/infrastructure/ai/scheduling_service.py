@@ -1,5 +1,7 @@
 from typing import Any
 
+from langfuse import observe
+from langfuse.langchain import CallbackHandler
 from langgraph.prebuilt import create_react_agent
 
 from api.infrastructure.ai.chat_openrouter import ChatOpenRouter
@@ -8,6 +10,8 @@ from api.infrastructure.ai.transcription_service import TranscriptionService
 
 LLM_MODEL: str = "qwen/qwen3-235b-a22b-2507"
 LLM_TEMPERATURE: float = 0
+
+handler = CallbackHandler()
 
 
 class SchedulingService:
@@ -37,18 +41,29 @@ class SchedulingService:
 
         return create_react_agent(model=llm, tools=tools, prompt=prompt)
 
+    @observe()
     async def get_scheduling_response(
         self,
         current_time: str,
         user_message: str,
         events_by_date: dict[str, list[dict]],
         current_user: str,
+        langfuse_session_id: str,
     ) -> str:
         agent = self._create_scheduling_agent(
-            current_time, events_by_date, current_user
+            current_time,
+            events_by_date,
+            current_user,
         )
         result = await agent.ainvoke(
             {"messages": [{"role": "user", "content": user_message}]},
+            config={
+                "callbacks": [handler],
+                "metadata": {
+                    "langfuse_session_id": langfuse_session_id,
+                    "langfuse_user_id": current_user,
+                },
+            },
         )
         return self._extract_response_content(result)
 

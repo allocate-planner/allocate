@@ -6,6 +6,10 @@ class Config:
 
     PLUNK_API_KEY: str | None = os.environ.get("ALLOCATE_PLUNK_API_KEY")
 
+    LANGFUSE_PUBLIC_KEY: str | None = os.environ.get("LANGFUSE_PUBLIC_KEY")
+    LANGFUSE_SECRET_KEY: str | None = os.environ.get("LANGFUSE_SECRET_KEY")
+    LANGFUSE_HOST: str | None = os.environ.get("LANGFUSE_HOST")
+
     JWT_SECRET_KEY: str | None = os.environ.get("ALLOCATE_JWT_SECRET_KEY")
     JWT_REFRESH_SECRET_KEY: str | None = os.environ.get("ALLOCATE_JWT_REFRESH_KEY")
     JWT_ALGORITHM: str = "HS256"
@@ -18,11 +22,15 @@ class ProductionConfig(Config):
     DEBUG: bool = False
     ENV: str = "production"
 
+    os.environ["LANGFUSE_TRACING_ENVIRONMENT"] = "production"
+
 
 class DevelopmentConfig(Config):
     DEVELOPMENT: bool = True
     DEBUG: bool = True
     ENV: str = "debug"
+
+    os.environ["LANGFUSE_TRACING_ENVIRONMENT"] = "development"
 
 
 def get_config() -> Config:

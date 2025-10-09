@@ -2,6 +2,7 @@ import os
 from datetime import UTC, datetime
 from io import BytesIO
 
+from langfuse import get_client, observe
 from openai import AsyncOpenAI
 
 BASE_PROMPT_PATH: str = "base.prompt"
@@ -29,7 +30,18 @@ class TranscriptionService:
         )
         self.prompt = ""
 
-    async def transcribe_audio(self, buffer: BytesIO) -> str:
+    @observe()
+    async def transcribe_audio(
+        self,
+        buffer: BytesIO,
+        session_id: str | None = None,
+        current_user: str | None = None,
+    ) -> str:
+        if session_id:
+            langfuse = get_client()
+            langfuse.update_current_trace(session_id=session_id)
+            langfuse.update_current_trace(user_id=current_user)
+
         transcription = await self.client.audio.transcriptions.create(
             model=TRANSCRIPTION_MODEL,
             file=buffer,

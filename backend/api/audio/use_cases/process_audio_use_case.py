@@ -1,5 +1,6 @@
 import io
 import json
+import uuid
 from datetime import datetime
 from io import BytesIO
 
@@ -51,9 +52,13 @@ class ProcessAudioUseCase(UseCase):
             raise UserNotFoundError(msg)
 
         try:
+            session_id = str(uuid.uuid4())
+
             buffer = self._parse_file_into_buffer(file)
             transcribed_audio = await self.transcription_service.transcribe_audio(
-                buffer
+                buffer,
+                session_id,
+                current_user,
             )
             current_time = datetime.now().strftime(TIME_FORMAT)  # noqa: DTZ005
 
@@ -65,6 +70,7 @@ class ProcessAudioUseCase(UseCase):
                 transcribed_audio,
                 events_by_date,
                 current_user,
+                session_id,
             )
 
             return ProcessAudioUseCase._transform_llm_output_to_pydantic_objects(
