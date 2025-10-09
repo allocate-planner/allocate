@@ -15,5 +15,4 @@ if __name__ == "__main__":
         host=UVICORN_HOST,
         port=UVICORN_PORT,
         access_log=True,
-        reload=True,
     )
