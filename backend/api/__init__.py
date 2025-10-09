@@ -5,7 +5,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from api.audio.controllers.audio_controller import audio
-from api.config import DevelopmentConfig
+from api.config import config
 from api.database import engine
 from api.events.controllers.events_controller import events
 from api.integrations.controllers.integration_controller import integrations
@@ -24,7 +24,7 @@ production = os.environ.get("ALLOCATE_ENV") == "production"
 
 def create_app() -> FastAPI:
     app = FastAPI()
-    app_config = DevelopmentConfig()
+    app_config = config
 
     app.middleware("http")(request_logging_middleware)
     app.middleware("http")(error_handling_middleware)
