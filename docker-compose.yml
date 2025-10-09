@@ -1,4 +1,4 @@
-name: allocate-api
+name: allocate
 
 services:
   api:
