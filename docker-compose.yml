@@ -3,8 +3,8 @@ name: allocate-api
 services:
   api:
     build: ./backend
-    ports:
-      - "5000:5000"
+    expose:
+      - "5000"
     environment:
       - ALLOCATE_DATABASE=${DOCKER_ALLOCATE_DATABASE}
       - ALLOCATE_JWT_SECRET_KEY=${DOCKER_ALLOCATE_JWT_SECRET_KEY}
@@ -40,5 +40,21 @@ services:
       - postgres_data:/var/lib/postgresql/data
     restart: unless-stopped
 
+  caddy:
+    image: caddy:2.10.2-alpine
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    restart: unless-stopped
+    depends_on:
+      - api
+
 volumes:
   postgres_data:
+  caddy_data:
+  caddy_config:
