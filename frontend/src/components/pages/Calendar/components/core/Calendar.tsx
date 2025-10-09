@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect, useRef } from "react";
 import { useAtomValue, useSetAtom } from "jotai";
 import { DndContext } from "@dnd-kit/core";
 
-import { addDays, startOfWeek } from "date-fns";
+import { addDays, startOfWeek, getDay } from "date-fns";
 
 import { useAuth } from "@/AuthProvider";
 import type { ITransformedEvent, ISelectedEvent, IEvent } from "@/models/IEvent";
@@ -29,7 +29,7 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/common/Command";
-import { toast } from "sonner";
+
 import { integrationsAtom } from "@/atoms/integrationsAtom";
 import { integrationService } from "@/services/IntegrationService";
 
@@ -72,7 +72,7 @@ const Calendar = ({ transformEvents, sidebarOpen, setSidebarOpen }: IProps) => {
     setIsEventPopupOpen,
   });
 
-  const { currentWeek, moveWeek } = useWeekNavigation();
+  const { currentWeek, moveByDays } = useWeekNavigation();
 
   const { sensors, onDragEnd } = useDrag({ createEvent, editEvent });
   const calendarView = useCalendarView();
@@ -179,13 +179,13 @@ const Calendar = ({ transformEvents, sidebarOpen, setSidebarOpen }: IProps) => {
   const daysCount = calendarView === "single" ? 1 : calendarView === "triple" ? 3 : 7;
   const viewStartDate =
     calendarView === "single"
-      ? new Date()
+      ? currentWeek
       : calendarView === "triple"
-        ? addDays(new Date(), -1)
+        ? addDays(currentWeek, -1)
         : weekStart;
 
   const weekDays = Array.from({ length: daysCount }, (_, i) => addDays(viewStartDate, i));
-  const daysOfWeek = Array.from({ length: daysCount }, (_, i) => i);
+  const daysOfWeek = weekDays.map(d => getDay(d));
 
   const gridCols =
     calendarView === "single"
@@ -198,7 +198,7 @@ const Calendar = ({ transformEvents, sidebarOpen, setSidebarOpen }: IProps) => {
     <DndContext sensors={sensors} onDragEnd={onDragEnd}>
       <div className="w-full flex flex-col items-start bg-gray-50 rounded-xl">
         <CalendarHeader
-          moveWeek={moveWeek}
+          moveByDays={moveByDays}
           calendarView={calendarView}
           sidebarOpen={sidebarOpen}
           setSidebarOpen={setSidebarOpen}

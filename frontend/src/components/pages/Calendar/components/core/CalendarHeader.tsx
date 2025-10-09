@@ -9,7 +9,7 @@ import { currentWeekAtom } from "@/atoms/eventsAtom";
 import type { CalendarView } from "@/components/pages/Calendar/hooks/useCalendarView";
 
 interface IProps {
-  moveWeek: (direction: number) => void;
+  moveByDays: (direction: number) => void;
   calendarView: CalendarView;
   sidebarOpen: boolean;
   setSidebarOpen: (sidebarOpen: boolean) => void;
@@ -17,7 +17,7 @@ interface IProps {
 }
 
 export const CalendarHeader = ({
-  moveWeek,
+  moveByDays,
   calendarView,
   sidebarOpen,
   setSidebarOpen,
@@ -52,11 +52,15 @@ export const CalendarHeader = ({
         <div className="flex justify-center items-center space-x-8 p-4">
           <ChevronLeftIcon
             className="w-6 h-6 cursor-pointer hover:scale-110 transform transition duration-100"
-            onClick={() => moveWeek(-1)}
+            onClick={() =>
+              moveByDays(calendarView === "single" ? -1 : calendarView === "triple" ? -3 : -7)
+            }
           />
           <ChevronRightIcon
             className="w-6 h-6 cursor-pointer hover:scale-110 transform transition duration-100"
-            onClick={() => moveWeek(1)}
+            onClick={() =>
+              moveByDays(calendarView === "single" ? 1 : calendarView === "triple" ? 3 : 7)
+            }
           />
           <Button
             className="bg-white border border-gray-300 text-gray-700 h-full rounded-lg hover:bg-gray-50"
@@ -73,11 +77,11 @@ export const CalendarHeader = ({
             key={day.toISOString()}
             className={`
               border-r border-b
-              ${isSameDay(day, new Date()) ? "border-b-violet-400" : "border-gray-200"} 
+              ${isSameDay(day, currentWeek) ? "border-b-violet-400" : "border-gray-200"} 
               flex justify-center items-center p-4
             `}
           >
-            <span className={`${isSameDay(day, new Date()) ? "font-bold" : ""}`}>
+            <span className={`${isSameDay(day, currentWeek) ? "font-bold" : ""}`}>
               {format(day, "EEE d")}
             </span>
           </div>

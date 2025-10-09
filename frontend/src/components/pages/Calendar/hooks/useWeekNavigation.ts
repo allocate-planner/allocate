@@ -7,9 +7,9 @@ export const useWeekNavigation = () => {
   const currentWeek = useAtomValue(currentWeekAtom);
   const setCurrentWeek = useSetAtom(currentWeekAtom);
 
-  const moveWeek = useCallback(
-    (direction: number) => {
-      setCurrentWeek(prevWeek => addDays(prevWeek, direction * 7));
+  const moveByDays = useCallback(
+    (days: number) => {
+      setCurrentWeek(prevWeek => addDays(prevWeek, days));
     },
     [setCurrentWeek]
   );
@@ -17,6 +17,6 @@ export const useWeekNavigation = () => {
   return {
     currentWeek,
     setCurrentWeek,
-    moveWeek,
+    moveByDays,
   };
 };

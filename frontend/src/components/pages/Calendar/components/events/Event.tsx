@@ -31,6 +31,21 @@ const Event = memo(
       id: id,
     });
 
+    const colorStyles: Record<string, { bg: string; accent: string }> = {
+      "#8D85D2": { bg: "#E6E4F8", accent: "#5A50A6" },
+      "#86B89A": { bg: "#E0F0E8", accent: "#4E8E6C" },
+      "#A9C7EA": { bg: "#EAF2FB", accent: "#4B79C3" },
+      "#F7CEB7": { bg: "#FCEDE2", accent: "#8A4D2E" },
+      "#E09BA7": { bg: "#F6E0E4", accent: "#A65466" },
+      "#C3CEDC": { bg: "#EFF2F7", accent: "#576981" },
+    };
+
+    const key = colour.toUpperCase();
+    const mapped = colorStyles[key] ?? { bg: colour, accent: key };
+
+    const accentColour = mapped.accent;
+    const backgroundColour = mapped.bg;
+
     const style = {
       transform: CSS.Translate.toString(transform),
       zIndex: isDragging ? 1000 : 10,
@@ -43,7 +58,9 @@ const Event = memo(
       <div
         ref={setNodeRef}
         style={{
-          backgroundColor: colour,
+          backgroundColor: backgroundColour,
+          borderLeft: `4px solid ${accentColour}`,
+          color: accentColour,
           gridRow: `${startHour} / span ${duration}`,
           ...style,
         }}
@@ -57,7 +74,7 @@ const Event = memo(
         {...listeners}
         {...attributes}
       >
-        <h2 className="font-bold text-sm truncate overflow-hidden w-full">{title}</h2>
+        <h2 className="font-medium text-sm truncate overflow-hidden w-full">{title}</h2>
         <h3 className="text-xs">
           {duration !== 1 ? (
             <>

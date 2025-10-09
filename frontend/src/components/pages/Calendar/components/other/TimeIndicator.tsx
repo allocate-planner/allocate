@@ -22,10 +22,10 @@ const TimeIndicator = () => {
   return (
     <div className="absolute w-full" style={{ top: `${topPosition()}px` }}>
       <div className="flex items-center -translate-y-1/2">
-        <div className="bg-red-300 text-white whitespace-nowrap text-xs px-1.5 py-0.5 rounded-sm ml-auto">
+        <div className="bg-indigo-500 text-white whitespace-nowrap text-xs px-1.5 py-0.5 rounded-sm ml-auto">
           {format(currentTime, "h:mm a")}
         </div>
-        <div className="flex-grow h-px bg-red-200" />
+        <div className="flex-grow h-px bg-indigo-300" />
       </div>
     </div>
   );
