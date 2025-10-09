@@ -1,4 +1,5 @@
 import logging
+import os
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -18,6 +19,9 @@ logging.basicConfig(
 )
 
 
+production = os.environ.get("ALLOCATE_ENV") == "production"
+
+
 def create_app() -> FastAPI:
     app = FastAPI()
     app_config = DevelopmentConfig()
@@ -25,13 +29,25 @@ def create_app() -> FastAPI:
     app.middleware("http")(request_logging_middleware)
     app.middleware("http")(error_handling_middleware)
 
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origins=["*"],
-        allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
-    )
+    if production:
+        app.add_middleware(
+            CORSMiddleware,
+            allow_origins=[
+                "https://allocate.day",
+                "https://www.allocate.day",
+            ],
+            allow_credentials=True,
+            allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+            allow_headers=["Content-Type", "Authorization"],
+        )
+    else:
+        app.add_middleware(
+            CORSMiddleware,
+            allow_origins=["http://localhost:5173"],
+            allow_credentials=True,
+            allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+            allow_headers=["Content-Type", "Authorization"],
+        )
 
     Base.metadata.create_all(bind=engine)
 
