@@ -33,13 +33,14 @@ allocate is a modern calendar application with native AI features, primarily foc
 - [TypeScript](https://www.typescriptlang.org/) – frontend language
 - [React](https://react.dev/) – frontend framework
 - [Zod](https://zod.dev/) – schema validation
-- [shadcn/ui](https://ui.shadcn.com/) – for components
+- [shadcn/ui](https://ui.shadcn.com/) – components
 - [OpenAI](https://openai.com/) – LLM & transcription models
 - [GitHub](https://github.com/features/actions) – CI/CD
 - [LangChain](https://www.langchain.com/) – LLM tooling
-- [Langfuse](https://langfuse.com/) – LLM observability _(soon)_
-- [Docker](https://www.docker.com/) - containers _(soon)_
-- [AWS](https://aws.amazon.com/) – cloud/infra _(soon)_
+- [Langfuse](https://langfuse.com/) – LLM observability
+- [Caddy](https://caddyserver.com/) - reverse proxy
+- [Docker](https://www.docker.com/) - containers
+- [AWS](https://aws.amazon.com/) – cloud/infra
 
 ## Demo
 
