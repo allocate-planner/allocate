@@ -1,4 +1,6 @@
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import { Orb } from "@/components/common/Orb";
+import { useState } from "react";
 
 interface IProps {
   onStop: () => void;
@@ -7,6 +9,8 @@ interface IProps {
 }
 
 const OrbComponent = ({ onStop, isProcessing, className = "" }: IProps) => {
+  const [inputVolume, _] = useState<number>(0.5);
+
   return (
     <div className={`relative overflow-hidden rounded-xl border border-gray-50 ${className}`}>
       {isProcessing ? (
@@ -14,9 +18,12 @@ const OrbComponent = ({ onStop, isProcessing, className = "" }: IProps) => {
           <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-300 border-t-transparent" />
         </div>
       ) : (
-        <video autoPlay muted loop playsInline className="w-full rounded-lg">
-          <source src="/orb/allocate_orb.webm" type="video/webm" />
-        </video>
+        <Orb
+          colors={["#a5b4fc", "#4f46e5"]}
+          volumeMode="manual"
+          manualInput={inputVolume}
+          agentState="listening"
+        />
       )}
       <button
         onClick={onStop}
