@@ -19,10 +19,9 @@ logging.basicConfig(
 )
 
 
-production = os.environ.get("ALLOCATE_ENV") == "production"
-
-
 def create_app() -> FastAPI:
+    production = os.environ.get("ALLOCATE_ENV") == "production"
+
     app = FastAPI()
     app_config = config
 

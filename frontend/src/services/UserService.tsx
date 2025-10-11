@@ -18,14 +18,15 @@ export const userService = {
       password: userDetails.password,
     });
 
-    const headers = {
+    const config = {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },
-    };
+      withCredentials: true,
+    } as const;
 
     return await axios
-      .post(`${API_BASE_URL}/users/login`, stringifiedData, headers)
+      .post(`${API_BASE_URL}/users/login`, stringifiedData, config)
       .then(response => {
         if (response.data) {
           return UserDTO.userDetailsFromBackend(response.data);

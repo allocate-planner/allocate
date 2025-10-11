@@ -51,3 +51,10 @@ class EditUser(FrozenBaseModel):
         str | None,
         StringConstraints(strip_whitespace=True, max_length=256),
     ] = None
+
+
+class AccessToken(FrozenBaseModel):
+    access_token: Annotated[
+        str,
+        StringConstraints(strip_whitespace=True, max_length=4096),
+    ]

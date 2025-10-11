@@ -8,6 +8,7 @@ from api.services.email_service import EmailService
 from api.users.hashers.bcrypt_hasher import BCryptHasher
 from api.users.use_cases.edit_user_use_case import EditUserUseCase
 from api.users.use_cases.login_user_use_case import LoginUserUseCase
+from api.users.use_cases.refresh_access_token_use_case import RefreshAccessTokenUseCase
 from api.users.use_cases.register_user_use_case import RegisterUserUseCase
 from api.users.validators import EmailAddressValidator, PasswordValidator
 
@@ -49,3 +50,9 @@ def edit_user_use_case(
     bcrypt_hasher: Annotated[BCryptHasher, Depends(get_bcrypt_hasher)],
 ) -> EditUserUseCase:
     return EditUserUseCase(user_repository, bcrypt_hasher)
+
+
+def refresh_access_token_use_case(
+    config: Annotated[Config, Depends(Config)],
+) -> RefreshAccessTokenUseCase:
+    return RefreshAccessTokenUseCase(config)

@@ -24,7 +24,6 @@ export const UserDetailsSchema = z.object({
   lastName: z.string().min(1).max(64),
   emailAddress: z.string().email().max(256),
   accessToken: z.string().min(1),
-  refreshToken: z.string().min(1),
 });
 
 export const ProfileEditSchema = z.object({
@@ -54,7 +53,6 @@ export const UserDetailsBackendSchema = z.object({
   last_name: z.string().min(1).max(64),
   email_address: z.string().email().max(256),
   access_token: z.string().min(1),
-  refresh_token: z.string().min(1),
 });
 
 export const UserEditResponseBackendSchema = z.object({
@@ -85,7 +83,6 @@ export class UserDTO {
       lastName: validatedBackend.last_name,
       emailAddress: validatedBackend.email_address,
       accessToken: validatedBackend.access_token,
-      refreshToken: validatedBackend.refresh_token,
     };
   }
 

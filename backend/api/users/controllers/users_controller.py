@@ -1,19 +1,29 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request, Response
 from fastapi.security import OAuth2PasswordRequestForm
 
+from api.config import config
 from api.dependencies import get_current_user
-from api.system.schemas.user import EditUser, User, UserBase, UserDetails, UserWithToken
+from api.system.schemas.user import (
+    AccessToken,
+    EditUser,
+    User,
+    UserBase,
+    UserDetails,
+    UserWithToken,
+)
 from api.users.dependencies import (
     edit_user_use_case,
     get_email_address_validator,
     get_password_validator,
     login_user_use_case,
+    refresh_access_token_use_case,
     register_user_use_case,
 )
 from api.users.use_cases.edit_user_use_case import EditUserUseCase
 from api.users.use_cases.login_user_use_case import LoginUserUseCase
+from api.users.use_cases.refresh_access_token_use_case import RefreshAccessTokenUseCase
 from api.users.use_cases.register_user_use_case import RegisterUserUseCase
 from api.users.validators import EmailAddressValidator, PasswordValidator
 
@@ -57,10 +67,42 @@ def register_user(
 
 @users.post("/api/v1/users/login")
 def authenticate_user(
+    response: Response,
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
     login_user_use_case: Annotated[LoginUserUseCase, Depends(login_user_use_case)],
 ) -> UserWithToken:
-    return login_user_use_case.execute(form_data)
+    user_with_token = login_user_use_case.execute(form_data)
+
+    secure_cookie = config.is_production
+    samesite_cookie = "lax"
+
+    response.set_cookie(
+        key="refresh_token",
+        value=user_with_token.refresh_token,
+        httponly=True,
+        secure=secure_cookie,
+        samesite=samesite_cookie,
+        max_age=config.JWT_REFRESH_TOKEN_EXPIRE_SECONDS,
+        path="/api/v1/users/refresh",
+    )
+
+    return user_with_token
+
+
+@users.post("/api/v1/users/refresh")
+def refresh_access_token(
+    request: Request,
+    refresh_access_token_use_case: Annotated[
+        RefreshAccessTokenUseCase,
+        Depends(refresh_access_token_use_case),
+    ],
+) -> AccessToken:
+    token = request.cookies.get("refresh_token")
+
+    if not token:
+        raise HTTPException(status_code=401, detail="Missing refresh token")
+
+    return refresh_access_token_use_case.execute(token)
 
 
 @users.put("/api/v1/users/edit")

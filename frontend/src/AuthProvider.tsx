@@ -13,9 +13,9 @@ const defaultAuthContext: IAuthContext = {
   lastName: "",
   emailAddress: "",
   accessToken: null,
-  refreshToken: null,
   login: () => {},
   logout: () => {},
+  updateAccessToken: () => {},
 };
 
 const setStoredUserData = (userData: IStoredUser): void => {
@@ -55,6 +55,14 @@ export const AuthProvider = ({ children }: IAuthProvider) => {
     setUser(null);
   };
 
+  const updateAccessToken = (accessToken: string): void => {
+    if (!user) return;
+
+    const updatedUserData = { ...user, accessToken } as IStoredUser;
+    setStoredUserData(updatedUserData);
+    setUser(updatedUserData);
+  };
+
   const contextValue: IAuthContext = {
     id: user?.id || 0,
     isAuthenticated: !!user,
@@ -62,9 +70,9 @@ export const AuthProvider = ({ children }: IAuthProvider) => {
     lastName: user?.lastName || "",
     emailAddress: user?.emailAddress || "",
     accessToken: user?.accessToken || null,
-    refreshToken: user?.refreshToken || null,
     login,
     logout,
+    updateAccessToken,
   };
 
   return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;

@@ -1,0 +1,2 @@
+class RefreshTokenError(Exception):
+    pass

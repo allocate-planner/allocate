@@ -26,7 +26,7 @@ interface IProps {
 }
 
 const AccountTab = ({ firstName, lastName, emailAddress, accessToken, onUserUpdate }: IProps) => {
-  const { id, refreshToken } = useAuth();
+  const { id } = useAuth();
 
   const [isUpdatingProfile, setIsUpdatingProfile] = useState<boolean>(false);
   const [isUpdatingPassword, setIsUpdatingPassword] = useState<boolean>(false);
@@ -52,7 +52,7 @@ const AccountTab = ({ firstName, lastName, emailAddress, accessToken, onUserUpda
     resolver: zodResolver(PasswordEditSchema),
   });
 
-  if (!refreshToken) {
+  if (!accessToken) {
     toast.error("Authentication required");
     return false;
   }
@@ -73,7 +73,6 @@ const AccountTab = ({ firstName, lastName, emailAddress, accessToken, onUserUpda
         ...updatedUser,
         id,
         accessToken,
-        refreshToken,
       };
 
       toast.success("Profile updated successfully");

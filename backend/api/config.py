@@ -13,8 +13,10 @@ class Config:
     JWT_SECRET_KEY: str | None = os.environ.get("ALLOCATE_JWT_SECRET_KEY")
     JWT_REFRESH_SECRET_KEY: str | None = os.environ.get("ALLOCATE_JWT_REFRESH_KEY")
     JWT_ALGORITHM: str = "HS256"
-    JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = 43800
-    JWT_REFRESH_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7
+    JWT_ACCESS_TOKEN_EXPIRE_SECONDS: int = 60
+    JWT_REFRESH_TOKEN_EXPIRE_SECONDS: int = 120
+
+    is_production: bool = False
 
 
 class ProductionConfig(Config):
@@ -22,6 +24,7 @@ class ProductionConfig(Config):
     DEBUG: bool = False
     ENV: str = "production"
 
+    is_production: bool = True
     os.environ["LANGFUSE_TRACING_ENVIRONMENT"] = "production"
 
 
@@ -30,6 +33,7 @@ class DevelopmentConfig(Config):
     DEBUG: bool = True
     ENV: str = "debug"
 
+    is_production: bool = False
     os.environ["LANGFUSE_TRACING_ENVIRONMENT"] = "development"
 
 

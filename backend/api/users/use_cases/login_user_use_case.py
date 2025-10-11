@@ -48,7 +48,7 @@ class LoginUserUseCase(UseCase):
 
     def create_access_token(self, subject: str) -> str:
         expire = datetime.now(UTC) + timedelta(
-            minutes=self.config.JWT_ACCESS_TOKEN_EXPIRE_MINUTES,
+            seconds=self.config.JWT_ACCESS_TOKEN_EXPIRE_SECONDS,
         )
 
         expiry_and_subject = {"exp": expire, "sub": str(subject)}
@@ -61,7 +61,7 @@ class LoginUserUseCase(UseCase):
 
     def create_refresh_token(self, subject: str) -> str:
         expires_delta = datetime.now(UTC) + timedelta(
-            minutes=self.config.JWT_REFRESH_TOKEN_EXPIRE_MINUTES,
+            seconds=self.config.JWT_REFRESH_TOKEN_EXPIRE_SECONDS,
         )
 
         expiry_and_subject = {"exp": expires_delta, "sub": str(subject)}
