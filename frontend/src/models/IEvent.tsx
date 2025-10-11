@@ -4,27 +4,27 @@ import { compareDates } from "@/utils/TimeUtils";
 
 export const EventSchema = z.object({
   id: z.number(),
-  title: z.string(),
-  description: z.string().optional(),
-  location: z.string().optional(),
+  title: z.string().max(256),
+  description: z.string().max(1024).optional(),
+  location: z.string().max(256).optional(),
   date: z.string(),
-  colour: z.string(),
+  colour: z.string().max(256),
   start_time: z.string(),
   end_time: z.string(),
-  rrule: z.string().optional(),
+  rrule: z.string().max(512).optional(),
   repeated: z.boolean().optional(),
 });
 
 export const EventCreateSchema = z
   .object({
-    title: z.string().min(1, "A title must be provided"),
-    description: z.string().optional(),
-    location: z.string().optional(),
-    colour: z.string().optional(),
+    title: z.string().min(1, "A title must be provided").max(256),
+    description: z.string().max(1024).optional(),
+    location: z.string().max(256).optional(),
+    colour: z.string().max(256).optional(),
     date: z.string(),
     start_time: z.string(),
     end_time: z.string(),
-    rrule: z.string().optional(),
+    rrule: z.string().max(512).optional(),
   })
   .refine(data => data.start_time !== data.end_time, {
     message: "Start time must be different than end time",
@@ -42,13 +42,13 @@ export const EventCreateSchema = z
 
 export const EventEditSchema = z
   .object({
-    title: z.string().min(1, "A title must be provided"),
-    description: z.string().optional(),
-    location: z.string().optional(),
-    colour: z.string().optional(),
+    title: z.string().min(1, "A title must be provided").max(256),
+    description: z.string().max(1024).optional(),
+    location: z.string().max(256).optional(),
+    colour: z.string().max(256).optional(),
     start_time: z.string(),
     end_time: z.string(),
-    rrule: z.string().optional(),
+    rrule: z.string().max(512).optional(),
   })
   .refine(data => data.start_time !== data.end_time, {
     message: "Start time must be different than end time",

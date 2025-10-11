@@ -7,9 +7,9 @@ export const UserLoginSchema = z.object({
 
 export const UserRegisterSchema = z
   .object({
-    firstName: z.string().min(1),
-    lastName: z.string().min(1),
-    emailAddress: z.string().email(),
+    firstName: z.string().min(1).max(64),
+    lastName: z.string().min(1).max(64),
+    emailAddress: z.string().email().max(256),
     password: z.string().min(8),
     confirmPassword: z.string().min(8),
   })
@@ -20,16 +20,16 @@ export const UserRegisterSchema = z
 
 export const UserDetailsSchema = z.object({
   id: z.number(),
-  firstName: z.string().min(1),
-  lastName: z.string().min(1),
-  emailAddress: z.string().email(),
+  firstName: z.string().min(1).max(64),
+  lastName: z.string().min(1).max(64),
+  emailAddress: z.string().email().max(256),
   accessToken: z.string().min(1),
   refreshToken: z.string().min(1),
 });
 
 export const ProfileEditSchema = z.object({
-  firstName: z.string().min(1).optional(),
-  lastName: z.string().min(1).optional(),
+  firstName: z.string().min(1).max(64).optional(),
+  lastName: z.string().min(1).max(64).optional(),
 });
 
 export const PasswordEditSchema = z
@@ -43,24 +43,24 @@ export const PasswordEditSchema = z
   });
 
 export const UserEditResponseSchema = z.object({
-  firstName: z.string().min(1),
-  lastName: z.string().min(1),
-  emailAddress: z.string().email(),
+  firstName: z.string().min(1).max(64),
+  lastName: z.string().min(1).max(64),
+  emailAddress: z.string().email().max(256),
 });
 
 export const UserDetailsBackendSchema = z.object({
   id: z.number(),
-  first_name: z.string().min(1),
-  last_name: z.string().min(1),
-  email_address: z.string().email(),
+  first_name: z.string().min(1).max(64),
+  last_name: z.string().min(1).max(64),
+  email_address: z.string().email().max(256),
   access_token: z.string().min(1),
   refresh_token: z.string().min(1),
 });
 
 export const UserEditResponseBackendSchema = z.object({
-  first_name: z.string().min(1),
-  last_name: z.string().min(1),
-  email_address: z.string().email(),
+  first_name: z.string().min(1).max(64),
+  last_name: z.string().min(1).max(64),
+  email_address: z.string().email().max(256),
 });
 
 export type IUserLogin = z.infer<typeof UserLoginSchema>;
