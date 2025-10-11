@@ -13,8 +13,8 @@ class Config:
     JWT_SECRET_KEY: str | None = os.environ.get("ALLOCATE_JWT_SECRET_KEY")
     JWT_REFRESH_SECRET_KEY: str | None = os.environ.get("ALLOCATE_JWT_REFRESH_KEY")
     JWT_ALGORITHM: str = "HS256"
-    JWT_ACCESS_TOKEN_EXPIRE_SECONDS: int = 60
-    JWT_REFRESH_TOKEN_EXPIRE_SECONDS: int = 120
+    JWT_ACCESS_TOKEN_EXPIRE_SECONDS: int = 60 * 15
+    JWT_REFRESH_TOKEN_EXPIRE_SECONDS: int = 60 * 60 * 24 * 7
 
     is_production: bool = False
 
