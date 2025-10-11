@@ -34,12 +34,13 @@ allocate is a modern calendar application with native AI features, primarily foc
 - [React](https://react.dev/) – frontend framework
 - [Zod](https://zod.dev/) – schema validation
 - [shadcn/ui](https://ui.shadcn.com/) – components
-- [OpenAI](https://openai.com/) – LLM & transcription models
+- [Groq](https://groq.com/) – transcription models
+- [OpenRouter](https://openrouter.ai/) – LLMs
 - [GitHub](https://github.com/features/actions) – CI/CD
 - [LangChain](https://www.langchain.com/) – LLM tooling
 - [Langfuse](https://langfuse.com/) – LLM observability
-- [Caddy](https://caddyserver.com/) - reverse proxy
-- [Docker](https://www.docker.com/) - containers
+- [Caddy](https://caddyserver.com/) – reverse proxy
+- [Docker](https://www.docker.com/) – containers
 - [AWS](https://aws.amazon.com/) – cloud/infra
 
 ## Demo
