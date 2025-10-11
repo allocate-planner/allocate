@@ -11,13 +11,13 @@ import { Spinner } from "@/components/common/Spinner";
 
 import { userService } from "@/services/UserService";
 import { useAuth } from "@/AuthProvider";
-import { UserRegisterSchema, type IUserRegister } from "@/models/IUser";
+import { type IUserLogin, UserRegisterSchema, type IUserRegister } from "@/models/IUser";
 
 import { toast } from "sonner";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, login } = useAuth();
 
   const {
     register,
@@ -39,7 +39,16 @@ const RegisterPage = () => {
     try {
       await userService.registerUser(userDetails);
       toast.success("You have successfully created an account.");
-      navigate("/login");
+
+      const userDetailsLogin: IUserLogin = {
+        emailAddress: userDetails.emailAddress,
+        password: userDetails.password,
+      };
+
+      const response = await userService.authenticateUser(userDetailsLogin);
+
+      login(response);
+      navigate("/calendar");
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "An unknown error occurred.";
 
