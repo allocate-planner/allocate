@@ -13,7 +13,7 @@ const UserInfo = ({ firstName, lastName, emailAddress, onLogout, className = "" 
     <div
       className={`border-t-[1px] border-gray-200 flex flex-row justify-between items-center p-6 ${className}`}
     >
-      <div className="flex flex-col">
+      <div className="flex flex-col truncate max-w-[85%]">
         <h1 className="font-bold">
           {firstName} {lastName}
         </h1>
