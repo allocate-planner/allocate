@@ -39,7 +39,7 @@ async def request_logging_middleware(
                     algorithms=[config.JWT_ALGORITHM],
                 )
                 user_id = str(payload.get("sub", ANONYMOUS_USER_ID))
-        except Exception:  # noqa: S110
+        except Exception:  # noqa: S110  # nosec B110
             pass
 
     logger.info(
