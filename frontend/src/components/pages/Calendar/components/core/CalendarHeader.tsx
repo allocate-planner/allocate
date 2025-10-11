@@ -1,10 +1,8 @@
 import { format, isSameDay } from "date-fns";
-import { useAtomValue, useSetAtom } from "jotai";
 
 import { Bars3Icon, ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 
 import { Button } from "@/components/common/Button";
-import { currentWeekAtom } from "@/atoms/eventsAtom";
 
 import type { CalendarView } from "@/components/pages/Calendar/hooks/useCalendarView";
 
@@ -14,6 +12,8 @@ interface IProps {
   sidebarOpen: boolean;
   setSidebarOpen: (sidebarOpen: boolean) => void;
   weekDays: Date[];
+  currentDay: Date;
+  setCurrentDay: (day: Date) => void;
 }
 
 export const CalendarHeader = ({
@@ -22,10 +22,9 @@ export const CalendarHeader = ({
   sidebarOpen,
   setSidebarOpen,
   weekDays,
+  currentDay,
+  setCurrentDay,
 }: IProps) => {
-  const currentWeek = useAtomValue(currentWeekAtom);
-  const setCurrentWeek = useSetAtom(currentWeekAtom);
-
   const getGridCols = () => {
     switch (calendarView) {
       case "single":
@@ -47,7 +46,7 @@ export const CalendarHeader = ({
               onClick={() => setSidebarOpen(!sidebarOpen)}
             />
           ) : null}
-          <h2 className="text-lg font-semibold">{format(currentWeek, "MMMM yyyy")}</h2>
+          <h2 className="text-lg font-semibold">{format(currentDay, "MMMM yyyy")}</h2>
         </div>
         <div className="flex justify-center items-center space-x-8 p-4">
           <ChevronLeftIcon
@@ -64,7 +63,7 @@ export const CalendarHeader = ({
           />
           <Button
             className="bg-white border border-gray-300 text-gray-700 h-full rounded-lg hover:bg-gray-50"
-            onClick={() => setCurrentWeek(new Date())}
+            onClick={() => setCurrentDay(new Date())}
           >
             Today
           </Button>
@@ -77,11 +76,11 @@ export const CalendarHeader = ({
             key={day.toISOString()}
             className={`
               border-r border-b
-              ${isSameDay(day, currentWeek) ? "border-b-violet-400" : "border-gray-200"} 
+              ${isSameDay(day, new Date()) ? "border-b-violet-400" : "border-gray-200"} 
               flex justify-center items-center p-4
             `}
           >
-            <span className={`${isSameDay(day, currentWeek) ? "font-bold" : ""}`}>
+            <span className={`${isSameDay(day, new Date()) ? "font-bold" : ""}`}>
               {format(day, "EEE d")}
             </span>
           </div>

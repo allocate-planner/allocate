@@ -72,12 +72,12 @@ const Calendar = ({ transformEvents, sidebarOpen, setSidebarOpen }: IProps) => {
     setIsEventPopupOpen,
   });
 
-  const { currentWeek, moveByDays } = useWeekNavigation();
+  const { currentDay, setCurrentDay, moveByDays } = useWeekNavigation();
 
   const { sensors, onDragEnd } = useDrag({ createEvent, editEvent });
   const calendarView = useCalendarView();
 
-  const weekStart = startOfWeek(currentWeek);
+  const weekStart = startOfWeek(currentDay);
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
@@ -179,9 +179,9 @@ const Calendar = ({ transformEvents, sidebarOpen, setSidebarOpen }: IProps) => {
   const daysCount = calendarView === "single" ? 1 : calendarView === "triple" ? 3 : 7;
   const viewStartDate =
     calendarView === "single"
-      ? currentWeek
+      ? currentDay
       : calendarView === "triple"
-        ? addDays(currentWeek, -1)
+        ? addDays(currentDay, -1)
         : weekStart;
 
   const weekDays = Array.from({ length: daysCount }, (_, i) => addDays(viewStartDate, i));
@@ -203,6 +203,8 @@ const Calendar = ({ transformEvents, sidebarOpen, setSidebarOpen }: IProps) => {
           sidebarOpen={sidebarOpen}
           setSidebarOpen={setSidebarOpen}
           weekDays={weekDays}
+          currentDay={currentDay}
+          setCurrentDay={setCurrentDay}
         />
 
         <div

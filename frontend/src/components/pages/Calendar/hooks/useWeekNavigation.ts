@@ -1,22 +1,22 @@
 import { useCallback } from "react";
 import { useAtomValue, useSetAtom } from "jotai";
 import { addDays } from "date-fns";
-import { currentWeekAtom } from "@/atoms/eventsAtom";
+import { currentDayAtom } from "@/atoms/eventsAtom";
 
 export const useWeekNavigation = () => {
-  const currentWeek = useAtomValue(currentWeekAtom);
-  const setCurrentWeek = useSetAtom(currentWeekAtom);
+  const currentDay = useAtomValue(currentDayAtom);
+  const setCurrentDay = useSetAtom(currentDayAtom);
 
   const moveByDays = useCallback(
     (days: number) => {
-      setCurrentWeek(prevWeek => addDays(prevWeek, days));
+      setCurrentDay(prevDay => addDays(prevDay, days));
     },
-    [setCurrentWeek]
+    [setCurrentDay]
   );
 
   return {
-    currentWeek,
-    setCurrentWeek,
+    currentDay,
+    setCurrentDay,
     moveByDays,
   };
 };
