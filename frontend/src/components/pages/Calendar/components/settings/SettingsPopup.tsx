@@ -74,7 +74,7 @@ const SettingsPopup = (props: IProps) => {
                 onClick={() => setSelectedSettingsSubPage("account")}
                 className={`${
                   selectedSettingsSubpage === "account"
-                    ? "bg-gray-50 border-violet-500 border-r-2"
+                    ? "bg-gray-50 border-indigo-500 border-r-2"
                     : ""
                 } p-4 hover:cursor-pointer `}
               >
@@ -87,7 +87,7 @@ const SettingsPopup = (props: IProps) => {
                 onClick={() => setSelectedSettingsSubPage("import")}
                 className={`${
                   selectedSettingsSubpage === "import"
-                    ? "bg-gray-50 border-violet-500 border-r-2"
+                    ? "bg-gray-50 border-indigo-500 border-r-2"
                     : ""
                 } p-4 hover:cursor-pointer `}
               >
@@ -100,7 +100,7 @@ const SettingsPopup = (props: IProps) => {
                 onClick={() => setSelectedSettingsSubPage("integrations")}
                 className={`${
                   selectedSettingsSubpage === "integrations"
-                    ? "bg-gray-50 border-violet-500 border-r-2"
+                    ? "bg-gray-50 border-indigo-500 border-r-2"
                     : ""
                 } p-4 hover:cursor-pointer `}
               >
@@ -113,7 +113,7 @@ const SettingsPopup = (props: IProps) => {
                 onClick={() => setSelectedSettingsSubPage("calendar")}
                 className={`${
                   selectedSettingsSubpage === "calendar"
-                    ? "bg-gray-50 border-violet-500 border-r-2"
+                    ? "bg-gray-50 border-indigo-500 border-r-2"
                     : ""
                 } p-4 hover:cursor-pointer `}
               >

@@ -349,7 +349,7 @@ const EventPopup = ({ isOpen, event, onClose, onCreate }: IProps) => {
             )}
           </div>
           <DialogFooter className="mt-6">
-            <Button className="bg-violet-500 hover:bg-violet-700" type="submit">
+            <Button className="bg-indigo-500 hover:bg-indigo-700" type="submit">
               {isSubmitting ? "Creating..." : "Create"}
             </Button>
           </DialogFooter>

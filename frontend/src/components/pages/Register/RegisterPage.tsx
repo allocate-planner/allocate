@@ -131,7 +131,7 @@ const RegisterPage = () => {
                 <p className="text-red-500 text-xs mt-1">{errors.confirmPassword.message}</p>
               )}
             </div>
-            <Button className="bg-violet-500 hover:bg-violet-700" type="submit">
+            <Button className="bg-indigo-500 hover:bg-indigo-700" type="submit">
               {isSubmitting && <Spinner />}
               Register
             </Button>
@@ -139,7 +139,7 @@ const RegisterPage = () => {
               Already have an account?{" "}
               <a
                 href="/login"
-                className="text-violet-500 hover:text-violet-700 hover:underline font-black cursor-pointer"
+                className="text-indigo-500 hover:text-indigo-700 hover:underline font-black cursor-pointer"
               >
                 Login
               </a>

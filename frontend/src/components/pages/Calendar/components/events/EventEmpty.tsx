@@ -14,7 +14,7 @@ const EventEmptyComponent = ({ id, onClick, onContextMenu }: IProps) => {
     <div
       ref={setNodeRef}
       className={`relative flex flex-col text-sm items-start w-full h-[28px] box-border px-4 py-1 row-span-1 ${
-        isOver ? "bg-violet-100" : ""
+        isOver ? "bg-indigo-100" : ""
       }`}
       onClick={onClick}
       onContextMenu={onContextMenu}

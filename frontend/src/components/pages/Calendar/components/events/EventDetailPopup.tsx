@@ -389,7 +389,7 @@ const EventDetailPopup = ({ isOpen, event, onClose, onEdit, onDelete }: IProps) 
             >
               {isSubmitting ? "Deleting..." : "Delete"}
             </Button>
-            <Button className="bg-violet-500 hover:bg-violet-700" type="submit">
+            <Button className="bg-indigo-500 hover:bg-indigo-700" type="submit">
               Save
             </Button>
           </DialogFooter>

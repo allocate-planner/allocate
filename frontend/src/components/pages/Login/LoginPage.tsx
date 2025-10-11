@@ -88,7 +88,7 @@ const LoginPage = () => {
                 <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>
               )}
             </div>
-            <Button className="bg-violet-500 hover:bg-violet-700" type="submit">
+            <Button className="bg-indigo-500 hover:bg-indigo-700" type="submit">
               {isSubmitting && <Spinner />}
               Sign In
             </Button>
@@ -96,7 +96,7 @@ const LoginPage = () => {
               Don’t have an account?{" "}
               <a
                 href="/register"
-                className="text-violet-500 hover:text-violet-700 hover:underline font-black cursor-pointer"
+                className="text-indigo-500 hover:text-indigo-700 hover:underline font-black cursor-pointer"
               >
                 Sign Up
               </a>

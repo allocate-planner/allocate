@@ -76,7 +76,7 @@ export const CalendarHeader = ({
             key={day.toISOString()}
             className={`
               border-r border-b
-              ${isSameDay(day, new Date()) ? "border-b-violet-400" : "border-gray-200"} 
+              ${isSameDay(day, new Date()) ? "border-b-indigo-400" : "border-gray-200"} 
               flex justify-center items-center p-4
             `}
           >
