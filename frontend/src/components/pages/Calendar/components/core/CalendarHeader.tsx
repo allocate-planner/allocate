@@ -71,11 +71,11 @@ export const CalendarHeader = ({
       </div>
       <div className={`${getGridCols()} grid grid-rows-1 w-full`}>
         <div className="border-b"></div>
-        {weekDays.map((day: Date) => (
+        {weekDays.map((day: Date, index: number) => (
           <div
             key={day.toISOString()}
             className={`
-              border-r border-b
+              ${index > 0 ? "border-l" : ""} border-b
               ${isSameDay(day, new Date()) ? "border-b-indigo-400" : "border-gray-200"} 
               flex justify-center items-center p-4
             `}
