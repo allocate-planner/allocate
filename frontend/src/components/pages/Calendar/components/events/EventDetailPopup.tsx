@@ -133,7 +133,10 @@ const EventDetailPopup = ({ isOpen, event, onClose, onEdit, onDelete }: IProps) 
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[550px]" onWheel={e => e.stopPropagation()}>
+      <DialogContent
+        className="sm:max-w-[550px] max-w-[90%] rounded-md"
+        onWheel={e => e.stopPropagation()}
+      >
         <DialogHeader className="space-y-4">
           <DialogTitle>Edit Event</DialogTitle>
           <DialogDescription>
@@ -151,7 +154,7 @@ const EventDetailPopup = ({ isOpen, event, onClose, onEdit, onDelete }: IProps) 
                 <Input
                   id="title"
                   placeholder="Call with Joe"
-                  className="w-full"
+                  className="w-full text-sm"
                   {...register("title")}
                 />
                 {errors.title && (
@@ -167,7 +170,7 @@ const EventDetailPopup = ({ isOpen, event, onClose, onEdit, onDelete }: IProps) 
                 <Textarea
                   id="description"
                   placeholder="Discuss new Product Name"
-                  className="w-full"
+                  className="w-full text-sm"
                   {...register("description")}
                 />
                 {errors.description && (
@@ -177,7 +180,7 @@ const EventDetailPopup = ({ isOpen, event, onClose, onEdit, onDelete }: IProps) 
             </div>
             <div className="flex flex-row items-center justify-between space-x-4 w-full">
               <Label className="w-1/3">Time</Label>
-              <div className="flex flex-row justify-center items-center w-2/3 space-x-2">
+              <div className="flex flex-col sm:flex-row justify-center items-center w-2/3 space-y-2 sm:space-y-0 sm:space-x-2">
                 <Controller
                   name="start_time"
                   control={control}
@@ -224,7 +227,7 @@ const EventDetailPopup = ({ isOpen, event, onClose, onEdit, onDelete }: IProps) 
                     </Popover>
                   )}
                 />
-                <Label>To</Label>
+                <Label className="hidden sm:block">To</Label>
                 <Controller
                   name="end_time"
                   control={control}
@@ -335,7 +338,7 @@ const EventDetailPopup = ({ isOpen, event, onClose, onEdit, onDelete }: IProps) 
                 <Input
                   id="location"
                   placeholder="1600 Amphitheatre Parkway"
-                  className="w-full"
+                  className="w-full text-sm"
                   {...register("location")}
                 />
                 {errors.location && (

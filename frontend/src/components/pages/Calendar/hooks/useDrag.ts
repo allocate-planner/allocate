@@ -1,4 +1,4 @@
-import { useSensors, useSensor, MouseSensor, type DragEndEvent } from "@dnd-kit/core";
+import { useSensors, useSensor, MouseSensor, TouchSensor, type DragEndEvent } from "@dnd-kit/core";
 import { useAtomValue } from "jotai";
 
 import { weekEventsAtom } from "@/atoms/eventsAtom";
@@ -29,6 +29,12 @@ export const useDrag = ({ createEvent, editEvent }: IProps) => {
     useSensor(MouseSensor, {
       activationConstraint: {
         distance: 4,
+      },
+    }),
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        delay: 100,
+        tolerance: 4,
       },
     })
   );

@@ -66,7 +66,7 @@ const Event = memo(
         }}
         className={`absolute z-10 flex ${
           duration === 1 ? "flex-row items-center space-x-2" : "flex-col"
-        } text-sm items-start w-full h-full rounded-sm box-border px-4 py-1 hover:cursor-pointer ${
+        } text-sm touch-none items-start w-full h-full rounded-sm box-border px-4 py-1 hover:cursor-pointer ${
           isDragging ? "cursor-grabbing opacity-50" : "cursor-grab"
         } ${!isDragging && hasDescription ? "opacity-90" : !isDragging ? "opacity-100" : ""}`}
         onClick={onClick}
