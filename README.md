@@ -36,6 +36,7 @@ allocate is a modern calendar application with native AI features, primarily foc
 - [shadcn/ui](https://ui.shadcn.com/) – components
 - [Groq](https://groq.com/) – transcription models
 - [OpenRouter](https://openrouter.ai/) – LLMs
+- [Exa](https://exa.ai/) – AI Search
 - [GitHub](https://github.com/features/actions) – CI/CD
 - [LangChain](https://www.langchain.com/) – LLM tooling
 - [Langfuse](https://langfuse.com/) – LLM observability
