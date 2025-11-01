@@ -6,12 +6,12 @@ from io import BytesIO
 
 from fastapi import UploadFile
 
+from api.ai.services.scheduling_service import SchedulingService
+from api.ai.services.transcription_service import TranscriptionService
 from api.audio.errors.audio_processing_error import AudioProcessingError
 from api.events.use_cases.create_event_use_case import CreateEventUseCase
 from api.events.use_cases.delete_event_use_case import DeleteEventUseCase
 from api.events.use_cases.edit_event_use_case import EditEventUseCase
-from api.infrastructure.ai.scheduling_service import SchedulingService
-from api.infrastructure.ai.transcription_service import TranscriptionService
 from api.system.interfaces.use_cases import UseCase
 from api.system.schemas.event import DeleteEvent, EditEvent, EventBase
 from api.users.errors.user_not_found_error import UserNotFoundError

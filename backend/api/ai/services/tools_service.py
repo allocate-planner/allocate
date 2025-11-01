@@ -2,6 +2,7 @@ from typing import Any
 
 from langchain_core.tools import tool
 
+from api.ai.services.search_service import SearchService
 from api.integrations.use_cases.search_integration_use_case import (
     SearchIntegrationUseCase,
 )
@@ -11,8 +12,13 @@ LINEAR_PROVIDER = "linear"
 
 
 class ToolsService:
-    def __init__(self, search_integration_use_case: SearchIntegrationUseCase) -> None:
+    def __init__(
+        self,
+        search_integration_use_case: SearchIntegrationUseCase,
+        search_service: SearchService,
+    ) -> None:
         self.search_integration_use_case = search_integration_use_case
+        self.search_service = search_service
 
     def get_tools_for_user(self, current_user: str) -> list:
         @tool
@@ -39,4 +45,12 @@ class ToolsService:
             except Exception as e:
                 return {"Error": str(e)}
 
-        return [search_notion, search_linear]
+        @tool
+        async def search_web(query: str) -> dict[str, Any]:
+            """Search the web for information."""
+            try:
+                return await self.search_service.search(query)
+            except Exception as e:
+                return {"Error": str(e)}
+
+        return [search_notion, search_linear, search_web]

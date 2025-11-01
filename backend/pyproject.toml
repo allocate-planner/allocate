@@ -28,6 +28,7 @@ dependencies = [
     "idna==3.7",
     "jinja2==3.1.4",
     "langchain>=0.3.27",
+    "langchain-exa>=0.3.1",
     "langchain-openai>=0.3.28",
     "langfuse>=3.6.1",
     "langgraph>=0.5.4",

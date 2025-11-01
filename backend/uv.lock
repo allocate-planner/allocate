@@ -44,6 +44,7 @@ dependencies = [
     { name = "idna" },
     { name = "jinja2" },
     { name = "langchain" },
+    { name = "langchain-exa" },
     { name = "langchain-openai" },
     { name = "langfuse" },
     { name = "langgraph" },
@@ -109,6 +110,7 @@ requires-dist = [
     { name = "idna", specifier = "==3.7" },
     { name = "jinja2", specifier = "==3.1.4" },
     { name = "langchain", specifier = ">=0.3.27" },
+    { name = "langchain-exa", specifier = ">=0.3.1" },
     { name = "langchain-openai", specifier = ">=0.3.28" },
     { name = "langfuse", specifier = ">=3.6.1" },
     { name = "langgraph", specifier = ">=0.5.4" },
@@ -390,6 +392,20 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/63/82/2914bff80ebee8c027802a664ad4b4caad502cd594e358f76aff395b5e56/email_validator-2.1.1.tar.gz", hash = "sha256:200a70680ba08904be6d1eef729205cc0d687634399a5924d842533efb824b84", size = 44709, upload-time = "2024-02-26T22:09:59.844Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/e4/60/b02cb0f5ee0be88bd4fbfdd9cc91e43ec2dfcc47fe064e7c70587ff58a94/email_validator-2.1.1-py3-none-any.whl", hash = "sha256:97d882d174e2a65732fb43bfce81a3a834cbc1bde8bf419e30ef5ea976370a05", size = 30334, upload-time = "2024-02-26T22:09:57.951Z" },
+]
+
+[[package]]
+name = "exa-py"
+version = "1.8.9"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "openai" },
+    { name = "requests" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/95/63/62c208d54e195013a2b5c9b1439942b4afc69f95ad0815fe9a51d36a2383/exa_py-1.8.9.tar.gz", hash = "sha256:03d9e31c71f86827007b5db581d02c808d88a7aaba1ad8422fc4425aabbaeb46", size = 13214, upload-time = "2025-02-18T06:52:21.322Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ff/e8/fdbd91e6eb01aa38ae63a4ef16cb63b9bd467d105d3f81601439c7e0bab8/exa_py-1.8.9-py3-none-any.whl", hash = "sha256:8d3abe8f21d116dcfc59c9619f8ddc29fea171733500ed5a1050ac5d1675d973", size = 12428, upload-time = "2025-02-18T06:52:19.003Z" },
 ]
 
 [[package]]
@@ -713,7 +729,7 @@ wheels = [
 
 [[package]]
 name = "langchain-core"
-version = "0.3.72"
+version = "0.3.79"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "jsonpatch" },
@@ -724,9 +740,22 @@ dependencies = [
     { name = "tenacity" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/8b/49/7568baeb96a57d3218cb5f1f113b142063679088fd3a0d0cae1feb0b3d36/langchain_core-0.3.72.tar.gz", hash = "sha256:4de3828909b3d7910c313242ab07b241294650f5cb6eac17738dd3638b1cd7de", size = 567227, upload-time = "2025-07-24T00:40:08.5Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/c8/99/f926495f467e0f43289f12e951655d267d1eddc1136c3cf4dd907794a9a7/langchain_core-0.3.79.tar.gz", hash = "sha256:024ba54a346dd9b13fb8b2342e0c83d0111e7f26fa01f545ada23ad772b55a60", size = 580895, upload-time = "2025-10-09T21:59:08.359Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/6e/7d/9f75023c478e3b854d67da31d721e39f0eb30ae969ec6e755430cb1c0fb5/langchain_core-0.3.72-py3-none-any.whl", hash = "sha256:9fa15d390600eb6b6544397a7aa84be9564939b6adf7a2b091179ea30405b240", size = 442806, upload-time = "2025-07-24T00:40:06.994Z" },
+    { url = "https://files.pythonhosted.org/packages/fc/71/46b0efaf3fc6ad2c2bd600aef500f1cb2b7038a4042f58905805630dd29d/langchain_core-0.3.79-py3-none-any.whl", hash = "sha256:92045bfda3e741f8018e1356f83be203ec601561c6a7becfefe85be5ddc58fdb", size = 449779, upload-time = "2025-10-09T21:59:06.493Z" },
+]
+
+[[package]]
+name = "langchain-exa"
+version = "0.3.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "exa-py" },
+    { name = "langchain-core" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/23/ea/0f95a9fc60900f59e30738e2e939665564db87377920a3aed75b665eb691/langchain_exa-0.3.1.tar.gz", hash = "sha256:2b59fbfe8fea3025f99c3e7456006bb0e0bc1c8ff6a3e1543965375df61421fc", size = 8543, upload-time = "2025-09-11T19:55:57.334Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ed/7c/df202eb52a845704d92ef842110e193e718c12c883f59502b0f615611b95/langchain_exa-0.3.1-py3-none-any.whl", hash = "sha256:f707fd19ee04dd062b777cf6f0df60fb8905a43eb7e7c0e26f2c3afb84fe2bfb", size = 8514, upload-time = "2025-09-11T19:55:56.624Z" },
 ]
 
 [[package]]

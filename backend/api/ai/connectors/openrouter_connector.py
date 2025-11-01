@@ -7,7 +7,7 @@ OPENROUTER_URL = "https://openrouter.ai/api/v1"
 OPENROUTER_API_KEY = os.environ.get("ALLOCATE_OPENROUTER_API_KEY", "")
 
 
-class ChatOpenRouter(ChatOpenAI):
+class OpenRouterConnector(ChatOpenAI):
     openai_api_key: SecretStr | None = Field(
         alias="api_key",
         default_factory=lambda: OPENROUTER_API_KEY,
