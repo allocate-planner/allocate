@@ -160,7 +160,7 @@ async def error_handling_middleware(  # noqa: C901, PLR0912
             status_code=401,
             content={"detail": "Invalid email or password"},
         )
-    except AudioTranscriptionError as e:
+    except AudioTranscriptionError:
         logger.exception(
             "Business logic error on %s %s",
             request.method,
