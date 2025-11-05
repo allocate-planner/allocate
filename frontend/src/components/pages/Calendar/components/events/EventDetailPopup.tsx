@@ -36,7 +36,7 @@ import { Input } from "@/components/common/Input";
 import { Label } from "@/components/common/Label";
 import { Textarea } from "@/components/common/Textarea";
 
-import { convertToISO, convertToTimePeriodFromHHmm, times } from "@/utils/TimeUtils";
+import { convertToISO, convertToTimePeriodFromHHmm, times } from "@/utils/timeUtils";
 
 const rruleOptions = [
   { label: "Does not repeat", value: "DNR" },

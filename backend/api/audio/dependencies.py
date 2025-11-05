@@ -7,7 +7,11 @@ from api.ai.services.scheduling_service import SchedulingService
 from api.ai.services.search_service import SearchService
 from api.ai.services.tools_service import ToolsService
 from api.ai.services.transcription_service import TranscriptionService
-from api.audio.use_cases.process_audio_use_case import ProcessAudioUseCase
+from api.audio.use_cases.analyse_audio_use_case import AnalyseAudioUseCase
+from api.audio.use_cases.apply_recommendations_use_case import (
+    ApplyRecommendationsUseCase,
+)
+from api.audio.use_cases.transcribe_audio_use_case import TranscribeAudioUseCase
 from api.dependencies import UserRepository, get_user_repository
 from api.integrations.dependencies import search_integration_use_case
 from api.integrations.use_cases.search_integration_use_case import (
@@ -49,16 +53,35 @@ def scheduling_service(
     return SchedulingService(transcription_service, tools_service)
 
 
-def process_audio_use_case(
+def transcribe_audio_use_case(
+    user_repository: Annotated[UserRepository, Depends(get_user_repository)],
     transcription_service: Annotated[
         TranscriptionService,
         Depends(transcription_service),
     ],
-    user_repository: Annotated[UserRepository, Depends(get_user_repository)],
-    scheduling_service: Annotated[SchedulingService, Depends(scheduling_service)],
-) -> ProcessAudioUseCase:
-    return ProcessAudioUseCase(
+) -> TranscribeAudioUseCase:
+    return TranscribeAudioUseCase(
+        user_repository,
         transcription_service,
+    )
+
+
+def analyse_audio_use_case(
+    user_repository: Annotated[UserRepository, Depends(get_user_repository)],
+    scheduling_service: Annotated[
+        SchedulingService,
+        Depends(scheduling_service),
+    ],
+) -> AnalyseAudioUseCase:
+    return AnalyseAudioUseCase(
         user_repository,
         scheduling_service,
+    )
+
+
+def apply_recommendations_use_case(
+    user_repository: Annotated[UserRepository, Depends(get_user_repository)],
+) -> ApplyRecommendationsUseCase:
+    return ApplyRecommendationsUseCase(
+        user_repository,
     )

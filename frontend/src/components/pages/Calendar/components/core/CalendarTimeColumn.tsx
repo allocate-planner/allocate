@@ -1,4 +1,4 @@
-import { calendarHours, formatHourLabel } from "@/utils/TimeUtils";
+import { calendarHours, formatHourLabel } from "@/utils/timeUtils";
 
 export const CalendarTimeColumn = () => {
   return (

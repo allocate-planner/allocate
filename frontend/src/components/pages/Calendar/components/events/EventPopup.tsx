@@ -31,7 +31,7 @@ import { cn } from "@/lib/utils";
 import { Input } from "@/components/common/Input";
 import { Label } from "@/components/common/Label";
 
-import { convertToISO, convertToTimePeriodFromISO, times } from "@/utils/TimeUtils";
+import { convertToISO, convertToTimePeriodFromISO, times } from "@/utils/timeUtils";
 import { Textarea } from "@/components/common/Textarea";
 
 const rruleOptions = [

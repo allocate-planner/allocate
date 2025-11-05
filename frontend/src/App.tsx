@@ -4,7 +4,7 @@ import { Toaster } from "sonner";
 import Routes from "@/Routes";
 import { AuthProvider, useAuth } from "@/AuthProvider";
 import axios from "axios";
-import { API_BASE_URL } from "@/utils/Constants";
+import { API_BASE_URL } from "@/utils/constants";
 
 const AxiosInterceptor = () => {
   const { logout, isAuthenticated, updateAccessToken } = useAuth();

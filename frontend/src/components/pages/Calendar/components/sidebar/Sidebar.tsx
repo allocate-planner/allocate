@@ -2,12 +2,14 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAtomValue } from "jotai";
 import { toast } from "sonner";
+import { AxiosError } from "axios";
 
 import { CalendarDaysIcon, Cog6ToothIcon } from "@heroicons/react/24/outline";
 
 import { useAuth } from "@/AuthProvider";
 import { audioService } from "@/services/AudioService";
 import { scheduledEventsAtom } from "@/atoms/eventsAtom";
+
 import type { IStoredUser } from "@/models/IUser";
 
 import OrbComponent from "@/components/pages/Calendar/components/other/OrbComponent";
@@ -17,6 +19,8 @@ import SettingsPopup from "@/components/pages/Calendar/components/settings/Setti
 import HamburgerMenu from "@/components/pages/Calendar/components/sidebar/HamburgerMenu";
 import MenuList from "@/components/pages/Calendar/components/sidebar/MenuList";
 import UserInfo from "@/components/pages/Calendar/components/sidebar/UserInfo";
+
+const baseErrorMessage = "LLM output is invalid";
 
 interface IProps {
   sidebarOpen: boolean;
@@ -59,12 +63,19 @@ const Sidebar = ({ sidebarOpen, onEventsUpdate }: IProps) => {
   const processAudio = async (audio: Blob) => {
     try {
       if (accessToken) {
-        await audioService.processAudio(audio, accessToken, scheduledEvents);
+        await audioService.processAudio(accessToken, audio, scheduledEvents);
         onEventsUpdate?.();
-        toast.success("Audio successfully processed");
       }
-    } catch {
-      toast.error("Audio not processed");
+    } catch (error: unknown) {
+      const err = error as Error;
+
+      if (err.message.includes(baseErrorMessage)) {
+        toast.info("Audio analysis failed, please try again");
+      } else if (err instanceof AxiosError) {
+        toast.error(err.response?.data);
+      } else {
+        toast.error("Processing failed, please try again");
+      }
     }
   };
 

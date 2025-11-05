@@ -10,7 +10,7 @@ import type { ITransformedEvent, ISelectedEvent, IEvent } from "@/models/IEvent"
 import EventPopup from "@/components/pages/Calendar/components/events/EventPopup";
 import EventDetailPopup from "@/components/pages/Calendar/components/events/EventDetailPopup";
 
-import { formatDate, formatISOFromTimeSlot, transformTo24HourFormat } from "@/utils/TimeUtils";
+import { formatDate, formatISOFromTimeSlot, transformTo24HourFormat } from "@/utils/timeUtils";
 
 import { useCalendarEvents } from "@/components/pages/Calendar/hooks/useCalendarEvents";
 import { useCalendarView } from "@/components/pages/Calendar/hooks/useCalendarView";

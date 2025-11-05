@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useAtomValue } from "jotai";
 
-import { calendarHours, times, transformTo24HourFormat } from "@/utils/TimeUtils";
+import { calendarHours, times, transformTo24HourFormat } from "@/utils/timeUtils";
 import { weekEventsAtom } from "@/atoms/eventsAtom";
 import type { ITransformedEvent } from "@/models/IEvent";
 

@@ -9,7 +9,7 @@ import {
   type IUserEdit,
   UserDTO,
 } from "@/models/IUser";
-import { API_BASE_URL } from "@/utils/Constants";
+import { API_BASE_URL } from "@/utils/constants";
 
 export const userService = {
   authenticateUser: async (userDetails: IUserLogin): Promise<IStoredUser> => {

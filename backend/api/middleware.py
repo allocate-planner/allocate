@@ -5,7 +5,9 @@ import jwt
 from fastapi import HTTPException, Request, Response
 from fastapi.responses import JSONResponse
 
-from api.audio.errors.audio_processing_error import AudioProcessingError
+from api.audio.errors.audio_analysis_error import AudioAnalysisError
+from api.audio.errors.audio_transcription_error import AudioTranscriptionError
+from api.audio.errors.audio_transformation_error import AudioTransformationError
 from api.config import config
 from api.events.errors.event_not_found_error import EventNotFoundError
 from api.events.errors.events_not_found_error import EventsNotFoundError
@@ -52,7 +54,7 @@ async def request_logging_middleware(
     return await call_next(request)
 
 
-async def error_handling_middleware(  # noqa: C901
+async def error_handling_middleware(  # noqa: C901, PLR0912
     request: Request,
     call_next: Callable[[Request], Awaitable[Response]],
 ) -> Response:
@@ -64,49 +66,70 @@ async def error_handling_middleware(  # noqa: C901
             request.method,
             request.url.path,
         )
-        return JSONResponse(status_code=err.status_code, content={"detail": err.detail})
+        return JSONResponse(
+            status_code=err.status_code,
+            content={"detail": err.detail},
+        )
     except MissingTokenError:
         logger.exception(
             "Auth error on %s %s",
             request.method,
             request.url.path,
         )
-        return JSONResponse(status_code=401, content={"detail": "Unauthorized"})
+        return JSONResponse(
+            status_code=401,
+            content={"detail": "Unauthorized"},
+        )
     except InvalidTokenError:
         logger.exception(
             "Auth error on %s %s",
             request.method,
             request.url.path,
         )
-        return JSONResponse(status_code=401, content={"detail": "Unauthorized"})
+        return JSONResponse(
+            status_code=401,
+            content={"detail": "Unauthorized"},
+        )
     except RefreshTokenError:
         logger.exception(
             "Auth error on %s %s",
             request.method,
             request.url.path,
         )
-        return JSONResponse(status_code=401, content={"detail": "Unauthorized"})
+        return JSONResponse(
+            status_code=401,
+            content={"detail": "Unauthorized"},
+        )
     except UserNotFoundError:
         logger.exception(
             "Business logic error on %s %s",
             request.method,
             request.url.path,
         )
-        return JSONResponse(status_code=404, content={"detail": "User not found"})
+        return JSONResponse(
+            status_code=404,
+            content={"detail": "User not found"},
+        )
     except EventNotFoundError:
         logger.exception(
             "Business logic error on %s %s",
             request.method,
             request.url.path,
         )
-        return JSONResponse(status_code=404, content={"detail": "Event not found"})
+        return JSONResponse(
+            status_code=404,
+            content={"detail": "Event not found"},
+        )
     except EventsNotFoundError:
         logger.exception(
             "Business logic error on %s %s",
             request.method,
             request.url.path,
         )
-        return JSONResponse(status_code=404, content={"detail": "Events not found"})
+        return JSONResponse(
+            status_code=404,
+            content={"detail": "Events not found"},
+        )
     except RecurringEventEditError:
         logger.exception(
             "Business logic error on %s %s",
@@ -114,7 +137,8 @@ async def error_handling_middleware(  # noqa: C901
             request.url.path,
         )
         return JSONResponse(
-            status_code=400, content={"detail": "Cannot edit first repeated event"}
+            status_code=400,
+            content={"detail": "Cannot edit first repeated event"},
         )
     except UserAlreadyExistsError:
         logger.exception(
@@ -122,7 +146,10 @@ async def error_handling_middleware(  # noqa: C901
             request.method,
             request.url.path,
         )
-        return JSONResponse(status_code=409, content={"detail": "User already exists"})
+        return JSONResponse(
+            status_code=409,
+            content={"detail": "User already exists"},
+        )
     except InvalidCredentialsError:
         logger.exception(
             "Business logic error on %s %s",
@@ -133,7 +160,7 @@ async def error_handling_middleware(  # noqa: C901
             status_code=401,
             content={"detail": "Invalid email or password"},
         )
-    except AudioProcessingError:
+    except AudioTranscriptionError as e:
         logger.exception(
             "Business logic error on %s %s",
             request.method,
@@ -141,7 +168,27 @@ async def error_handling_middleware(  # noqa: C901
         )
         return JSONResponse(
             status_code=400,
-            content={"detail": "Audio processing failed"},
+            content={"detail": "Audio transcription failed"},
+        )
+    except AudioAnalysisError as e:
+        logger.exception(
+            "Business logic error on %s %s",
+            request.method,
+            request.url.path,
+        )
+        return JSONResponse(
+            status_code=400,
+            content={"detail": str(e)},
+        )
+    except AudioTransformationError:
+        logger.exception(
+            "Business logic error on %s %s",
+            request.method,
+            request.url.path,
+        )
+        return JSONResponse(
+            status_code=400,
+            content={"detail": "Audio transformation failed"},
         )
     except Exception:
         logger.exception(

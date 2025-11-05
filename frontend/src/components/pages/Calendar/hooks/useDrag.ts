@@ -9,7 +9,7 @@ import {
   calculateNewEndSlot,
   convertTimeSlotIndexToISO,
   convertTimeToSlotIndex,
-} from "@/utils/TimeUtils";
+} from "@/utils/timeUtils";
 
 interface IProps {
   createEvent: (event: IEventCreate) => Promise<boolean>;

@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { compareDates } from "@/utils/TimeUtils";
+import { compareDates } from "@/utils/timeUtils";
 
 export const EventSchema = z.object({
   id: z.number(),

@@ -3,7 +3,7 @@ import { memo } from "react";
 import { useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 
-import { formatTimeSlotToHMM, formatTimeSlotToHMMA } from "@/utils/TimeUtils";
+import { formatTimeSlotToHMM, formatTimeSlotToHMMA } from "@/utils/timeUtils";
 
 interface IProps {
   id: string;

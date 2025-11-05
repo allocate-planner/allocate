@@ -34,6 +34,7 @@ class SchedulingService:
             temperature=LLM_TEMPERATURE,
             extra_body={"provider": {"sort": "throughput"}},
         )
+
         tools = self.tools_service.get_tools_for_user(current_user)
         prompt = self.transcription_service.get_scheduling_prompt(
             current_time, events_by_date
@@ -55,6 +56,7 @@ class SchedulingService:
             events_by_date,
             current_user,
         )
+
         result = await agent.ainvoke(
             {"messages": [{"role": "user", "content": user_message}]},
             config={
@@ -65,8 +67,8 @@ class SchedulingService:
                 },
             },
         )
+
         return self._extract_response_content(result)
 
     def _extract_response_content(self, result: dict) -> str:
-        last_message = result["messages"][-1]
-        return last_message.content
+        return result["messages"][-1].content

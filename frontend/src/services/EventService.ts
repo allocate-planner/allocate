@@ -1,7 +1,7 @@
 import axios from "axios";
 
 import type { IEvent, IEventCreate, IEventUpdate } from "@/models/IEvent";
-import { API_BASE_URL } from "@/utils/Constants";
+import { API_BASE_URL } from "@/utils/constants";
 
 export const eventService = {
   createEvent: async (eventDetails: IEventCreate, accessToken: string): Promise<IEvent> => {
