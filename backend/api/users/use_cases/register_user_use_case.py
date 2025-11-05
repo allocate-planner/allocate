@@ -1,3 +1,5 @@
+from fastapi import BackgroundTasks
+
 from api.services.email_service import EmailService
 from api.system.interfaces.use_cases import UseCase
 from api.system.models.models import User
@@ -19,7 +21,9 @@ class RegisterUserUseCase(UseCase):
         self.bcrypt_hasher = bcrypt_hasher
         self.email_service = email_service
 
-    def execute(self, request: UserDetails) -> UserSchema:
+    def execute(
+        self, request: UserDetails, background_tasks: BackgroundTasks
+    ) -> UserSchema:
         if self.user_repository.find_by_email(request.email_address):
             msg = "User already exists."
             raise UserAlreadyExistsError(msg)
@@ -34,6 +38,9 @@ class RegisterUserUseCase(UseCase):
         )
 
         self.user_repository.add(user)
-        self.email_service.send_welcome_email(str(user.email_address))
+        background_tasks.add_task(
+            self.email_service.send_welcome_email,
+            str(user.email_address),
+        )
 
         return user

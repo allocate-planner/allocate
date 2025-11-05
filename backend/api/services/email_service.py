@@ -10,7 +10,7 @@ class EmailService:
         self.url = PLUNK_URL
         self.api_key = config.PLUNK_API_KEY
 
-    def send_welcome_email(self, recipient: str) -> None:
+    async def send_welcome_email(self, recipient: str) -> None:
         self.body = """
 <!DOCTYPE html>
 <html lang="en">
@@ -70,4 +70,5 @@ class EmailService:
             "Authorization": f"Bearer {self.api_key}",
         }
 
-        httpx.request("POST", self.url, json=payload, headers=headers)
+        async with httpx.AsyncClient() as client:
+            await client.request("POST", self.url, json=payload, headers=headers)

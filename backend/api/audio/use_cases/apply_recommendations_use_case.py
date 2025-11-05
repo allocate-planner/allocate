@@ -23,7 +23,7 @@ class ApplyRecommendationsUseCase(UseCase):
     ) -> None:
         self.user_repository = user_repository
 
-    async def execute(
+    def execute(
         self,
         current_user: str,
         recommendations: str,

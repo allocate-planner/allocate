@@ -1,6 +1,13 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException, Request, Response
+from fastapi import (
+    APIRouter,
+    BackgroundTasks,
+    Depends,
+    HTTPException,
+    Request,
+    Response,
+)
 from fastapi.security import OAuth2PasswordRequestForm
 
 from api.config import config
@@ -33,6 +40,7 @@ users = APIRouter()
 @users.post("/api/v1/users")
 def register_user(
     request: UserDetails,
+    background_tasks: BackgroundTasks,
     register_user_use_case: Annotated[
         RegisterUserUseCase,
         Depends(register_user_use_case),
@@ -62,7 +70,7 @@ def register_user(
             detail=validation_password_errors,
         )
 
-    return register_user_use_case.execute(request)
+    return register_user_use_case.execute(request, background_tasks)
 
 
 @users.post("/api/v1/users/login")

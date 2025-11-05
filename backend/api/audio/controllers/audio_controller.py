@@ -61,7 +61,7 @@ async def analyse_audio(
 
 
 @audio.post("/api/v1/audio/apply", response_model=list[EventBase])
-async def apply_recommendations(  # noqa: PLR0913
+def apply_recommendations(  # noqa: PLR0913
     analysis_output: AudioAnalysisOutput,
     apply_recommendations_use_case: Annotated[
         ApplyRecommendationsUseCase,
@@ -81,7 +81,7 @@ async def apply_recommendations(  # noqa: PLR0913
     ],
     current_user: Annotated[str, Depends(get_current_user)],
 ):
-    return await apply_recommendations_use_case.execute(
+    return apply_recommendations_use_case.execute(
         current_user,
         analysis_output.llm_output,
         create_event_use_case,
