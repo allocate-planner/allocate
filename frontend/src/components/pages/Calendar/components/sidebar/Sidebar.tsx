@@ -65,6 +65,7 @@ const Sidebar = ({ sidebarOpen, onEventsUpdate }: IProps) => {
       if (accessToken) {
         await audioService.processAudio(accessToken, audio, scheduledEvents);
         onEventsUpdate?.();
+        toast.success("Audio processed successfully");
       }
     } catch (error: unknown) {
       const err = error as Error;
