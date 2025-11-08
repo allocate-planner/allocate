@@ -22,7 +22,7 @@
 
 ## Introduction
 
-allocate is a modern calendar application with native AI features, primarily focused on voice interaction. Instead of manually scheduling your days, simply speak your plans and watch your schedule appear seamlessly, with smart integrations to Notion, Linear, GitHub, Gmail, and more to give your events meaningful context.
+allocate is a modern calendar application with native AI features, primarily focused on voice interaction. Instead of manually scheduling your days, simply speak your plans and watch your schedule appear seamlessly, with smart integrations to Notion, Linear, GitHub, Gmail, the Web, and more to give your events meaningful context.
 
 ## Tech Stack
 

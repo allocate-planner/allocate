@@ -19,7 +19,7 @@ const features = [
   {
     name: "Powerful integrations",
     description:
-      "Seamlessly connects to Notion, Linear, GitHub, Gmail, and more. Your AI assistant understands the context from all your connected tools.",
+      "Seamlessly connects to Notion, Linear, GitHub, Gmail, the Web, and more. Your AI assistant understands the context from all your connected tools.",
     icon: LinkIcon,
   },
   {
