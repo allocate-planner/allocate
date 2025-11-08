@@ -1,5 +1,6 @@
 import base64
 import os
+from datetime import datetime
 from typing import Any
 
 import httpx
@@ -80,7 +81,13 @@ class NotionProvider:
         response.raise_for_status()
         return response.json()
 
-    async def search(self, query: str, access_token: str) -> dict[str, Any]:
+    async def search(
+        self,
+        query: str,
+        access_token: str,
+        expires_at: datetime | None = None,
+        refresh_token: str | None = None,
+    ) -> dict[str, Any]:
         data = {
             "query": query,
         }

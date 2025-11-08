@@ -1,3 +1,5 @@
+from datetime import UTC, datetime, timedelta
+
 import jwt
 
 from api.config import Config
@@ -58,6 +60,11 @@ class HandleRedirectUseCase(UseCase):
             "workspace_id",
             "bot_id",
         ]
+
+        if "expires_in" in token_response:
+            integration_data["expires_at"] = datetime.now(UTC) + timedelta(
+                seconds=token_response["expires_in"],
+            )
 
         for field in optional_fields:
             if field in token_response:

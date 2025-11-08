@@ -1,3 +1,4 @@
+import base64
 import os
 from typing import Any
 
@@ -78,7 +79,11 @@ class LinearProvider:
         response.raise_for_status()
         return response.json()
 
-    async def search(self, query: str, access_token: str) -> dict[str, Any]:
+    async def search(
+        self,
+        query: str,
+        access_token: str,
+    ) -> dict[str, Any]:
         headers = {
             "Authorization": f"Bearer {access_token}",
             "Content-Type": "application/json",
@@ -136,3 +141,33 @@ class LinearProvider:
             raise ValueError(msg)
 
         return issues
+
+    async def refresh_access_token(self, refresh_token: str) -> dict[str, Any]:
+        if (
+            LinearProvider.client_id is None
+            or LinearProvider.client_secret is None
+            or LinearProvider.redirect_uri is None
+            or LinearProvider.oauth_token_url is None
+        ):
+            msg = "A Linear variable is empty"
+            raise ValueError(msg)
+
+        credentials = f"{LinearProvider.client_id}:{LinearProvider.client_secret}"
+        encoded_credentials = base64.b64encode(credentials.encode()).decode()
+
+        headers = {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Authorization": f"Basic {encoded_credentials}",
+        }
+
+        response = await _client.post(
+            LinearProvider.oauth_token_url,
+            data={
+                "grant_type": "refresh_token",
+                "refresh_token": refresh_token,
+            },
+            headers=headers,
+        )
+
+        response.raise_for_status()
+        return response.json()

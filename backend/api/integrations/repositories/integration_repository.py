@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from sqlalchemy.orm import Session
 
 from api.system.interfaces.repositories import Repository
@@ -52,3 +54,19 @@ class IntegrationRepository(Repository):
             )
             .first()
         )
+
+    def update_tokens(
+        self,
+        integration: Integration,
+        access_token: str,
+        refresh_token: str | None,
+        expires_at: datetime | None,
+    ) -> Integration:
+        integration.access_token = access_token  # type: ignore  # noqa: PGH003
+        integration.refresh_token = refresh_token  # type: ignore  # noqa: PGH003
+        integration.expires_at = expires_at  # type: ignore  # noqa: PGH003
+
+        self.db.commit()
+        self.db.refresh(integration)
+
+        return integration

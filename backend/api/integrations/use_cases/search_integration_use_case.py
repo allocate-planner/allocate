@@ -1,3 +1,4 @@
+from datetime import UTC, datetime, timedelta
 from typing import Any
 
 from api.integrations.providers.provider_registry import ProviderRegistry
@@ -44,4 +45,48 @@ class SearchIntegrationUseCase(AsyncUseCase):
             msg = "Integration not connected"
             raise ValueError(msg)
 
-        return await concrete_provider.search(query, str(integration.access_token))
+        access_token = str(integration.access_token)
+        expires_at: datetime | None = integration.expires_at  # type: ignore  # noqa: PGH003
+
+        if expires_at is not None:
+            expires_at_utc = (
+                expires_at.replace(tzinfo=UTC)
+                if expires_at.tzinfo is None
+                else expires_at.astimezone(UTC)
+            )
+
+            now_utc = datetime.now(UTC)
+
+            if expires_at_utc < now_utc:
+                if integration.refresh_token is None:
+                    msg = "Refresh token is required to refresh access token"
+                    raise ValueError(msg)
+
+                token_response = await concrete_provider.refresh_access_token(
+                    integration.refresh_token
+                )
+
+                new_access_token = token_response.get("access_token")
+                new_refresh_token = token_response.get(
+                    "refresh_token",
+                    integration.refresh_token,
+                )
+                expires_in = token_response.get("expires_in")
+                new_expires_at = (
+                    now_utc + timedelta(seconds=expires_in) if expires_in else None
+                )
+
+                if new_access_token is None:
+                    msg = "Linear response missing access_token"
+                    raise ValueError(msg)
+
+                self.integration_repository.update_tokens(
+                    integration,
+                    new_access_token,
+                    new_refresh_token,
+                    new_expires_at,
+                )
+
+                access_token = new_access_token
+
+        return await concrete_provider.search(query, access_token)
