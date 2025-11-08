@@ -85,8 +85,6 @@ class NotionProvider:
         self,
         query: str,
         access_token: str,
-        expires_at: datetime | None = None,
-        refresh_token: str | None = None,
     ) -> dict[str, Any]:
         data = {
             "query": query,
