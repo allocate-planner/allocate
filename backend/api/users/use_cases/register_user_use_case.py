@@ -22,7 +22,9 @@ class RegisterUserUseCase(UseCase):
         self.email_service = email_service
 
     def execute(
-        self, request: UserDetails, background_tasks: BackgroundTasks
+        self,
+        request: UserDetails,
+        background_tasks: BackgroundTasks,
     ) -> UserSchema:
         if self.user_repository.find_by_email(request.email_address):
             msg = "User already exists."

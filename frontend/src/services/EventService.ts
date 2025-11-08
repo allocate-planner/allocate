@@ -1,6 +1,7 @@
 import axios from "axios";
 
 import type { IEvent, IEventCreate, IEventUpdate } from "@/models/IEvent";
+import type { IImportReport } from "@/models/IImport";
 import { API_BASE_URL } from "@/utils/constants";
 
 export const eventService = {
@@ -117,6 +118,26 @@ export const eventService = {
           throw new Error(error.response.data.detail);
         } else {
           throw new Error("An unknown error occurred while deleting the event.");
+        }
+      });
+  },
+
+  importEvents: async (file: File, accessToken: string): Promise<IImportReport> => {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    return await axios
+      .post(`${API_BASE_URL}/events/import`, formData, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      .then(response => response.data as IImportReport)
+      .catch(error => {
+        if (error.response && error.response.data && error.response.data.detail) {
+          throw new Error(error.response.data.detail);
+        } else {
+          throw new Error("An unknown error occurred while importing events.");
         }
       });
   },

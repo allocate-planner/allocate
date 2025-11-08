@@ -85,3 +85,9 @@ class EditEvent(FrozenBaseModel):
     previous_date: date_type | None = None
     previous_start_time: time_type | None = None
     previous_end_time: time_type | None = None
+
+
+class ImportReport(FrozenBaseModel):
+    imported_count: int = 0
+    skipped_count: int = 0
+    warnings: list[str] | None = None

@@ -8,7 +8,7 @@ from icalendar import Calendar
 from api.events.repositories.event_repository import EventRepository
 from api.events.use_cases.create_event_use_case import CreateEventUseCase
 from api.system.interfaces.use_cases import UseCase
-from api.system.schemas.event import EventBase
+from api.system.schemas.event import EventBase, ImportReport
 from api.users.errors.user_not_found_error import UserNotFoundError
 from api.users.repositories.user_repository import UserRepository
 
@@ -27,7 +27,7 @@ class ImportEventsUseCase(UseCase):
         current_user: str,
         file: UploadFile,
         create_event_use_case: CreateEventUseCase,
-    ) -> list[EventBase]:
+    ) -> ImportReport:
         user = self.user_repository.find_by_email(current_user)
 
         if user is None:
@@ -51,8 +51,10 @@ class ImportEventsUseCase(UseCase):
         calendar_object: Any,  # noqa: ANN401
         create_event_use_case: CreateEventUseCase,
         current_user: str,
-    ) -> list[EventBase]:
-        events: list = []
+    ) -> ImportReport:
+        imported_count = 0
+        skipped_count = 0
+        warnings: list[str] = []
 
         for event in calendar_object.walk("VEVENT"):
             summary = event.get("SUMMARY")
@@ -62,6 +64,8 @@ class ImportEventsUseCase(UseCase):
             dt_end = event.get("DTEND")
 
             if not all([summary, dt_start, dt_end]):
+                skipped_count += 1
+                warnings.append("Skipped event with missing required fields")
                 continue
 
             event_start_date = (
@@ -72,6 +76,8 @@ class ImportEventsUseCase(UseCase):
             )
 
             if event_start_date != event_end_date:
+                skipped_count += 1
+                warnings.append("Skipped multi-day event")
                 continue
 
             event_start_time: datetime = dt_start.dt
@@ -89,7 +95,12 @@ class ImportEventsUseCase(UseCase):
             exdate_text = ImportEventsUseCase.ical_text(exdate_prop, ",")
 
             if rrule_text:
-                rrulestr(rrule_text)
+                try:
+                    rrulestr(rrule_text)
+                except Exception:
+                    skipped_count += 1
+                    warnings.append("Skipped event with invalid RRULE")
+                    continue
 
             event = EventBase(  # noqa: PLW2901
                 title=title,
@@ -103,10 +114,16 @@ class ImportEventsUseCase(UseCase):
                 exdate=exdate_text,
             )
 
-            events.append(event)
             create_event_use_case.execute(event, current_user)
+            imported_count += 1
 
-        return events
+        return ImportReport.model_validate(
+            {
+                "imported_count": imported_count,
+                "skipped_count": skipped_count,
+                "warnings": warnings or None,
+            }
+        )
 
     @staticmethod
     def ical_text(value: Any, join_sep: str = ",") -> str | None:  # noqa: ANN401

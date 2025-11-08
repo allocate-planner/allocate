@@ -66,7 +66,7 @@ def edit_event(
     return edit_event_use_case.execute(event_id, request, current_user)
 
 
-@events.post("/api/v1/events/import", response_model=list[event.EventBase])
+@events.post("/api/v1/events/import", response_model=event.ImportReport)
 def import_events(
     file: Annotated[UploadFile, File()],
     import_events_use_case: Annotated[

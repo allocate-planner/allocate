@@ -28,14 +28,6 @@ interface IProps {
 
 const SettingsPopup = (props: IProps) => {
   const [selectedSettingsSubpage, setSelectedSettingsSubPage] = useState<string>("account");
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
-  const [_, setFile] = useState<File | null>(null);
-
-  const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setFile(e.target.files[0]);
-    }
-  };
 
   const renderTabContent = () => {
     switch (selectedSettingsSubpage) {
@@ -50,7 +42,7 @@ const SettingsPopup = (props: IProps) => {
           />
         );
       case "import":
-        return <ImportTab handleUpload={handleUpload} />; // co-locate state
+        return <ImportTab />;
       case "integrations":
         return <IntegrationsTab />;
       case "calendar":
