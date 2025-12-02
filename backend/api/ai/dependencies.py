@@ -7,11 +7,11 @@ from api.ai.services.scheduling_service import SchedulingService
 from api.ai.services.search_service import SearchService
 from api.ai.services.tools_service import ToolsService
 from api.ai.services.transcription_service import TranscriptionService
-from api.audio.use_cases.analyse_audio_use_case import AnalyseAudioUseCase
-from api.audio.use_cases.apply_recommendations_use_case import (
+from api.ai.use_cases.analyse_audio_use_case import AnalyseAudioUseCase
+from api.ai.use_cases.apply_recommendations_use_case import (
     ApplyRecommendationsUseCase,
 )
-from api.audio.use_cases.transcribe_audio_use_case import TranscribeAudioUseCase
+from api.ai.use_cases.transcribe_audio_use_case import TranscribeAudioUseCase
 from api.dependencies import UserRepository, get_user_repository
 from api.integrations.dependencies import search_integration_use_case
 from api.integrations.use_cases.search_integration_use_case import (

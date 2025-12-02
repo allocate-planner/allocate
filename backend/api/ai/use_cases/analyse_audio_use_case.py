@@ -1,8 +1,8 @@
 import json
 from datetime import datetime
 
+from api.ai.errors.audio_analysis_error import AudioAnalysisError
 from api.ai.services.scheduling_service import SchedulingService
-from api.audio.errors.audio_analysis_error import AudioAnalysisError
 from api.system.interfaces.use_cases import UseCase
 from api.system.schemas.audio import AudioAnalysisOutput
 from api.system.schemas.event import Event

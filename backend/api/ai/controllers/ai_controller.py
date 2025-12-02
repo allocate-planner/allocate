@@ -2,16 +2,16 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, File, UploadFile
 
-from api.audio.dependencies import (
+from api.ai.dependencies import (
     analyse_audio_use_case,
     apply_recommendations_use_case,
     transcribe_audio_use_case,
 )
-from api.audio.use_cases.analyse_audio_use_case import AnalyseAudioUseCase
-from api.audio.use_cases.apply_recommendations_use_case import (
+from api.ai.use_cases.analyse_audio_use_case import AnalyseAudioUseCase
+from api.ai.use_cases.apply_recommendations_use_case import (
     ApplyRecommendationsUseCase,
 )
-from api.audio.use_cases.transcribe_audio_use_case import TranscribeAudioUseCase
+from api.ai.use_cases.transcribe_audio_use_case import TranscribeAudioUseCase
 from api.dependencies import get_current_user
 from api.events.dependencies import (
     create_event_use_case,
@@ -24,10 +24,10 @@ from api.events.use_cases.edit_event_use_case import EditEventUseCase
 from api.system.schemas.audio import AudioAnalysisOutput, AudioTranscriptionResponse
 from api.system.schemas.event import Event, EventBase
 
-audio = APIRouter()
+ai = APIRouter()
 
 
-@audio.post("/api/v1/audio/transcribe", response_model=AudioTranscriptionResponse)
+@ai.post("/api/v1/ai/audio/transcribe", response_model=AudioTranscriptionResponse)
 async def transcribe_audio(
     file: Annotated[UploadFile, File()],
     transcribe_audio_use_case: Annotated[
@@ -42,7 +42,7 @@ async def transcribe_audio(
     )
 
 
-@audio.post("/api/v1/audio/analyse", response_model=AudioAnalysisOutput)
+@ai.post("/api/v1/ai/audio/analyse", response_model=AudioAnalysisOutput)
 async def analyse_audio(
     transcription_response: AudioTranscriptionResponse,
     events: list[Event],
@@ -60,7 +60,7 @@ async def analyse_audio(
     )
 
 
-@audio.post("/api/v1/audio/apply", response_model=list[EventBase])
+@ai.post("/api/v1/ai/audio/apply", response_model=list[EventBase])
 def apply_recommendations(  # noqa: PLR0913
     analysis_output: AudioAnalysisOutput,
     apply_recommendations_use_case: Annotated[

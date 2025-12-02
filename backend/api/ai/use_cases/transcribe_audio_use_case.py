@@ -4,8 +4,8 @@ from io import BytesIO
 
 from fastapi import UploadFile
 
+from api.ai.errors.audio_transcription_error import AudioTranscriptionError
 from api.ai.services.transcription_service import TranscriptionService
-from api.audio.errors.audio_transcription_error import AudioTranscriptionError
 from api.system.interfaces.use_cases import UseCase
 from api.system.schemas.audio import AudioTranscriptionResponse
 from api.users.errors.user_not_found_error import UserNotFoundError

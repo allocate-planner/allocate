@@ -5,7 +5,7 @@ import { API_BASE_URL } from "@/utils/constants";
 import type { ITransformedEvent } from "@/models/IEvent";
 import type { AudioAnalysisOutput, AudioTranscriptionResponse } from "@/models/IAudio";
 
-export const audioService = {
+export const aiService = {
   transcribeAudio: async (
     accessToken: string,
     audioRecording: Blob
@@ -14,7 +14,7 @@ export const audioService = {
     formData.append("file", audioRecording, "audio.webm");
 
     return await axios
-      .post(`${API_BASE_URL}/audio/transcribe`, formData, {
+      .post(`${API_BASE_URL}/ai/audio/transcribe`, formData, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
           "Content-Type": "multipart/form-data",
@@ -37,7 +37,7 @@ export const audioService = {
   ): Promise<AudioAnalysisOutput> => {
     return await axios
       .post(
-        `${API_BASE_URL}/audio/analyse`,
+        `${API_BASE_URL}/ai/audio/analyse`,
         {
           transcription_response: transcriptionResponse,
           events: events,
@@ -64,7 +64,7 @@ export const audioService = {
   ): Promise<ITransformedEvent[]> => {
     return await axios
       .post(
-        `${API_BASE_URL}/audio/apply`,
+        `${API_BASE_URL}/ai/audio/apply`,
         {
           llm_output: analysisOutput.llm_output,
           session_id: analysisOutput.session_id,
@@ -91,13 +91,13 @@ export const audioService = {
     events: ITransformedEvent[]
   ): Promise<ITransformedEvent[]> => {
     try {
-      const transcriptionResponse = await audioService.transcribeAudio(accessToken, audioRecording);
-      const analysisOutput = await audioService.analyseAudio(
+      const transcriptionResponse = await aiService.transcribeAudio(accessToken, audioRecording);
+      const analysisOutput = await aiService.analyseAudio(
         accessToken,
         transcriptionResponse,
         events
       );
-      const appliedRecommendations = await audioService.applyRecommendations(
+      const appliedRecommendations = await aiService.applyRecommendations(
         accessToken,
         analysisOutput
       );

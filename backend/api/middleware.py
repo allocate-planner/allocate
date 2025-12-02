@@ -5,9 +5,9 @@ import jwt
 from fastapi import HTTPException, Request, Response
 from fastapi.responses import JSONResponse
 
-from api.audio.errors.audio_analysis_error import AudioAnalysisError
-from api.audio.errors.audio_transcription_error import AudioTranscriptionError
-from api.audio.errors.audio_transformation_error import AudioTransformationError
+from api.ai.errors.audio_analysis_error import AudioAnalysisError
+from api.ai.errors.audio_transcription_error import AudioTranscriptionError
+from api.ai.errors.audio_transformation_error import AudioTransformationError
 from api.config import config
 from api.events.errors.event_not_found_error import EventNotFoundError
 from api.events.errors.events_not_found_error import EventsNotFoundError

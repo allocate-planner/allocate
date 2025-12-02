@@ -4,7 +4,7 @@ import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from api.audio.controllers.audio_controller import audio
+from api.ai.controllers.ai_controller import ai
 from api.config import config
 from api.database import engine
 from api.events.controllers.events_controller import events
@@ -50,7 +50,7 @@ def create_app() -> FastAPI:
 
     Base.metadata.create_all(bind=engine)
 
-    app.include_router(audio, tags=["audio"])
+    app.include_router(ai, tags=["ai"])
     app.include_router(users, tags=["users"])
     app.include_router(events, tags=["events"])
     app.include_router(integrations, tags=["integrations"])

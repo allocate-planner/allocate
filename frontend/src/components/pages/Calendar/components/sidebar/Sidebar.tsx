@@ -7,7 +7,7 @@ import { AxiosError } from "axios";
 import { CalendarDaysIcon, Cog6ToothIcon } from "@heroicons/react/24/outline";
 
 import { useAuth } from "@/AuthProvider";
-import { audioService } from "@/services/AudioService";
+import { aiService } from "@/services/AIService";
 import { scheduledEventsAtom } from "@/atoms/eventsAtom";
 
 import type { IStoredUser } from "@/models/IUser";
@@ -63,7 +63,7 @@ const Sidebar = ({ sidebarOpen, onEventsUpdate }: IProps) => {
   const processAudio = async (audio: Blob) => {
     try {
       if (accessToken) {
-        await audioService.processAudio(accessToken, audio, scheduledEvents);
+        await aiService.processAudio(accessToken, audio, scheduledEvents);
         onEventsUpdate?.();
         toast.success("Audio processed successfully");
       }

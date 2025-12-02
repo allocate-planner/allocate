@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from api.audio.errors.audio_transformation_error import AudioTransformationError
+from api.ai.errors.audio_transformation_error import AudioTransformationError
 from api.events.use_cases.create_event_use_case import CreateEventUseCase
 from api.events.use_cases.delete_event_use_case import DeleteEventUseCase
 from api.events.use_cases.edit_event_use_case import EditEventUseCase
