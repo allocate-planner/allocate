@@ -68,7 +68,4 @@ class SchedulingService:
             },
         )
 
-        return self._extract_response_content(result)
-
-    def _extract_response_content(self, result: dict) -> str:
         return result["messages"][-1].content

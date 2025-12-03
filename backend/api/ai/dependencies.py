@@ -3,11 +3,13 @@ from typing import Annotated
 from fastapi import Depends
 
 from api.ai.connectors.exa_connector import ExaConnector
+from api.ai.services.chat_service import ChatService
 from api.ai.services.scheduling_service import SchedulingService
 from api.ai.services.search_service import SearchService
 from api.ai.services.tools_service import ToolsService
 from api.ai.services.transcription_service import TranscriptionService
 from api.ai.use_cases.analyse_audio_use_case import AnalyseAudioUseCase
+from api.ai.use_cases.analyse_chat_use_case import AnalyseChatUseCase
 from api.ai.use_cases.apply_recommendations_use_case import (
     ApplyRecommendationsUseCase,
 )
@@ -25,6 +27,10 @@ def transcription_service() -> TranscriptionService:
 
 def exa_connector() -> ExaConnector:
     return ExaConnector()
+
+
+def chat_service() -> ChatService:
+    return ChatService()
 
 
 def search_service(
@@ -84,4 +90,14 @@ def apply_recommendations_use_case(
 ) -> ApplyRecommendationsUseCase:
     return ApplyRecommendationsUseCase(
         user_repository,
+    )
+
+
+def analyse_chat_use_case(
+    user_repository: Annotated[UserRepository, Depends(get_user_repository)],
+    chat_service: Annotated[ChatService, Depends(chat_service)],
+) -> AnalyseChatUseCase:
+    return AnalyseChatUseCase(
+        user_repository,
+        chat_service,
     )

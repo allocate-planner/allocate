@@ -4,10 +4,12 @@ from fastapi import APIRouter, Depends, File, UploadFile
 
 from api.ai.dependencies import (
     analyse_audio_use_case,
+    analyse_chat_use_case,
     apply_recommendations_use_case,
     transcribe_audio_use_case,
 )
 from api.ai.use_cases.analyse_audio_use_case import AnalyseAudioUseCase
+from api.ai.use_cases.analyse_chat_use_case import AnalyseChatUseCase
 from api.ai.use_cases.apply_recommendations_use_case import (
     ApplyRecommendationsUseCase,
 )
@@ -22,6 +24,7 @@ from api.events.use_cases.create_event_use_case import CreateEventUseCase
 from api.events.use_cases.delete_event_use_case import DeleteEventUseCase
 from api.events.use_cases.edit_event_use_case import EditEventUseCase
 from api.system.schemas.audio import AudioAnalysisOutput, AudioTranscriptionResponse
+from api.system.schemas.chat import ChatInput, ChatOutput
 from api.system.schemas.event import Event, EventBase
 
 ai = APIRouter()
@@ -87,4 +90,21 @@ def apply_recommendations(  # noqa: PLR0913
         create_event_use_case,
         edit_event_use_case,
         delete_event_use_case,
+    )
+
+
+@ai.post("/api/v1/chat/analyse", response_model=ChatOutput)
+async def analyse_chat(
+    chat: ChatInput,
+    events: list[Event],
+    analyse_chat_use_case: Annotated[
+        AnalyseChatUseCase,
+        Depends(analyse_chat_use_case),
+    ],
+    current_user: Annotated[str, Depends(get_current_user)],
+):
+    return await analyse_chat_use_case.execute(
+        current_user,
+        chat,
+        events,
     )

@@ -8,6 +8,7 @@ from fastapi.responses import JSONResponse
 from api.ai.errors.audio_analysis_error import AudioAnalysisError
 from api.ai.errors.audio_transcription_error import AudioTranscriptionError
 from api.ai.errors.audio_transformation_error import AudioTransformationError
+from api.ai.errors.chat_analysis_error import ChatAnalysisError
 from api.config import config
 from api.events.errors.event_not_found_error import EventNotFoundError
 from api.events.errors.events_not_found_error import EventsNotFoundError
@@ -170,7 +171,7 @@ async def error_handling_middleware(  # noqa: C901, PLR0912
             status_code=400,
             content={"detail": "Audio transcription failed"},
         )
-    except AudioAnalysisError as e:
+    except AudioAnalysisError:
         logger.exception(
             "Business logic error on %s %s",
             request.method,
@@ -178,7 +179,7 @@ async def error_handling_middleware(  # noqa: C901, PLR0912
         )
         return JSONResponse(
             status_code=400,
-            content={"detail": str(e)},
+            content={"detail": "Audio analysis failed"},
         )
     except AudioTransformationError:
         logger.exception(
@@ -189,6 +190,16 @@ async def error_handling_middleware(  # noqa: C901, PLR0912
         return JSONResponse(
             status_code=400,
             content={"detail": "Audio transformation failed"},
+        )
+    except ChatAnalysisError:
+        logger.exception(
+            "Business logic error on %s %s",
+            request.method,
+            request.url.path,
+        )
+        return JSONResponse(
+            status_code=400,
+            content={"detail": "Chat analysis failed"},
         )
     except Exception:
         logger.exception(
