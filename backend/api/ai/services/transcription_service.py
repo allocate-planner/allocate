@@ -6,7 +6,7 @@ from openai import AsyncOpenAI
 
 from api.ai.services.prompt_service import PromptService
 
-BASE_PROMPT_PATH: str = "base.prompt"
+BASE_PROMPT_PATH: str = "api/prompts/base.prompt"
 TRANSCRIPTION_MODEL: str = "whisper-large-v3"
 
 BASE_URL = "https://api.groq.com/openai/v1"

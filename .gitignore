@@ -166,6 +166,3 @@ dist-ssr
 
 # Ruff
 .ruff_cache
-
-# Prompts
-*.prompt

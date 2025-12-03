@@ -7,7 +7,7 @@ from api.ai.services.prompt_service import PromptService
 LLM_MODEL: str = "qwen/qwen3-235b-a22b-2507"
 LLM_TEMPERATURE: float = 0
 
-CHAT_PROMPT_PATH: str = "chat.prompt"
+CHAT_PROMPT_PATH: str = "api/prompts/chat.prompt"
 
 handler = CallbackHandler()
 
