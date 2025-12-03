@@ -2,7 +2,8 @@ import { motion } from "motion/react";
 
 import {
   containerVariants,
-  headerVariants,
+  heroContentVariants,
+  heroImageVariants,
 } from "@/components/pages/Home/components/MotionVariants";
 
 const Hero = () => {
@@ -25,9 +26,14 @@ const Hero = () => {
           className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
         />
       </div>
-      <motion.div className="py-24 sm:py-32 lg:pb-40" variants={headerVariants}>
+      <div className="py-24 sm:py-32 lg:pb-40">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl text-center">
+          <motion.div
+            className="mx-auto max-w-2xl text-center"
+            variants={heroContentVariants}
+            initial="hidden"
+            animate="visible"
+          >
             <h1 className="text-balance text-5xl font-semibold tracking-tight text-gray-900 sm:text-7xl">
               Your day, planned in seconds
             </h1>
@@ -46,8 +52,13 @@ const Hero = () => {
                 Learn more <span aria-hidden="true">→</span>
               </a>
             </div>
-          </div>
-          <div className="mt-16 flow-root sm:mt-24">
+          </motion.div>
+          <motion.div
+            className="mt-16 flow-root sm:mt-24"
+            variants={heroImageVariants}
+            initial="hidden"
+            animate="visible"
+          >
             <div className="-m-2 rounded-xl bg-gray-900/5 p-2 ring-1 ring-inset ring-gray-900/10 lg:-m-4 lg:rounded-2xl lg:p-4">
               <img
                 alt="Screenshot of allocate"
@@ -57,9 +68,9 @@ const Hero = () => {
                 className="rounded-md shadow-2xl ring-1 ring-gray-900/10"
               />
             </div>
-          </div>
+          </motion.div>
         </div>
-      </motion.div>
+      </div>
       <div
         aria-hidden="true"
         className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
