@@ -38,8 +38,11 @@ class PromptService:
         events_by_date: dict[str, list[dict]],
     ) -> None:
         events_text = format_events_by_date(events_by_date)
-        day = datetime.now(tz=UTC).strftime("%A, %B %d, %Y")
+        now = datetime.now(tz=UTC)
+        day = f"{now.strftime('%A, %B %d, %Y')} ({now.strftime('%Y-%m-%d')})"
 
         self.prompt = self.prompt.replace(PLACEHOLDER_EVENTS, events_text)
         self.prompt = self.prompt.replace(PLACEHOLDER_TIME, current_time)
         self.prompt = self.prompt.replace(PLACEHOLDER_DAY, day)
+
+        print(self.prompt)  ## Sorry Opus, i'll try this first.

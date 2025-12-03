@@ -3,7 +3,7 @@ import axios from "axios";
 import { API_BASE_URL } from "@/utils/constants";
 
 import type { ITransformedEvent } from "@/models/IEvent";
-import type { AudioAnalysisOutput, AudioTranscriptionResponse } from "@/models/IAudio";
+import type { AudioAnalysisOutput, AudioTranscriptionResponse, ChatOutput } from "@/models/IAudio";
 
 export const aiService = {
   transcribeAudio: async (
@@ -106,5 +106,35 @@ export const aiService = {
     } catch (error) {
       throw error;
     }
+  },
+
+  analyseChat: async (
+    accessToken: string,
+    userInput: string,
+    events: ITransformedEvent[]
+  ): Promise<ChatOutput> => {
+    return await axios
+      .post(
+        `${API_BASE_URL}/chat/analyse`,
+        {
+          chat: {
+            user_input: userInput,
+          },
+          events: events,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      )
+      .then(response => response.data)
+      .catch(error => {
+        if (error.response && error.response.data && error.response.data.detail) {
+          throw new Error(error.response.data.detail);
+        } else {
+          throw new Error("An unknown error occurred while analysing the chat");
+        }
+      });
   },
 };

@@ -21,6 +21,7 @@ import { useOAuthCallback } from "@/components/pages/Calendar/hooks/useOAuthCall
 import { CalendarHeader } from "@/components/pages/Calendar/components/core/CalendarHeader";
 import { CalendarTimeColumn } from "@/components/pages/Calendar/components/core/CalendarTimeColumn";
 import { CalendarGrid } from "@/components/pages/Calendar/components/core/CalendarGrid";
+import AnalysisPopup from "@/components/pages/Calendar/components/other/AnalysisPopup";
 import TimeIndicator from "@/components/pages/Calendar/components/other/TimeIndicator";
 import {
   Command,
@@ -31,6 +32,7 @@ import {
 } from "@/components/common/Command";
 
 import { integrationsAtom } from "@/atoms/integrationsAtom";
+
 import { integrationService } from "@/services/IntegrationService";
 
 type ContextTarget =
@@ -48,6 +50,7 @@ const Calendar = ({ transformEvents, sidebarOpen, setSidebarOpen }: IProps) => {
 
   const [selectedSlot, setSelectedSlot] = useState<ISelectedEvent | null>();
   const [isEventPopupOpen, setIsEventPopupOpen] = useState<boolean>(false);
+  const [isAnalysisPopupOpen, setIsAnalysisPopupOpen] = useState<boolean>(false);
 
   const [selectedEvent, setSelectedEvent] = useState<ITransformedEvent | null>();
   const [isEventDetailPopupOpen, setIsEventDetailPopupOpen] = useState<boolean>(false);
@@ -91,6 +94,20 @@ const Calendar = ({ transformEvents, sidebarOpen, setSidebarOpen }: IProps) => {
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
   }, [contextMenu]);
+
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      const isCmdOrCtrl = e.metaKey || e.ctrlKey;
+
+      if (isCmdOrCtrl && e.shiftKey && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        setIsAnalysisPopupOpen(true);
+      }
+    };
+
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [setIsAnalysisPopupOpen]);
 
   const handleEventClick = (day: number, time: string) => {
     const timeSlot = transformTo24HourFormat(time).split(":").map(Number);
@@ -174,6 +191,10 @@ const Calendar = ({ transformEvents, sidebarOpen, setSidebarOpen }: IProps) => {
   const closeEventDetailPopup = () => {
     setSelectedEvent(null);
     setIsEventDetailPopupOpen(false);
+  };
+
+  const closeAnalysisPopup = () => {
+    setIsAnalysisPopupOpen(false);
   };
 
   const daysCount = calendarView === "single" ? 1 : calendarView === "triple" ? 3 : 7;
@@ -291,6 +312,10 @@ const Calendar = ({ transformEvents, sidebarOpen, setSidebarOpen }: IProps) => {
               onEdit={editEvent}
               onDelete={deleteEvent}
             />
+          )}
+
+          {isAnalysisPopupOpen && (
+            <AnalysisPopup isOpen={isAnalysisPopupOpen} onClose={closeAnalysisPopup} />
           )}
         </div>
       </div>

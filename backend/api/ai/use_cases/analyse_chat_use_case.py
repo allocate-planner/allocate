@@ -44,13 +44,9 @@ class AnalyseChatUseCase(UseCase):
                 chat.user_input,
                 events_by_date,
                 current_user,
-                chat.session_id,
             )
 
-            return ChatOutput(
-                response=response,
-                session_id=chat.session_id,
-            )
+            return ChatOutput(response=response)
 
         except ChatAnalysisError:
             raise

@@ -23,7 +23,6 @@ class ChatService:
         user_message: str,
         events_by_date: dict[str, list[dict]],
         current_user: str,
-        langfuse_session_id: str,
     ) -> str:
         llm = OpenRouterConnector(
             model=LLM_MODEL,
@@ -41,7 +40,6 @@ class ChatService:
             config={
                 "callbacks": [handler],
                 "metadata": {
-                    "langfuse_session_id": langfuse_session_id,
                     "langfuse_user_id": current_user,
                 },
             },
