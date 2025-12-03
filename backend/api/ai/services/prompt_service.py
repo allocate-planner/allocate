@@ -44,5 +44,3 @@ class PromptService:
         self.prompt = self.prompt.replace(PLACEHOLDER_EVENTS, events_text)
         self.prompt = self.prompt.replace(PLACEHOLDER_TIME, current_time)
         self.prompt = self.prompt.replace(PLACEHOLDER_DAY, day)
-
-        print(self.prompt)  ## Sorry Opus, i'll try this first.
