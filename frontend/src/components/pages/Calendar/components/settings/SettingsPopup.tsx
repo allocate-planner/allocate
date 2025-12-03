@@ -54,7 +54,10 @@ const SettingsPopup = (props: IProps) => {
 
   return (
     <Dialog open={props.isOpen} onOpenChange={props.onClose}>
-      <DialogContent className="sm:max-w-[1280px] p-0 gap-0">
+      <DialogContent
+        className="sm:max-w-[1280px] p-0 gap-0"
+        onOpenAutoFocus={event => event.preventDefault()}
+      >
         <DialogHeader className="space-y-2 border-b-[1px] border-gray-200 p-8">
           <DialogTitle className="text-3xl font-bold">Settings</DialogTitle>
           <DialogDescription>Modify your user, or system settings here.</DialogDescription>
