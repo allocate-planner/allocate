@@ -26,8 +26,9 @@ export const convertToTimePeriodFromHHmm = (time: string): string => {
 // Input:  "02:00:00+01:00"
 // Output: "02:00am"
 export const convertToTimePeriodFromISO = (time: string) => {
-  const dummyISOString = `1970-01-01T${time}`;
-  return format(parseISO(dummyISOString), "hh:mma").toLowerCase();
+  const today = format(new Date(), "yyyy-MM-dd");
+  const isoString = `${today}T${time}`;
+  return format(parseISO(isoString), "hh:mma").toLowerCase();
 };
 
 // Input:  "10"
