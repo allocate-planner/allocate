@@ -8,7 +8,7 @@ from api.ai.connectors.openrouter_connector import OpenRouterConnector
 from api.ai.services.tools_service import ToolsService
 from api.ai.services.transcription_service import TranscriptionService
 
-LLM_MODEL: str = "qwen/qwen3-235b-a22b-2507"
+LLM_MODEL: str = "openai/gpt-oss-120b"
 LLM_TEMPERATURE: float = 0
 
 handler = CallbackHandler()

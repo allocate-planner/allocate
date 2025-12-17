@@ -2,7 +2,7 @@ from typing import Any
 
 from api.ai.connectors.exa_connector import ExaConnector
 
-EXA_MODEL = "exa-fast-preview"
+EXA_MODEL = "exa"
 
 
 class SearchService:

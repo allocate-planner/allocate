@@ -4,7 +4,7 @@ from langfuse.langchain import CallbackHandler
 from api.ai.connectors.openrouter_connector import OpenRouterConnector
 from api.ai.services.prompt_service import PromptService
 
-LLM_MODEL: str = "qwen/qwen3-235b-a22b-2507"
+LLM_MODEL: str = "openai/gpt-oss-120b"
 LLM_TEMPERATURE: float = 0
 
 CHAT_PROMPT_PATH: str = "api/prompts/chat.prompt"
